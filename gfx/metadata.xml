@@ -1,0 +1,6 @@
+<brush name="gfx/quirks_ui.png" version="17" b1="2" b5="0">
+  <sprite id="perk_bank" ic="FF624551" img="ui\perks\perk_bank.png" />
+  <sprite id="active_bank" ic="FF624552" img="ui\perks\active_bank.png" />
+  <sprite id="active_cash_in" ic="FF624553" img="ui\perks\active_cash_in.png" />
+  <sprite id="cashed_in_effect" ic="FF624554" img="ui\perks\cashed_in_effect.png" />
+</brush>
