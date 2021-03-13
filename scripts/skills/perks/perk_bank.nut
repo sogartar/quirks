@@ -8,7 +8,6 @@ this.perk_bank <- this.inherit("scripts/skills/skill", {
     this.m.Type = this.Const.SkillType.Perk;
     this.m.Order = this.Const.SkillOrder.Perk;
     this.m.IsActive = false;
-    this.m.IsStacking = false;
     this.m.IsHidden = false;
   }
 

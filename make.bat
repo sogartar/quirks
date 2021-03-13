@@ -1,7 +1,14 @@
+@echo off
+
 SET SCRIPT_DIR=%~dp0
 SET WORKING_DIR=%cd%
 
-bbrusher pack "%SCRIPT_DIR%\brushes\quirks_ui.brush" "%SCRIPT_DIR%\gfx"
+bbrusher pack "%SCRIPT_DIR%\brushes\quirks_ui.brush" "%SCRIPT_DIR%\gfx" || goto error
 
 cd "%SCRIPT_DIR%"
-7z a "%WORKING_DIR%\mod_quirks.zip" brushes gfx scripts sounds
+7z a "%WORKING_DIR%\mod_quirks.zip" brushes gfx scripts sounds || goto error
+exit 0
+
+:error
+echo Failed with error #%errorlevel%.
+exit /b %errorlevel%

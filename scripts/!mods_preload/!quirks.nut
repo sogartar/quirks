@@ -17,17 +17,18 @@ local gt = this.getroottable();
 };
 
 ::mods_queue(null, "mod_hooks(>=20)", function() {
-  gt.Const.BankFatigueCost <- 50;
-  gt.Const.BankApCost <- 9;
+  gt.Const.BankFatigueCost <- 1;
+  gt.Const.BankApCost <- 1;
   gt.Const.BankApIncreaseOnUse <- 1;
-  gt.Const.CashInFatigueCost <- 50;
-  gt.Const.CashInApCost <- 9;
+  gt.Const.CashInFatigueCost <- 1;
+  gt.Const.CashInApCost <- 1;
   gt.Const.Strings.PerkName.Bank <- "Bank";
   gt.Const.Strings.CashInName <- "Cash In";
+  gt.Const.Strings.CashedInEffectName <- "Cashed In";
   gt.Const.BankInterestRatePerTurn <- 0.25;
   gt.Const.Strings.PerkDescription.Bank <- "Unlocks the \'Bank\' ability to bank action points to be used later. " +
     "When used, banks [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.BankApIncreaseOnUse + "[/color] action point. " +
-    "Breaking (cashing in) the bank adds the action points inside to be spent this turn." +
+    "Breaking (cashing in) makes the action points available next turn. " +
     "Each turn the bank is not spent it is increased by [color=" + gt.Const.UI.Color.PositiveValue + "]" + (gt.Const.BankInterestRatePerTurn * 100) + "%[/color]. " +
     "\'" + gt.Const.Strings.PerkName.Bank + "\' costs " + this.Const.BankFatigueCost + " fatigue and " + gt.Const.BankApCost + " action points. " +
     "\'" + gt.Const.Strings.CashInName + "\' costs " + this.Const.CashInFatigueCost + " fatigue and " + gt.Const.CashInApCost + " action points.";

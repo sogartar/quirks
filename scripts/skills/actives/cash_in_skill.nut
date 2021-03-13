@@ -1,4 +1,4 @@
-this.bank_skill <- this.inherit("scripts/skills/skill", {
+this.cash_in_skill <- this.inherit("scripts/skills/skill", {
   m = {},
   function create() {
     this.m.ID = "actives.cash_in";
@@ -24,7 +24,7 @@ this.bank_skill <- this.inherit("scripts/skills/skill", {
 
   function getDescription() {
     local skills = this.getContainer();
-    local bank_effect = skills.getSkillByID("effect.bank");
+    local bank_effect = skills.getSkillByID("effects.bank");
     return "Cash in [color=" + this.Const.UI.Color.PositiveValue + "]" + bank_effect.getActionPoints() + "[/color] banked action points.";
   }
 
@@ -50,17 +50,18 @@ this.bank_skill <- this.inherit("scripts/skills/skill", {
   }
 
   function isUsable() {
-    return this.skill.isUsable();
+    local skills = this.getContainer();
+    return this.skill.isUsable() && skills.hasSkill("effects.bank") && !skills.hasSkill("effects.cashed_in");
   }
 
   function onUse(_user, _targetTile) {
     local skills = this.getContainer();
     local actor = skills.getActor();
-    local bank_effect = skills.getSkillByID("effect.bank");
+    local bank_effect = skills.getSkillByID("effects.bank");
     local ap = bank_effect.getActionPoints();
     skills.remove(bank_effect);
     local cashed_in_effect = this.new("scripts/skills/effects/cashed_in_effect");
-    cashed_in_effect.setActionPonts(ap);
+    cashed_in_effect.setActionPoints(ap);
     skills.add(cashed_in_effect);
     this.removeSelf();
     return true;

@@ -49,7 +49,7 @@ this.bank_skill <- this.inherit("scripts/skills/skill", {
   }
 
   function onUse(_user, _targetTile) {
-    local bank_effect = this.getContainer().getSkillByID("effect.bank");
+    local bank_effect = this.getContainer().getSkillByID("effects.bank");
     if (bank_effect == null) {
       bank_effect = this.new("scripts/skills/effects/bank_effect");
       this.getContainer().add(bank_effect);

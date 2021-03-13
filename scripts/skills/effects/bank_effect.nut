@@ -1,6 +1,6 @@
 this.bank_effect <- this.inherit("scripts/skills/skill", {
   m = {
-    ActionPointsBank = 0
+    ActionPoints = 0
   }
 
   function create()
@@ -12,32 +12,31 @@ this.bank_effect <- this.inherit("scripts/skills/skill", {
     this.m.Overlay = "perk_bank";
     this.m.Type = this.Const.SkillType.StatusEffect;
     this.m.IsActive = false;
-    this.m.IsStacking = false;
     this.m.IsRemovedAfterBattle = true;
   }
 
-  function setActionPointsBank(ap) {
-    this.m.ActionPointsBank = ap;
+  function setActionPoints(ap) {
+    this.m.ActionPoints = ap;
   }
 
-  function getActionPointsBank() {
-    return this.m.ActionPointsBank;
+  function getActionPoints() {
+    return this.m.ActionPoints;
   }
 
   function addActionPoints(ap) {
-    this.m.ActionPointsBank += ap;
+    this.m.ActionPoints += ap;
   }
 
   function onAdded() {
-    local actor = this.getContainer().add("scripts/skills/actives/cash_in_skill");
+    local actor = this.getContainer().add(this.new("scripts/skills/actives/cash_in_skill"));
   }
 
   function getDescription() {
-    return "This character has [color=" + this.Const.UI.Color.PositiveValue + "]" + this.getActionPointsBank() +
+    return "This character has [color=" + this.Const.UI.Color.PositiveValue + "]" + this.getActionPoints() +
       "[/color] action points in the bank.";
   }
 
   function onTurnEnd() {
-    this.setActionPointsBank(this.getActionPointsBank() * this.Const.BankInterestRatePerTurn);
+    this.setActionPoints(this.getActionPoints() * (this.Const.BankInterestRatePerTurn + 1));
   }
 });
