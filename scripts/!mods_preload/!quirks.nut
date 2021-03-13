@@ -16,7 +16,7 @@ local gt = this.getroottable();
   perk.Unlocks <- row;
 };
 
-::mods_queue(null, "mod_hooks(>=20)", function() {
+local addPerkBank = function() {
   gt.Const.BankFatigueCost <- 1;
   gt.Const.BankApCost <- 1;
   gt.Const.BankApIncreaseOnUse <- 1;
@@ -44,4 +44,29 @@ local gt = this.getroottable();
     IconDisabled = "ui/perks/perk_bank_sw.png"
   };
   ::quirks.setPerk(bankPerkConsts, 0);
+};
+
+local addPerkPrecision = function() {
+  gt.Const.PrecisionFatigueCost <- 25;
+  gt.Const.PrecisionApCost <- 5;
+  gt.Const.Strings.PerkName.Precision <- "Precision";
+  gt.Const.PrecisionHitChanceBonus <- 30;
+  gt.Const.Strings.PerkDescription.Precision <- "Unlocks the \'" + gt.Const.Strings.PerkName.Precision + "\' ability to increase next attack's hit chance by [color=" +
+  this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color]. Costs " + this.Const.PrecisionFatigueCost + " fatigue and " + gt.Const.PrecisionApCost + " action points.";
+  gt.Const.Strings.PrecisionSkillDescription <- "Increase next attack's hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color].";
+
+  local precisionPerkConsts = {
+    ID = "perk.precision",
+    Script = "scripts/skills/perks/perk_precision",
+    Name = this.Const.Strings.PerkName.Precision,
+    Tooltip = this.Const.Strings.PerkDescription.Precision,
+    Icon = "ui/perks/perk_precision.png",
+    IconDisabled = "ui/perks/perk_precision_sw.png"
+  };
+  ::quirks.setPerk(precisionPerkConsts, 0);
+};
+
+::mods_queue(null, "mod_hooks(>=20)", function() {
+  addPerkBank();
+  addPerkPrecision();
 });

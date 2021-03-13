@@ -3,4 +3,6 @@
   <sprite id="active_bank" ic="FF624552" img="ui\perks\active_bank.png" />
   <sprite id="active_cash_in" ic="FF624553" img="ui\perks\active_cash_in.png" />
   <sprite id="cashed_in_effect" ic="FF624554" img="ui\perks\cashed_in_effect.png" />
+  <sprite id="perk_precision" ic="FF624555" img="ui\perks\perk_precision.png" />
+  <sprite id="active_precision" ic="FF624556" img="ui\perks\active_precision.png" />
 </brush>
