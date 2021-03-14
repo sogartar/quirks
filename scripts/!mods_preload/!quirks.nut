@@ -17,11 +17,11 @@ local gt = this.getroottable();
 };
 
 local addPerkBank = function() {
-  gt.Const.BankFatigueCost <- 1;
-  gt.Const.BankApCost <- 1;
+  gt.Const.BankFatigueCost <- 50;
+  gt.Const.BankApCost <- 9;
   gt.Const.BankApIncreaseOnUse <- 1;
-  gt.Const.CashInFatigueCost <- 1;
-  gt.Const.CashInApCost <- 1;
+  gt.Const.CashInFatigueCost <- 50;
+  gt.Const.CashInApCost <- 9;
   gt.Const.Strings.PerkName.Bank <- "Bank";
   gt.Const.Strings.CashInName <- "Cash In";
   gt.Const.Strings.CashedInEffectName <- "Cashed In";
@@ -66,7 +66,28 @@ local addPerkPrecision = function() {
   ::quirks.setPerk(precisionPerkConsts, 0);
 };
 
+local addPerkExertion = function() {
+  gt.Const.ExertionFatigueCostMult <- 0.166;
+  gt.Const.ExertionMinFatigueCost <- 15;
+  gt.Const.ExertionInitiativeBase <- 210;
+  gt.Const.ExertionApBonus <- 1;
+  gt.Const.Strings.PerkName.Exertion <- "Exertion";
+  gt.Const.Strings.PerkDescription.Exertion <- "Unlocks the \'" + gt.Const.Strings.PerkName.Exertion +
+    "\' ability to increase action points this turn. Fatigue cost is based on current initiative.";
+
+  local exertionPerkConsts = {
+    ID = "perk.exertion",
+    Script = "scripts/skills/perks/perk_exertion",
+    Name = this.Const.Strings.PerkName.Exertion,
+    Tooltip = this.Const.Strings.PerkDescription.Exertion,
+    Icon = "ui/perks/perk_exertion.png",
+    IconDisabled = "ui/perks/perk_exertion_sw.png"
+  };
+  ::quirks.setPerk(exertionPerkConsts, 0);
+};
+
 ::mods_queue(null, "mod_hooks(>=20)", function() {
   addPerkBank();
   addPerkPrecision();
+  addPerkExertion();
 });
