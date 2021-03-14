@@ -86,8 +86,27 @@ local addPerkExertion = function() {
   ::quirks.setPerk(exertionPerkConsts, 0);
 };
 
+local addPerkHyperactive = function() {
+  gt.Const.HyperactiveApBonus <- 3;
+  gt.Const.HyperactiveFatigueRecoveryRateModifier <- -30;
+  gt.Const.Strings.PerkName.Hyperactive <- "Hyperactive";
+  gt.Const.Strings.PerkDescription.Hyperactive <- "Permanently increases action points by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.HyperactiveApBonus +
+    "[/color] and reduces fatigue recovery rate by [color=" + this.Const.UI.Color.NegativeValue + "]" + (-gt.Const.HyperactiveFatigueRecoveryRateModifier) + "[/color].";
+
+  local hyperactivePerkConsts = {
+    ID = "perk.hyperactive",
+    Script = "scripts/skills/perks/perk_hyperactive",
+    Name = this.Const.Strings.PerkName.Hyperactive,
+    Tooltip = this.Const.Strings.PerkDescription.Hyperactive,
+    Icon = "ui/perks/perk_hyperactive.png",
+    IconDisabled = "ui/perks/perk_hyperactive_sw.png"
+  };
+  ::quirks.setPerk(hyperactivePerkConsts, 0);
+};
+
 ::mods_queue(null, "mod_hooks(>=20)", function() {
   addPerkBank();
   addPerkPrecision();
   addPerkExertion();
+  addPerkHyperactive();
 });
