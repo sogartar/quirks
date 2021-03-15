@@ -104,9 +104,26 @@ local addPerkHyperactive = function() {
   ::quirks.setPerk(hyperactivePerkConsts, 0);
 };
 
+local addPerkAcurate = function() {
+  gt.Const.AcurateHitChanceBonus <- 5;
+  gt.Const.Strings.PerkName.Acurate <- "Acurate";
+  gt.Const.Strings.PerkDescription.Acurate <- "Increases hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.AcurateHitChanceBonus + "[/color].";
+
+  local acuratePerkConsts = {
+    ID = "perk.acurate",
+    Script = "scripts/skills/perks/perk_acurate",
+    Name = this.Const.Strings.PerkName.Acurate,
+    Tooltip = this.Const.Strings.PerkDescription.Acurate,
+    Icon = "ui/perks/perk_acurate.png",
+    IconDisabled = "ui/perks/perk_acurate_sw.png"
+  };
+  ::quirks.setPerk(acuratePerkConsts, 0);
+};
+
 ::mods_queue(null, "mod_hooks(>=20)", function() {
   addPerkBank();
   addPerkPrecision();
   addPerkExertion();
   addPerkHyperactive();
+  addPerkAcurate();
 });
