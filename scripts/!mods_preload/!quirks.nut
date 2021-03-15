@@ -117,10 +117,59 @@ local addPerkAcurate = function() {
     Icon = "ui/perks/perk_acurate.png",
     IconDisabled = "ui/perks/perk_acurate_sw.png"
   };
-  ::quirks.setPerk(acuratePerkConsts, 0);
+  ::quirks.setPerk(acuratePerkConsts, 2);
 };
 
-::mods_queue(null, "mod_hooks(>=20)", function() {
+local addPerkRefundFatigue = function() {
+  gt.Const.RefundFatigueMult <- 0.5;
+  gt.Const.Strings.PerkName.RefundFatigue <- "Refund Fatigue";
+  gt.Const.Strings.PerkDescription.RefundFatigue <- "On a miss refund [color=" + this.Const.UI.Color.PositiveValue + "]" +
+    this.Math.floor(gt.Const.RefundFatigueMult * 100) + "%[/color] of the fatigue used.";
+
+  local refundFatiguePerkConsts = {
+    ID = "perk.refund_fatigue",
+    Script = "scripts/skills/perks/perk_refund_fatigue",
+    Name = this.Const.Strings.PerkName.RefundFatigue,
+    Tooltip = this.Const.Strings.PerkDescription.RefundFatigue,
+    Icon = "ui/perks/perk_refund_fatigue.png",
+    IconDisabled = "ui/perks/perk_refund_fatigue_sw.png"
+  };
+  ::quirks.setPerk(refundFatiguePerkConsts, 0);
+};
+
+local addOnAfterSkillUsed = function() {
+  ::mods_hookClass("skills/skill", function(c) {
+    local skillClass = ::libreuse.getParentClass(c, "skill");
+    if (skillClass == null) {
+      skillClass = c;
+    }
+    skillClass.onAfterSkillUsed <- function(_user, _targetTile) {};
+    skillClass.onAfterAnySkillUsed <- function(_skill, _targetTile) {};
+    local useOriginal = skillClass.use;
+    skillClass.use = function(_targetTile, _forFree = false) {
+      local ret = useOriginal(_targetTile, _forFree);
+      this.onAfterSkillUsed(this.getContainer().getActor(), _targetTile);
+      this.getContainer().onAfterSkillUsed(this, _targetTile);
+      return ret;
+    };
+  });
+
+  ::mods_hookClass("skills/skill_container", function(c) {
+    local containerClass = ::libreuse.getParentClass(c, "skill_container");
+    if (containerClass == null) {
+      containerClass = c;
+    }
+    containerClass.onAfterSkillUsed <- function(_caller, _targetTile) {
+      foreach(skill in this.m.Skills) {
+        skill.onAfterAnySkillUsed(_caller, _targetTile);
+      }
+    };
+  });
+}
+
+::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
+  addOnAfterSkillUsed();
+  addPerkRefundFatigue();
   addPerkBank();
   addPerkPrecision();
   addPerkExertion();
