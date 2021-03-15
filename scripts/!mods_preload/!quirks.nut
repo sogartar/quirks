@@ -63,7 +63,7 @@ local addPerkPrecision = function() {
     Icon = "ui/perks/perk_precision.png",
     IconDisabled = "ui/perks/perk_precision_sw.png"
   };
-  ::quirks.setPerk(precisionPerkConsts, 0);
+  ::quirks.setPerk(precisionPerkConsts, 2);
 };
 
 local addPerkExertion = function() {
@@ -167,12 +167,70 @@ local addOnAfterSkillUsed = function() {
   });
 }
 
+local addExpectedDamageCalculationFlag = function() {
+  ::mods_hookClass("skills/skill", function(c) {
+    local skillClass = ::libreuse.getParentClass(c, "skill");
+    if (skillClass == null) {
+      skillClass = c;
+    }
+    local getExpectedDamageOriginal = skillClass.getExpectedDamage;
+    skillClass.getExpectedDamage = function(_target) {
+      local skills = this.getContainer();
+      local targetSkills = _target.getSkills();
+      skills.m.IsCalculatingExpectedDamge = true;
+      targetSkills.m.IsCalculatingExpectedDamge = true;
+
+      local ret = getExpectedDamageOriginal(_target);
+
+      skills.m.IsCalculatingExpectedDamge = false;
+      targetSkills.m.IsCalculatingExpectedDamge = false;
+
+      return ret;
+    };
+
+    local getTooltipOriginal = ::libreuse.getMember(c, "getTooltip");
+    ::mods_override(c, "getTooltip", function() {
+      this.getContainer().m.IsCalculatingExpectedDamge = true;
+      local ret = getTooltipOriginal();
+      this.getContainer().m.IsCalculatingExpectedDamge = false;
+      return ret;
+    });
+  }, true, false);
+
+  ::mods_hookClass("skills/skill_container", function(c) {
+    local containerClass = ::libreuse.getParentClass(c, "skill_container");
+    if (containerClass == null) {
+      containerClass = c;
+    }
+    containerClass.m.IsCalculatingExpectedDamge <- false;
+  });
+}
+
+local addPerkDoubleOrNothing = function() {
+  gt.Const.Strings.PerkName.DoubleOrNothing <- "Double Or Nothing";
+  gt.Const.Strings.PerkDescription.DoubleOrNothing <- "On each attack there is an equal chance to do double damage or no damage at all." +
+    " When attacked there is an equal chance to take double damage or no damage at all.";
+
+  local doubleOrNothingPerkConsts = {
+    ID = "perk.double_or_nothing",
+    Script = "scripts/skills/perks/perk_double_or_nothing",
+    Name = this.Const.Strings.PerkName.DoubleOrNothing,
+    Tooltip = this.Const.Strings.PerkDescription.DoubleOrNothing,
+    Icon = "ui/perks/perk_double_or_nothing.png",
+    IconDisabled = "ui/perks/perk_double_or_nothing_sw.png"
+  };
+  ::quirks.setPerk(doubleOrNothingPerkConsts, 0);
+};
+
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
   addOnAfterSkillUsed();
+  addExpectedDamageCalculationFlag();
+
   addPerkRefundFatigue();
   addPerkBank();
   addPerkPrecision();
   addPerkExertion();
   addPerkHyperactive();
   addPerkAcurate();
+  addPerkDoubleOrNothing();
 });

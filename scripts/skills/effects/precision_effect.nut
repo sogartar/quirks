@@ -1,6 +1,6 @@
 this.precision_effect <- this.inherit("scripts/skills/skill", {
   m = {
-    HitChanceBonus = 0
+    HitChanceBonus = this.Const.PrecisionHitChanceBonus
   }
 
   function create() {
@@ -13,7 +13,6 @@ this.precision_effect <- this.inherit("scripts/skills/skill", {
     this.m.IsActive = false;
     this.m.IsStacking = true;
     this.m.IsRemovedAfterBattle = true;
-    this.m.HitChanceBonus = this.Const.PrecisionHitChanceBonus;
   }
 
   function getDescription() {
