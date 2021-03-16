@@ -241,16 +241,36 @@ local addPerkTeacher = function() {
   ::quirks.setPerk(teacherPerkConsts, 4);
 };
 
+local addPerkDefensiveAdaption = function() {
+  gt.Const.DefensiveAdaptionBonusPerStack <- 10;
+  gt.Const.Strings.PerkName.DefensiveAdaption <- "DefensiveAdaption";
+  gt.getDefensiveAdaptionDescription <- function(bonusPerStack) {
+    return "With each hit taken increase defense by [color=" + this.Const.UI.Color.PositiveValue + "]" +
+    bonusPerStack + "[/color]. Upon being missed the counter is reset."; };
+  gt.Const.Strings.PerkDescription.DefensiveAdaption <- gt.getDefensiveAdaptionDescription(gt.Const.DefensiveAdaptionBonusPerStack);
+
+  local defensiveAdaptionPerkConsts = {
+    ID = "perk.defensive_adaption",
+    Script = "scripts/skills/perks/perk_defensive_adaption",
+    Name = this.Const.Strings.PerkName.DefensiveAdaption,
+    Tooltip = this.Const.Strings.PerkDescription.DefensiveAdaption,
+    Icon = "ui/perks/perk_defensive_adaption.png",
+    IconDisabled = "ui/perks/perk_defensive_adaption_sw.png"
+  };
+  ::quirks.setPerk(defensiveAdaptionPerkConsts, 0);
+};
+
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
   addOnAfterSkillUsed();
   addExpectedDamageCalculationFlag();
 
-  addPerkRefundFatigue();
+  addPerkAcurate();
   addPerkBank();
-  addPerkPrecision();
+  addPerkDefensiveAdaption();
+  addPerkDoubleOrNothing();
   addPerkExertion();
   addPerkHyperactive();
-  addPerkAcurate();
-  addPerkDoubleOrNothing();
+  addPerkPrecision();
+  addPerkRefundFatigue();
   addPerkTeacher();
 });

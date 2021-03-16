@@ -6,7 +6,7 @@ this.perk_double_or_nothing <- this.inherit("scripts/skills/skill", {
     this.m.Description = this.Const.Strings.PerkDescription.DoubleOrNothing;
     this.m.Icon = "ui/perks/perk_double_or_nothing.png";
     this.m.Type = this.Const.SkillType.Perk | this.Const.SkillType.StatusEffect;
-    this.m.Order = this.Const.SkillOrder.Perk;
+    this.m.Order = this.Const.SkillOrder.Perk | this.Const.SkillType.StatusEffect;
     this.m.IsActive = false;
     this.m.IsHidden = false;
   }
