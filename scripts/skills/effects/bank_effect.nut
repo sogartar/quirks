@@ -39,4 +39,8 @@ this.bank_effect <- this.inherit("scripts/skills/skill", {
   function onTurnEnd() {
     this.setActionPoints(this.getActionPoints() * (this.Const.BankInterestRatePerTurn + 1));
   }
+  
+  function onUpdated(_properties) {
+    _properties.TargetAttractionMult *= this.Math.pow(1.03, 1 + this.getActionPoints());
+  }
 });

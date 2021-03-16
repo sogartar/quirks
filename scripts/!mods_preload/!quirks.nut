@@ -43,7 +43,7 @@ local addPerkBank = function() {
     Icon = "ui/perks/perk_bank.png",
     IconDisabled = "ui/perks/perk_bank_sw.png"
   };
-  ::quirks.setPerk(bankPerkConsts, 0);
+  ::quirks.setPerk(bankPerkConsts, 6);
 };
 
 local addPerkPrecision = function() {
@@ -63,7 +63,7 @@ local addPerkPrecision = function() {
     Icon = "ui/perks/perk_precision.png",
     IconDisabled = "ui/perks/perk_precision_sw.png"
   };
-  ::quirks.setPerk(precisionPerkConsts, 2);
+  ::quirks.setPerk(precisionPerkConsts, 4);
 };
 
 local addPerkExertion = function() {
@@ -83,7 +83,7 @@ local addPerkExertion = function() {
     Icon = "ui/perks/perk_exertion.png",
     IconDisabled = "ui/perks/perk_exertion_sw.png"
   };
-  ::quirks.setPerk(exertionPerkConsts, 0);
+  ::quirks.setPerk(exertionPerkConsts, 4);
 };
 
 local addPerkHyperactive = function() {
@@ -101,7 +101,7 @@ local addPerkHyperactive = function() {
     Icon = "ui/perks/perk_hyperactive.png",
     IconDisabled = "ui/perks/perk_hyperactive_sw.png"
   };
-  ::quirks.setPerk(hyperactivePerkConsts, 0);
+  ::quirks.setPerk(hyperactivePerkConsts, 5);
 };
 
 local addPerkAcurate = function() {
@@ -219,7 +219,26 @@ local addPerkDoubleOrNothing = function() {
     Icon = "ui/perks/perk_double_or_nothing.png",
     IconDisabled = "ui/perks/perk_double_or_nothing_sw.png"
   };
-  ::quirks.setPerk(doubleOrNothingPerkConsts, 0);
+  ::quirks.setPerk(doubleOrNothingPerkConsts, 5);
+};
+
+local addPerkTeacher = function() {
+  gt.Const.TeacherXpMult <- 1.30;
+  gt.Const.Strings.PerkName.Teacher <- "Teacher";
+  gt.getTeacherDescription <- function(xpMult) {
+    return "Each kill by this character grants addition [color=" + this.Const.UI.Color.PositiveValue + "]" +
+    this.Math.round((xpMult - 1) * 100) + "%[/color] XP for the kill to everybody in the company who is a lower level."; };
+  gt.Const.Strings.PerkDescription.Teacher <- gt.getTeacherDescription(gt.Const.TeacherXpMult);
+
+  local teacherPerkConsts = {
+    ID = "perk.teacher",
+    Script = "scripts/skills/perks/perk_teacher",
+    Name = this.Const.Strings.PerkName.Teacher,
+    Tooltip = this.Const.Strings.PerkDescription.Teacher,
+    Icon = "ui/perks/perk_teacher.png",
+    IconDisabled = "ui/perks/perk_teacher_sw.png"
+  };
+  ::quirks.setPerk(teacherPerkConsts, 4);
 };
 
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
@@ -233,4 +252,5 @@ local addPerkDoubleOrNothing = function() {
   addPerkHyperactive();
   addPerkAcurate();
   addPerkDoubleOrNothing();
+  addPerkTeacher();
 });

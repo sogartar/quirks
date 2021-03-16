@@ -34,4 +34,8 @@ this.perk_double_or_nothing <- this.inherit("scripts/skills/skill", {
       _properties.DamageReceivedTotalMult = 0.0;
     }
   }
+  
+  function onUpdated(_properties) {
+    _properties.TargetAttractionMult *= 1.2;
+  }
 });
