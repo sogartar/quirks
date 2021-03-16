@@ -134,7 +134,7 @@ local addPerkRefundFatigue = function() {
     Icon = "ui/perks/perk_refund_fatigue.png",
     IconDisabled = "ui/perks/perk_refund_fatigue_sw.png"
   };
-  ::quirks.setPerk(refundFatiguePerkConsts, 0);
+  ::quirks.setPerk(refundFatiguePerkConsts, 4);
 };
 
 local addOnAfterSkillUsed = function() {
@@ -260,9 +260,48 @@ local addPerkDefensiveAdaption = function() {
   ::quirks.setPerk(defensiveAdaptionPerkConsts, 0);
 };
 
+local addMaxPerkPointsToPlayer = function() {
+  ::mods_hookExactClass("entity/tactical/player", function(c) {
+    c.m.MaxPerkPoints <- gt.Const.XP.MaxLevelWithPerkpoints - 1;
+    local updateLevelOriginal = c.updateLevel;
+    c.updateLevel = function() {
+      updateLevelOriginal();
+      local spentAndUnspentPerkPoints = this.m.PerkPoints + this.m.PerkPointsSpent;
+      local perkPointsToAdd = this.Math.min(this.m.MaxPerkPoints, this.getLevel() - 1) - spentAndUnspentPerkPoints;
+      this.m.PerkPoints += perkPointsToAdd;
+    };
+  });
+}
+
+local addPerkVeteran = function() {
+  gt.Const.VeteranHitpointsCost <- 10;
+  gt.Const.VeteranStaminaCost <- 10;
+  gt.Const.VeteranPerkPointsBonus <- 2;
+  gt.Const.Strings.PerkName.Veteran <- "Veteran";
+  gt.getVeteranDescription <- function(hitpointsCost, staminaCost, perkPointsBonus) {
+    return "Increase maximum perk points by [color=" + this.Const.UI.Color.PositiveValue + "]" +
+    perkPointsBonus + "[/color], but lose [color=" + this.Const.UI.Color.NegativeValue + "]" +
+    hitpointsCost + "[/color] hitpoints and [color=" + this.Const.UI.Color.NegativeValue + "]" +
+    staminaCost + "[/color] maximum fatigue.";
+  };
+  gt.Const.Strings.PerkDescription.Veteran <- gt.getVeteranDescription(
+    gt.Const.VeteranHitpointsCost, gt.Const.VeteranStaminaCost, gt.Const.VeteranPerkPointsBonus);
+
+  local veteranPerkConsts = {
+    ID = "perk.veteran",
+    Script = "scripts/skills/perks/perk_veteran",
+    Name = this.Const.Strings.PerkName.Veteran,
+    Tooltip = this.Const.Strings.PerkDescription.Veteran,
+    Icon = "ui/perks/perk_veteran.png",
+    IconDisabled = "ui/perks/perk_veteran_sw.png"
+  };
+  ::quirks.setPerk(veteranPerkConsts, 6);
+};
+
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
   addOnAfterSkillUsed();
   addExpectedDamageCalculationFlag();
+  addMaxPerkPointsToPlayer();
 
   addPerkAcurate();
   addPerkBank();
@@ -273,4 +312,5 @@ local addPerkDefensiveAdaption = function() {
   addPerkPrecision();
   addPerkRefundFatigue();
   addPerkTeacher();
+  addPerkVeteran();
 });
