@@ -347,6 +347,26 @@ local addPerkSurprise = function() {
   ::quirks.setPerk(surprisePerkConsts, 5);
 };
 
+local addPerkRefundActionPoints = function() {
+  gt.Const.RefundActionPointsFatigueCostMultiplier <- 2;
+  this.Const.Strings.PerkName.RefundActionPoints <- "Refund Action Points"
+  gt.getRefundActionPointsDescription <- function(fatigueCostMultiplier) {
+    return "Unlocks the ability to refund all action points on a missed attack. The cost is [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      this.Math.round(fatigueCostMultiplier * 100) + "%[/color] of the fatigue of the attack.";
+  };
+  gt.Const.Strings.PerkDescription.RefundActionPoints <- gt.getRefundActionPointsDescription(gt.Const.RefundActionPointsFatigueCostMultiplier);
+
+  local refundActionPointsPerkConsts = {
+    ID = "perk.refund_action_points",
+    Script = "scripts/skills/perks/perk_refund_action_points",
+    Name = this.Const.Strings.PerkName.RefundActionPoints,
+    Tooltip = this.Const.Strings.PerkDescription.RefundActionPoints,
+    Icon = "ui/perks/perk_refund_action_points.png",
+    IconDisabled = "ui/perks/perk_refund_action_points_sw.png"
+  };
+  ::quirks.setPerk(refundActionPointsPerkConsts, 4);
+};
+
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
   addOnAfterSkillUsed();
   #addExpectedDamageCalculationFlag();
@@ -361,6 +381,7 @@ local addPerkSurprise = function() {
   addPerkHyperactive();
   addPerkPrecision();
   addPerkPunchingBag();
+  addPerkRefundActionPoints();
   addPerkRefundFatigue();
   addPerkSurprise();
   addPerkTeacher();
