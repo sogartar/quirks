@@ -32,7 +32,6 @@ this.cashed_in_effect <- this.inherit("scripts/skills/skill", {
   function onUpdate(_properties) {
     if (this.m.IsRewardThisRound) {
       _properties.ActionPoints = this.Math.floor(_properties.ActionPoints + this.getActionPoints());
-      #this.logInfo("cashed_in_effect AP = " + _properties.ActionPoints);
     }
   }
 

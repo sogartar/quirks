@@ -56,7 +56,7 @@ local addPerkPrecision = function() {
   this.Const.PrecisionHitChanceBonusDecreasePerTurn <- 10;
   gt.Const.Strings.PerkDescription.Precision <- "Unlocks the \'" + gt.Const.Strings.PerkName.Precision + "\' ability to increase next attack's hit chance by [color=" +
   this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color]." +
-    "If unused, each turn this bonus is decreased by [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]." Costs " + 
+    "If unused, each turn this bonus is decreased by [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]. Costs " + 
     this.Const.PrecisionFatigueCost + " fatigue and " + gt.Const.PrecisionApCost + " action points.";
   gt.Const.Strings.PrecisionSkillDescription <- "Increase next attack's hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color]. " +
     "If unused, each turn this bonus is decreased by [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.PrecisionHitChanceBonusDecreasePerTurn + "%[/color].";
@@ -94,7 +94,7 @@ local addPerkExertion = function() {
 
 local addPerkHyperactive = function() {
   gt.Const.HyperactiveApBonus <- 3;
-  gt.Const.HyperactiveFatigueRecoveryRateModifier <- -30;
+  gt.Const.HyperactiveFatigueRecoveryRateModifier <- -20;
   gt.Const.Strings.PerkName.Hyperactive <- "Hyperactive";
   gt.Const.Strings.PerkDescription.Hyperactive <- "Permanently increases action points by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.HyperactiveApBonus +
     "[/color] and reduces fatigue recovery rate by [color=" + this.Const.UI.Color.NegativeValue + "]" + (-gt.Const.HyperactiveFatigueRecoveryRateModifier) + "[/color].";
@@ -326,6 +326,27 @@ local addPerkPunchingBag = function() {
   ::quirks.setPerk(punchingBagPerkConsts, 2);
 };
 
+local addPerkSurprise = function() {
+  gt.Const.Strings.SurprisedEffectName <- "Surprised";
+  gt.Const.SurpriseOnMissedInitiativeStolen <- 10;
+  gt.Const.Strings.PerkName.Surprise <- "Surprise";
+  gt.getSurpriseDescription <- function(onMissedInitiativeStolen) {
+    return "With each time, being missed, steal [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      onMissedInitiativeStolen + "[/color] initiative form the attacker next round.";
+  };
+  gt.Const.Strings.PerkDescription.Surprise <- gt.getSurpriseDescription(gt.Const.SurpriseOnMissedInitiativeStolen);
+
+  local surprisePerkConsts = {
+    ID = "perk.surprise",
+    Script = "scripts/skills/perks/perk_surprise",
+    Name = this.Const.Strings.PerkName.Surprise,
+    Tooltip = this.Const.Strings.PerkDescription.Surprise,
+    Icon = "ui/perks/perk_surprise.png",
+    IconDisabled = "ui/perks/perk_surprise_sw.png"
+  };
+  ::quirks.setPerk(surprisePerkConsts, 5);
+};
+
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
   addOnAfterSkillUsed();
   #addExpectedDamageCalculationFlag();
@@ -341,6 +362,7 @@ local addPerkPunchingBag = function() {
   addPerkPrecision();
   addPerkPunchingBag();
   addPerkRefundFatigue();
+  addPerkSurprise();
   addPerkTeacher();
   addPerkVeteran();
 });

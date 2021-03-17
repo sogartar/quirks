@@ -6,4 +6,5 @@
   <sprite id="perk_precision" ic="FF624555" img="ui\perks\perk_precision.png" />
   <sprite id="active_precision" ic="FF624556" img="ui\perks\active_precision.png" />
   <sprite id="active_exertion" ic="FF624556" img="ui\perks\active_exertion.png" />
+  <sprite id="surprised_effect" ic="FF624556" img="ui\perks\surprised_effect.png" />
 </brush>

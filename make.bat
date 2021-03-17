@@ -3,6 +3,7 @@
 SET SCRIPT_DIR=%~dp0
 SET WORKING_DIR=%cd%
 
+mkdir "%SCRIPT_DIR%\brushes"
 bbrusher pack "%SCRIPT_DIR%\brushes\quirks_ui.brush" "%SCRIPT_DIR%\gfx" || goto error
 
 cd "%SCRIPT_DIR%"
