@@ -2,7 +2,9 @@
 
 local gt = this.getroottable();
 
-::quirks <- {};
+if (!("quirks" in gt)) {
+  ::quirks <- {};
+}
 
 ::quirks.setPerk <- function(perk, row, col = null) {
   gt.Const.Perks.Perks.resize(this.Math.max(row + 1, gt.Const.Perks.Perks.len()), []);
@@ -51,9 +53,13 @@ local addPerkPrecision = function() {
   gt.Const.PrecisionApCost <- 5;
   gt.Const.Strings.PerkName.Precision <- "Precision";
   gt.Const.PrecisionHitChanceBonus <- 30;
+  this.Const.PrecisionHitChanceBonusDecreasePerTurn <- 10;
   gt.Const.Strings.PerkDescription.Precision <- "Unlocks the \'" + gt.Const.Strings.PerkName.Precision + "\' ability to increase next attack's hit chance by [color=" +
-  this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color]. Costs " + this.Const.PrecisionFatigueCost + " fatigue and " + gt.Const.PrecisionApCost + " action points.";
-  gt.Const.Strings.PrecisionSkillDescription <- "Increase next attack's hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color].";
+  this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color]." +
+    "If unused, each turn this bonus is decreased by [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]." Costs " + 
+    this.Const.PrecisionFatigueCost + " fatigue and " + gt.Const.PrecisionApCost + " action points.";
+  gt.Const.Strings.PrecisionSkillDescription <- "Increase next attack's hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color]. " +
+    "If unused, each turn this bonus is decreased by [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.PrecisionHitChanceBonusDecreasePerTurn + "%[/color].";
 
   local precisionPerkConsts = {
     ID = "perk.precision",
@@ -147,9 +153,10 @@ local addOnAfterSkillUsed = function() {
     skillClass.onAfterAnySkillUsed <- function(_skill, _targetTile) {};
     local useOriginal = skillClass.use;
     skillClass.use = function(_targetTile, _forFree = false) {
+      local container = this.getContainer();
       local ret = useOriginal(_targetTile, _forFree);
-      this.onAfterSkillUsed(this.getContainer().getActor(), _targetTile);
-      this.getContainer().onAfterSkillUsed(this, _targetTile);
+      this.onAfterSkillUsed(container.getActor(), _targetTile);
+      container.onAfterSkillUsed(this, _targetTile);
       return ret;
     };
   });
@@ -266,8 +273,9 @@ local addMaxPerkPointsToPlayer = function() {
     local updateLevelOriginal = c.updateLevel;
     c.updateLevel = function() {
       updateLevelOriginal();
+      local hasStudent = this.getSkills().getSkillByID("perk.student") != null;
       local spentAndUnspentPerkPoints = this.m.PerkPoints + this.m.PerkPointsSpent;
-      local perkPointsToAdd = this.Math.min(this.m.MaxPerkPoints, this.getLevel() - 1) - spentAndUnspentPerkPoints;
+      local perkPointsToAdd = this.Math.min(this.m.MaxPerkPoints + (hasStudent ? 1 : 0), this.getLevel() - 1) - spentAndUnspentPerkPoints;
       this.m.PerkPoints += perkPointsToAdd;
     };
   });
@@ -298,10 +306,31 @@ local addPerkVeteran = function() {
   ::quirks.setPerk(veteranPerkConsts, 6);
 };
 
+local addPerkPunchingBag = function() {
+  gt.Const.PunchingBagOnHitDamageMult <- 0.65;
+  gt.Const.Strings.PerkName.PunchingBag <- "PunchingBag";
+  gt.getPunchingBagDescription <- function(onHitDamageMult) {
+    return "Upon taking damage decrease future incomming damage by [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      this.Math.round((1 - onHitDamageMult) * 100) + "%[/color] until next turn.";
+  };
+  gt.Const.Strings.PerkDescription.PunchingBag <- gt.getPunchingBagDescription(gt.Const.PunchingBagOnHitDamageMult);
+
+  local punchingBagPerkConsts = {
+    ID = "perk.punching_bag",
+    Script = "scripts/skills/perks/perk_punching_bag",
+    Name = this.Const.Strings.PerkName.PunchingBag,
+    Tooltip = this.Const.Strings.PerkDescription.PunchingBag,
+    Icon = "ui/perks/perk_punching_bag.png",
+    IconDisabled = "ui/perks/perk_punching_bag_sw.png"
+  };
+  ::quirks.setPerk(punchingBagPerkConsts, 2);
+};
+
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
   addOnAfterSkillUsed();
-  addExpectedDamageCalculationFlag();
+  #addExpectedDamageCalculationFlag();
   addMaxPerkPointsToPlayer();
+  ::quirks.makeHitChanceMultipliersSymmetric();
 
   addPerkAcurate();
   addPerkBank();
@@ -310,6 +339,7 @@ local addPerkVeteran = function() {
   addPerkExertion();
   addPerkHyperactive();
   addPerkPrecision();
+  addPerkPunchingBag();
   addPerkRefundFatigue();
   addPerkTeacher();
   addPerkVeteran();

@@ -12,30 +12,20 @@ this.perk_double_or_nothing <- this.inherit("scripts/skills/skill", {
   }
 
   function onAnySkillUsed(_skill, _targetEntity, _properties) {
-    if (this.getContainer().m.IsCalculatingExpectedDamge || !_skill.isAttack()) {
+    if (!_skill.isAttack()) {
       return;
     }
 
-    if (this.Math.rand(1, 2) == 1) {
-      _properties.DamageTotalMult *= 2;
-    } else {
-      _properties.DamageTotalMult = 0.0;
-    }
+    _properties.DamageTotalMult *= 2;
+    _properties.TotalAttackToHitMult *= 0.5;
   }
 
-  function onBeforeDamageReceived(_attacker, _skill, _hitInfo, _properties) {
-    if (this.getContainer().m.IsCalculatingExpectedDamge) {
-      return;
-    }
-
-    if (this.Math.rand(1, 2) == 1) {
-      _properties.DamageReceivedTotalMult *= 2;
-    } else {
-      _properties.DamageReceivedTotalMult = 0.0;
-    }
+  function onBeingAttacked(_attacker, _skill, _properties) {
+    _properties.TotalAttackToHitMult *= 0.5;
   }
-  
-  function onUpdated(_properties) {
+
+  function onUpdate(_properties) {
     _properties.TargetAttractionMult *= 1.2;
+    _properties.DamageReceivedTotalMult *= 2;
   }
 });

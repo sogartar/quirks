@@ -24,7 +24,7 @@ this.perk_refund_fatigue <- this.inherit("scripts/skills/skill", {
   }
 
   function onAfterAnySkillUsed(_skill, _targetEntity) {
-    if (!_skill.isAttack() || (!this.m.IsTargetHit && !this.m.IsTargetMissed)) {
+    if (_skill == null || !_skill.isAttack() || (!this.m.IsTargetHit && !this.m.IsTargetMissed)) {
       return; #Not an attack skill
     }
 

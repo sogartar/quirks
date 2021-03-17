@@ -1,6 +1,7 @@
 this.precision_effect <- this.inherit("scripts/skills/skill", {
   m = {
-    HitChanceBonus = this.Const.PrecisionHitChanceBonus
+    HitChanceBonus = this.Const.PrecisionHitChanceBonus,
+    HitChanceBonusDecreasePerTurn = this.Const.PrecisionHitChanceBonusDecreasePerTurn
   }
 
   function create() {
@@ -28,10 +29,17 @@ this.precision_effect <- this.inherit("scripts/skills/skill", {
   }
 
   function onTargetHit(_skill, _targetEntity, _bodyPart, _damageInflictedHitpoints, _damageInflictedArmor) {
-    this.removeSelf();
+    this.getContainer().remove(this);
   }
 
   function onTargetMissed(_skill, _targetEntity) {
-    this.removeSelf();
+    this.getContainer().remove(this);
+  }
+  
+  function onTurnStart() {
+    this.m.HitChanceBonus -= this.m.HitChanceBonusDecreasePerTurn;
+    if (this.m.HitChanceBonus == 0) {
+      this.removeSelf();
+    }
   }
 });

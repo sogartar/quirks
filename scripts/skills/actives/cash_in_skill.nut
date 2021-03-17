@@ -63,7 +63,7 @@ this.cash_in_skill <- this.inherit("scripts/skills/skill", {
     local cashed_in_effect = this.new("scripts/skills/effects/cashed_in_effect");
     cashed_in_effect.setActionPoints(ap);
     skills.add(cashed_in_effect);
-    this.removeSelf();
+    this.getContainer().remove(this);
     return true;
   }
 });
