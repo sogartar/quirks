@@ -387,6 +387,60 @@ local addPerkSlack = function() {
   ::quirks.setPerk(slackPerkConsts, 4);
 };
 
+local addPerkImpenetrable = function() {
+  gt.Const.ImpenetrableBestFatigueFromArmorAndHelmet <- 32;
+  gt.Const.ImpenetrablFatigueStdDev <- 13;
+  gt.Const.ImpenetrableBestDamageReceivedDirectMult <- 0.66;
+  this.Const.Strings.PerkName.Impenetrable <- "Impenetrable"
+  gt.getImpenetrableDescription <- function(bestFatigueFromArmorAndHelmet, bestDamageReceivedDirectMult) {
+    return "Reduces armor penetration damage based on fatigue from both armor and helmet with best results at " +
+      bestFatigueFromArmorAndHelmet + " fatigue when damage is reduced by [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      this.Math.round(bestDamageReceivedDirectMult * 100) + "%[/color]. If the fatigue deviates from the golden value the effect is reduced.";
+  };
+  gt.Const.Strings.PerkDescription.Impenetrable <- gt.getImpenetrableDescription(
+    gt.Const.ImpenetrableBestFatigueFromArmorAndHelmet, gt.Const.ImpenetrableBestDamageReceivedDirectMult);
+
+  local impenetrablePerkConsts = {
+    ID = "perk.impenetrable",
+    Script = "scripts/skills/perks/perk_impenetrable",
+    Name = this.Const.Strings.PerkName.Impenetrable,
+    Tooltip = this.Const.Strings.PerkDescription.Impenetrable,
+    Icon = "ui/perks/perk_impenetrable.png",
+    IconDisabled = "ui/perks/perk_impenetrable_sw.png"
+  };
+  ::quirks.setPerk(impenetrablePerkConsts, 5);
+};
+
+local findPerkConsts = function(perkId, perks=gt.Const.Perks.Perks) {
+  foreach (perksRow in perks) {
+    foreach (perk in perksRow) {
+      if (perk.ID == perkId) {
+        return perk;
+      }
+    }
+  }
+
+  return null;
+}
+
+local buffBullseye = function() {
+  gt.Const.BullseyeRangedAttackBlockedChanceMult <- 0.533;
+  local total = this.Const.Combat.RangedAttackBlockedChance * gt.Const.BullseyeRangedAttackBlockedChanceMult;
+  gt.Const.Strings.PerkDescription.Bullseye <- "Nailed it! The penalty to hitchance when shooting at a target you have no clear line of fire to is reduced from [color=" +
+    this.Const.UI.Color.NegativeValue + "]" + this.Math.round(this.Const.Combat.RangedAttackBlockedChance * 100) +
+    "%[/color] to [color=" + this.Const.UI.Color.NegativeValue + "]" + this.Math.round(total * 100) + "%[/color] for ranged weapons.";
+  
+  ::mods_hookExactClass("skills/perks/perk_bullseye", function(c) {
+    c.m.RangedAttackBlockedChanceMult <- this.Const.BullseyeRangedAttackBlockedChanceMult;
+    c.onUpdate = function(_properties) {
+      _properties.RangedAttackBlockedChanceMult *= this.m.RangedAttackBlockedChanceMult;
+    };
+  });
+
+  local perkConsts = findPerkConsts("perk.bullseye");
+  perkConsts.Tooltip = gt.Const.Strings.PerkDescription.Bullseye;
+}
+
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
   addOnAfterSkillUsed();
   #addExpectedDamageCalculationFlag();
@@ -399,6 +453,7 @@ local addPerkSlack = function() {
   addPerkDoubleOrNothing();
   addPerkExertion();
   addPerkHyperactive();
+  addPerkImpenetrable();
   addPerkPrecision();
   addPerkPunchingBag();
   addPerkRefundActionPoints();
@@ -407,4 +462,6 @@ local addPerkSlack = function() {
   addPerkSurprise();
   addPerkTeacher();
   addPerkVeteran();
+
+  buffBullseye();
 });
