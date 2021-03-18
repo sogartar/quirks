@@ -1,12 +1,12 @@
-this.perk_defensive_adaption <- this.inherit("scripts/skills/skill", {
+this.perk_defensive_adaptation <- this.inherit("scripts/skills/skill", {
   m = {
-    BonusPerStack = this.Const.DefensiveAdaptionBonusPerStack
+    BonusPerStack = this.Const.DefensiveAdaptationBonusPerStack
     Stacks = 0
   },
   function create() {
-    this.m.ID = "perk.defensive_adaption";
-    this.m.Name = this.Const.Strings.PerkName.DefensiveAdaption;
-    this.m.Icon = "ui/perks/perk_defensive_adaption.png";
+    this.m.ID = "perk.defensive_adaptation";
+    this.m.Name = this.Const.Strings.PerkName.DefensiveAdaptation;
+    this.m.Icon = "ui/perks/perk_defensive_adaptation.png";
     this.m.Type = this.Const.SkillType.Perk | this.Const.SkillType.StatusEffect;
     this.m.Order = this.Const.SkillOrder.Perk | this.Const.SkillType.StatusEffect;
     this.m.IsActive = false;
@@ -18,7 +18,7 @@ this.perk_defensive_adaption <- this.inherit("scripts/skills/skill", {
   }
 
   function getDescription() {
-    return this.getroottable().getDefensiveAdaptionDescription(this.m.BonusPerStack) +
+    return this.getroottable().getDefensiveAdaptationDescription(this.m.BonusPerStack) +
       "\nCurrent defense bonus [color=" + this.Const.UI.Color.PositiveValue + "]" + this.getBonus() + "[/color].";
   }
 

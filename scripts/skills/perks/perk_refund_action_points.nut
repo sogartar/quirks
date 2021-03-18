@@ -31,7 +31,7 @@ this.perk_refund_action_points <- this.inherit("scripts/skills/skill", {
     if (!this.m.IsTargetHit) {
       this.logInfo("Target Missed.");
       local active = this.new("scripts/skills/actives/refund_action_points_skill");
-      active.setFatigueCost(_skill.getFatigueCost() * this.m.RefundFatigueCostMultiplier);
+      active.setFatigueCost(this.Math.round(_skill.getFatigueCost() * this.m.RefundFatigueCostMultiplier));
       active.setActionPontsRefund(_skill.getActionPointCost());
       this.getContainer().add(active);
     }

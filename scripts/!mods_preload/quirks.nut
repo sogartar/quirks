@@ -248,23 +248,23 @@ local addPerkTeacher = function() {
   ::quirks.setPerk(teacherPerkConsts, 4);
 };
 
-local addPerkDefensiveAdaption = function() {
-  gt.Const.DefensiveAdaptionBonusPerStack <- 10;
-  gt.Const.Strings.PerkName.DefensiveAdaption <- "DefensiveAdaption";
-  gt.getDefensiveAdaptionDescription <- function(bonusPerStack) {
+local addPerkDefensiveAdaptation = function() {
+  gt.Const.DefensiveAdaptationBonusPerStack <- 10;
+  gt.Const.Strings.PerkName.DefensiveAdaptation <- "Defensive Adaptation";
+  gt.getDefensiveAdaptationDescription <- function(bonusPerStack) {
     return "With each hit taken increase defense by [color=" + this.Const.UI.Color.PositiveValue + "]" +
     bonusPerStack + "[/color]. Upon being missed the counter is reset."; };
-  gt.Const.Strings.PerkDescription.DefensiveAdaption <- gt.getDefensiveAdaptionDescription(gt.Const.DefensiveAdaptionBonusPerStack);
+  gt.Const.Strings.PerkDescription.DefensiveAdaptation <- gt.getDefensiveAdaptationDescription(gt.Const.DefensiveAdaptationBonusPerStack);
 
-  local defensiveAdaptionPerkConsts = {
-    ID = "perk.defensive_adaption",
-    Script = "scripts/skills/perks/perk_defensive_adaption",
-    Name = this.Const.Strings.PerkName.DefensiveAdaption,
-    Tooltip = this.Const.Strings.PerkDescription.DefensiveAdaption,
-    Icon = "ui/perks/perk_defensive_adaption.png",
-    IconDisabled = "ui/perks/perk_defensive_adaption_sw.png"
+  local defensiveAdaptationPerkConsts = {
+    ID = "perk.defensive_adaptation",
+    Script = "scripts/skills/perks/perk_defensive_adaptation",
+    Name = this.Const.Strings.PerkName.DefensiveAdaptation,
+    Tooltip = this.Const.Strings.PerkDescription.DefensiveAdaptation,
+    Icon = "ui/perks/perk_defensive_adaptation.png",
+    IconDisabled = "ui/perks/perk_defensive_adaptation_sw.png"
   };
-  ::quirks.setPerk(defensiveAdaptionPerkConsts, 0);
+  ::quirks.setPerk(defensiveAdaptationPerkConsts, 0);
 };
 
 local addMaxPerkPointsToPlayer = function() {
@@ -308,7 +308,7 @@ local addPerkVeteran = function() {
 
 local addPerkPunchingBag = function() {
   gt.Const.PunchingBagOnHitDamageMult <- 0.65;
-  gt.Const.Strings.PerkName.PunchingBag <- "PunchingBag";
+  gt.Const.Strings.PerkName.PunchingBag <- "Punching Bag";
   gt.getPunchingBagDescription <- function(onHitDamageMult) {
     return "Upon taking damage decrease future incomming damage by [color=" + this.Const.UI.Color.PositiveValue + "]" +
       this.Math.round((1 - onHitDamageMult) * 100) + "%[/color] until next turn.";
@@ -367,6 +367,26 @@ local addPerkRefundActionPoints = function() {
   ::quirks.setPerk(refundActionPointsPerkConsts, 4);
 };
 
+local addPerkSlack = function() {
+  gt.Const.SlackFatigueRecoveryPerUnspentActionPoint <- 1.5;
+  this.Const.Strings.PerkName.Slack <- "Slack"
+  gt.getSlackDescription <- function(fatigueRecoveryPerUnspentActionPoint) {
+    return "At the start of each turn Recovers an aditional [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      fatigueRecoveryPerUnspentActionPoint + "[/color] fatigue per unspent action point.";
+  };
+  gt.Const.Strings.PerkDescription.Slack <- gt.getSlackDescription(gt.Const.SlackFatigueRecoveryPerUnspentActionPoint);
+
+  local slackPerkConsts = {
+    ID = "perk.slack",
+    Script = "scripts/skills/perks/perk_slack",
+    Name = this.Const.Strings.PerkName.Slack,
+    Tooltip = this.Const.Strings.PerkDescription.Slack,
+    Icon = "ui/perks/perk_slack.png",
+    IconDisabled = "ui/perks/perk_slack_sw.png"
+  };
+  ::quirks.setPerk(slackPerkConsts, 4);
+};
+
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
   addOnAfterSkillUsed();
   #addExpectedDamageCalculationFlag();
@@ -375,7 +395,7 @@ local addPerkRefundActionPoints = function() {
 
   addPerkAcurate();
   addPerkBank();
-  addPerkDefensiveAdaption();
+  addPerkDefensiveAdaptation();
   addPerkDoubleOrNothing();
   addPerkExertion();
   addPerkHyperactive();
@@ -383,6 +403,7 @@ local addPerkRefundActionPoints = function() {
   addPerkPunchingBag();
   addPerkRefundActionPoints();
   addPerkRefundFatigue();
+  addPerkSlack();
   addPerkSurprise();
   addPerkTeacher();
   addPerkVeteran();
