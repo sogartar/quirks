@@ -46,17 +46,19 @@ local addPerkBank = function() {
     IconDisabled = "ui/perks/perk_bank_sw.png"
   };
   ::quirks.setPerk(bankPerkConsts, 6);
+
+  ::quirks.stopAiDefendingOnEnemyBank();
 };
 
 local addPerkPrecision = function() {
-  gt.Const.PrecisionFatigueCost <- 25;
-  gt.Const.PrecisionApCost <- 5;
+  gt.Const.PrecisionFatigueCost <- 15;
+  gt.Const.PrecisionApCost <- 3;
   gt.Const.Strings.PerkName.Precision <- "Precision";
-  gt.Const.PrecisionHitChanceBonus <- 30;
+  gt.Const.PrecisionHitChanceBonus <- 20;
   this.Const.PrecisionHitChanceBonusDecreasePerTurn <- 10;
-  gt.Const.Strings.PerkDescription.Precision <- "Unlocks the \'" + gt.Const.Strings.PerkName.Precision + "\' ability to increase next attack's hit chance by [color=" +
+  gt.Const.Strings.PerkDescription.Precision <- "Unlocks the \'" + gt.Const.Strings.PerkName.Precision + "\' ability to increase next attack's hit chance with [color=" +
   this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color]." +
-    "If unused, each turn this bonus is decreased by [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]. Costs " + 
+    "If unused, each turn this bonus is decreased with [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]. Costs " + 
     this.Const.PrecisionFatigueCost + " fatigue and " + gt.Const.PrecisionApCost + " action points.";
   gt.Const.Strings.PrecisionSkillDescription <- "Increase next attack's hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color]. " +
     "If unused, each turn this bonus is decreased by [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.PrecisionHitChanceBonusDecreasePerTurn + "%[/color].";
@@ -73,13 +75,13 @@ local addPerkPrecision = function() {
 };
 
 local addPerkExertion = function() {
-  gt.Const.ExertionFatigueCostMult <- 0.166;
-  gt.Const.ExertionMinFatigueCost <- 15;
-  gt.Const.ExertionInitiativeBase <- 210;
-  gt.Const.ExertionApBonus <- 1;
+  gt.Const.ExertionFatigueCostMult <- 40;
+  gt.Const.ExertionMinFatigueCost <- 20;
+  gt.Const.ExertionFatiguePoolBase <- 60;
+  gt.Const.ExertionApBonus <- 3;
   gt.Const.Strings.PerkName.Exertion <- "Exertion";
   gt.Const.Strings.PerkDescription.Exertion <- "Unlocks the \'" + gt.Const.Strings.PerkName.Exertion +
-    "\' ability to increase action points this turn. Fatigue cost is based on current initiative.";
+    "\' ability to increase action points this turn. Fatigue cost is based on the current fatigue pool left.";
 
   local exertionPerkConsts = {
     ID = "perk.exertion",
@@ -226,15 +228,15 @@ local addPerkDoubleOrNothing = function() {
     Icon = "ui/perks/perk_double_or_nothing.png",
     IconDisabled = "ui/perks/perk_double_or_nothing_sw.png"
   };
-  ::quirks.setPerk(doubleOrNothingPerkConsts, 5);
+  ::quirks.setPerk(doubleOrNothingPerkConsts, 6);
 };
 
 local addPerkTeacher = function() {
-  gt.Const.TeacherXpMult <- 1.30;
+  gt.Const.TeacherXpMult <- 1.4;
   gt.Const.Strings.PerkName.Teacher <- "Teacher";
   gt.getTeacherDescription <- function(xpMult) {
     return "Each kill by this character grants addition [color=" + this.Const.UI.Color.PositiveValue + "]" +
-    this.Math.round((xpMult - 1) * 100) + "%[/color] XP for the kill to everybody in the company who is a lower level."; };
+    this.Math.round((xpMult - 1) * 100) + "%[/color] XP for the kill to everybody in the battle who is a lower level."; };
   gt.Const.Strings.PerkDescription.Teacher <- gt.getTeacherDescription(gt.Const.TeacherXpMult);
 
   local teacherPerkConsts = {
@@ -249,7 +251,7 @@ local addPerkTeacher = function() {
 };
 
 local addPerkDefensiveAdaptation = function() {
-  gt.Const.DefensiveAdaptationBonusPerStack <- 10;
+  gt.Const.DefensiveAdaptationBonusPerStack <- 12;
   gt.Const.Strings.PerkName.DefensiveAdaptation <- "Defensive Adaptation";
   gt.getDefensiveAdaptationDescription <- function(bonusPerStack) {
     return "With each hit taken increase defense by [color=" + this.Const.UI.Color.PositiveValue + "]" +
@@ -307,11 +309,11 @@ local addPerkVeteran = function() {
 };
 
 local addPerkPunchingBag = function() {
-  gt.Const.PunchingBagOnHitDamageMult <- 0.65;
+  gt.Const.PunchingBagOnHitDamageMult <- 0.9;
   gt.Const.Strings.PerkName.PunchingBag <- "Punching Bag";
   gt.getPunchingBagDescription <- function(onHitDamageMult) {
     return "Upon taking damage decrease future incomming damage by [color=" + this.Const.UI.Color.PositiveValue + "]" +
-      this.Math.round((1 - onHitDamageMult) * 100) + "%[/color] until next turn.";
+      this.Math.round((1 - onHitDamageMult) * 100) + "%[/color] for 2 turns.";
   };
   gt.Const.Strings.PerkDescription.PunchingBag <- gt.getPunchingBagDescription(gt.Const.PunchingBagOnHitDamageMult);
 
@@ -323,7 +325,7 @@ local addPerkPunchingBag = function() {
     Icon = "ui/perks/perk_punching_bag.png",
     IconDisabled = "ui/perks/perk_punching_bag_sw.png"
   };
-  ::quirks.setPerk(punchingBagPerkConsts, 2);
+  ::quirks.setPerk(punchingBagPerkConsts, 1);
 };
 
 local addPerkSurprise = function() {
@@ -332,7 +334,7 @@ local addPerkSurprise = function() {
   gt.Const.Strings.PerkName.Surprise <- "Surprise";
   gt.getSurpriseDescription <- function(onMissedInitiativeStolen) {
     return "With each time, being missed, steal [color=" + this.Const.UI.Color.PositiveValue + "]" +
-      onMissedInitiativeStolen + "[/color] initiative form the attacker next round.";
+      onMissedInitiativeStolen + "[/color] initiative form the attacker for 2 round.";
   };
   gt.Const.Strings.PerkDescription.Surprise <- gt.getSurpriseDescription(gt.Const.SurpriseOnMissedInitiativeStolen);
 
@@ -344,11 +346,11 @@ local addPerkSurprise = function() {
     Icon = "ui/perks/perk_surprise.png",
     IconDisabled = "ui/perks/perk_surprise_sw.png"
   };
-  ::quirks.setPerk(surprisePerkConsts, 5);
+  ::quirks.setPerk(surprisePerkConsts, 4);
 };
 
 local addPerkRefundActionPoints = function() {
-  gt.Const.RefundActionPointsFatigueCostMultiplier <- 2;
+  gt.Const.RefundActionPointsFatigueCostMultiplier <- 1.0;
   this.Const.Strings.PerkName.RefundActionPoints <- "Refund Action Points"
   gt.getRefundActionPointsDescription <- function(fatigueCostMultiplier) {
     return "Unlocks the ability to refund all action points on a missed attack. The cost is [color=" + this.Const.UI.Color.PositiveValue + "]" +
@@ -364,15 +366,15 @@ local addPerkRefundActionPoints = function() {
     Icon = "ui/perks/perk_refund_action_points.png",
     IconDisabled = "ui/perks/perk_refund_action_points_sw.png"
   };
-  ::quirks.setPerk(refundActionPointsPerkConsts, 4);
+  ::quirks.setPerk(refundActionPointsPerkConsts, 5);
 };
 
 local addPerkSlack = function() {
-  gt.Const.SlackFatigueRecoveryPerUnspentActionPoint <- 1.5;
-  this.Const.Strings.PerkName.Slack <- "Slack"
+  gt.Const.SlackFatigueRecoveryPerUnspentActionPoint <- 1.75;
+  this.Const.Strings.PerkName.Slack <- "Slack";
   gt.getSlackDescription <- function(fatigueRecoveryPerUnspentActionPoint) {
-    return "At the start of each turn Recovers an aditional [color=" + this.Const.UI.Color.PositiveValue + "]" +
-      fatigueRecoveryPerUnspentActionPoint + "[/color] fatigue per unspent action point.";
+    return "Each turn recover an aditional [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      fatigueRecoveryPerUnspentActionPoint + "[/color] fatigue per unspent action point previos turn.";
   };
   gt.Const.Strings.PerkDescription.Slack <- gt.getSlackDescription(gt.Const.SlackFatigueRecoveryPerUnspentActionPoint);
 
@@ -384,7 +386,7 @@ local addPerkSlack = function() {
     Icon = "ui/perks/perk_slack.png",
     IconDisabled = "ui/perks/perk_slack_sw.png"
   };
-  ::quirks.setPerk(slackPerkConsts, 4);
+  ::quirks.setPerk(slackPerkConsts, 1);
 };
 
 local addPerkImpenetrable = function() {

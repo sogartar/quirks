@@ -16,6 +16,10 @@ this.precision_effect <- this.inherit("scripts/skills/skill", {
     this.m.IsRemovedAfterBattle = true;
   }
 
+  function getName() {
+    return this.skill.getName() + " (+" + this.m.HitChanceBonus + ")";
+  }
+
   function getDescription() {
     return "This character has [color=" + this.Const.UI.Color.PositiveValue + "]" + this.m.HitChanceBonus +
       "%[/color] additional hit chance next attack.";
@@ -37,7 +41,7 @@ this.precision_effect <- this.inherit("scripts/skills/skill", {
   }
   
   function onTurnStart() {
-    this.m.HitChanceBonus -= this.m.HitChanceBonusDecreasePerTurn;
+    this.m.HitChanceBonus = this.Math.max(0, this.m.HitChanceBonus - this.m.HitChanceBonusDecreasePerTurn);
     if (this.m.HitChanceBonus == 0) {
       this.removeSelf();
     }

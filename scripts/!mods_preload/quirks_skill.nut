@@ -94,6 +94,10 @@ if (!("quirks" in gt)) {
 
     skillClass.attackEntity = function( _user, _targetEntity, _allowDiversion = true )
     {
+      if (_targetEntity != null && !_targetEntity.isAlive())
+      {
+        return false;
+      }
       local properties = this.m.Container.buildPropertiesForUse(this, _targetEntity);
       local userTile = _user.getTile();
       local astray = false;

@@ -3,7 +3,7 @@ this.exertion_skill <- this.inherit("scripts/skills/skill", {
     ApBonusPerUse = this.Const.ExertionApBonus,
     MinFatigueCost = this.Const.ExertionMinFatigueCost,
     FatigueCostMult = this.Const.ExertionFatigueCostMult,
-    InitiativeBase = this.Const.ExertionInitiativeBase,
+    FatiguePoolBase = this.Const.ExertionFatiguePoolBase,
     ApBonus = 0
   }
 
@@ -52,8 +52,9 @@ this.exertion_skill <- this.inherit("scripts/skills/skill", {
   }
 
   function getFatigueCost() {
+    local actor = this.getContainer().getActor();
     return this.Math.ceil(this.Math.max(this.m.MinFatigueCost,
-      (this.m.InitiativeBase - this.getContainer().getActor().getInitiative()) * this.m.FatigueCostMult));
+      (this.m.FatiguePoolBase / (this.m.FatiguePoolBase + actor.getFatigueMax() - actor.getFatigue())) * this.m.FatigueCostMult));
   }
 
   function onUpdate(_properties) {

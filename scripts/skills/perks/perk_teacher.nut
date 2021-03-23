@@ -25,7 +25,7 @@ this.perk_teacher <- this.inherit("scripts/skills/skill", {
     local students = [];
     local teacherLevel = teacher.getLevel();
     foreach (bro in brothers) {
-      if (bro.getLevel() < teacherLevel) {
+      if (bro.getLevel() < teacherLevel && bro != teacher) {
         students.append(bro);
       }
     }
@@ -40,7 +40,7 @@ this.perk_teacher <- this.inherit("scripts/skills/skill", {
     this.skill.onSerialize(_out);
     _out.writeU32(this.m.LifetimeXpTaught);
   }
-  
+
   function onDeserialize(_in) {
     this.skill.onDeserialize(_in);
     this.m.LifetimeXpTaught = _in.readU32();

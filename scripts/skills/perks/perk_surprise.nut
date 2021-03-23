@@ -14,6 +14,10 @@ this.perk_surprise <- this.inherit("scripts/skills/skill", {
     this.m.IsHidden = true;
   }
 
+  function getName() {
+    return this.skill.getName() + " (" + this.m.StacksForThisRound + "x this round, " + this.m.StacksForNextRound + "x next)";
+  }
+
   function getDescription() {
     return this.getroottable().getSurpriseDescription(this.m.OnMissedInitiativeStolen) +
       "\n[color=" + this.Const.UI.Color.PositiveValue + "]" + (this.m.OnMissedInitiativeStolen * this.m.StacksForThisRound) + "[/color] initiative stolen and active currently." +
@@ -24,7 +28,9 @@ this.perk_surprise <- this.inherit("scripts/skills/skill", {
     local surprisedEffect = this.new("scripts/skills/effects/surprised_effect");
     _attacker.getSkills().add(surprisedEffect);
 
+    surprisedEffect.decreaseInitiativeForThisRound(this.m.OnMissedInitiativeStolen);
     surprisedEffect.decreaseInitiativeForNextRound(this.m.OnMissedInitiativeStolen);
+    this.m.StacksForThisRound += 1;
     this.m.StacksForNextRound += 1;
   }
 
@@ -36,7 +42,7 @@ this.perk_surprise <- this.inherit("scripts/skills/skill", {
   function onUpdate(_properties) {
     this.m.IsHidden = (this.m.StacksForThisRound == 0 && this.m.StacksForNextRound == 0);
     _properties.Initiative += this.m.OnMissedInitiativeStolen * this.m.StacksForThisRound;
-    _properties.TargetAttractionMult *= 0.85;
+    _properties.TargetAttractionMult *= 0.9;
   }
 
   function reset() {
