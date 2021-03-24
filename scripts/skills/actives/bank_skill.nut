@@ -17,6 +17,7 @@ this.bank_skill <- this.inherit("scripts/skills/skill", {
     this.m.IsActive = true;
     this.m.IsTargeted = false;
     this.m.IsAttack = false;
+    this.m.IsAudibleWhenHidden = true;
     this.m.ActionPointCost = this.Const.BankApCost;
     this.m.FatigueCost = this.Const.BankFatigueCost;
     this.m.MinRange = 0;

@@ -15,6 +15,7 @@ this.cash_in_skill <- this.inherit("scripts/skills/skill", {
     this.m.IsActive = true;
     this.m.IsTargeted = false;
     this.m.IsAttack = false;
+    this.m.IsAudibleWhenHidden = true;
     this.m.ActionPointCost = this.Const.CashInApCost;
     this.m.FatigueCost = this.Const.CashInFatigueCost;
     this.m.MinRange = 0;

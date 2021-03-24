@@ -59,7 +59,7 @@ this.refund_action_points_skill <- this.inherit("scripts/skills/skill", {
 
   function onUse(_user, _targetTile) {
     local actor = this.getContainer().getActor();
-    actor.setActionPoints(this.m.ActionPontsRefund);
+    actor.setActionPoints(actor.getActionPoints() + this.m.ActionPontsRefund);
     #actor.setDirty(true);
     this.getContainer().remove(this);
     return true;

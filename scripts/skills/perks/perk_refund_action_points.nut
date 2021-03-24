@@ -1,6 +1,7 @@
 this.perk_refund_action_points <- this.inherit("scripts/skills/skill", {
   m = {
-    RefundFatigueCostMultiplier = this.Const.RefundActionPointsFatigueCostMultiplier,
+    AttackFatigueCostMult = this.Const.RefundActionPointsAttackFatigueCostMult,
+    FatigueCostPerActionPoint = this.Const.RefundActionPointsFatigueCostPerActionPoint,
     IsTargetHit = false,
     IsTargetMissed = false
   }
@@ -29,14 +30,18 @@ this.perk_refund_action_points <- this.inherit("scripts/skills/skill", {
     }
 
     if (!this.m.IsTargetHit) {
-      this.logInfo("Target Missed.");
-      local active = this.new("scripts/skills/actives/refund_action_points_skill");
-      active.setFatigueCost(this.Math.round(_skill.getFatigueCost() * this.m.RefundFatigueCostMultiplier));
-      active.setActionPontsRefund(_skill.getActionPointCost());
-      this.getContainer().add(active);
+      this.enableRefundActionPointsSkill(_skill);
     }
 
     reset();
+  }
+
+  function enableRefundActionPointsSkill(_skill) {
+    local active = this.new("scripts/skills/actives/refund_action_points_skill");
+    local ap = _skill.getActionPointCost();
+    active.setFatigueCost(this.Math.round(_skill.getFatigueCost() * this.m.AttackFatigueCostMult + this.m.FatigueCostPerActionPoint * ap));
+    active.setActionPontsRefund(ap);
+    this.getContainer().add(active);
   }
 
   function reset() {

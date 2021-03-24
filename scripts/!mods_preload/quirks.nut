@@ -81,7 +81,8 @@ local addPerkExertion = function() {
   gt.Const.ExertionApBonus <- 3;
   gt.Const.Strings.PerkName.Exertion <- "Exertion";
   gt.Const.Strings.PerkDescription.Exertion <- "Unlocks the \'" + gt.Const.Strings.PerkName.Exertion +
-    "\' ability to increase action points this turn. Fatigue cost is based on the current fatigue pool left.";
+    "\' ability to increase action points by " + gt.Const.ExertionApBonus + " this turn. Fatigue cost is based on the current fatigue pool left. " +
+    "It is more expensive when exhausted.";
 
   local exertionPerkConsts = {
     ID = "perk.exertion",
@@ -151,15 +152,40 @@ local addOnAfterSkillUsed = function() {
     if (skillClass == null) {
       skillClass = c;
     }
-    skillClass.onAfterSkillUsed <- function(_user, _targetTile) {};
+    skillClass.onAfterSkillUsed <- function(_targetTile) {};
     skillClass.onAfterAnySkillUsed <- function(_skill, _targetTile) {};
+    skillClass.m.IsOnAfterSkillUsedScheduled <- false;
+
     local useOriginal = skillClass.use;
     skillClass.use = function(_targetTile, _forFree = false) {
+      this.m.IsOnAfterSkillUsedScheduled = false;
       local container = this.getContainer();
       local ret = useOriginal(_targetTile, _forFree);
-      this.onAfterSkillUsed(container.getActor(), _targetTile);
-      container.onAfterSkillUsed(this, _targetTile);
+      if (!ret || !this.isAttack()) {
+        this.m.IsOnAfterSkillUsedScheduled = true;
+        this.onAfterSkillUsed(_targetTile);
+        container.onAfterSkillUsed(this, _targetTile);
+      }
       return ret;
+    };
+
+    local onScheduledTargetHitOriginal = skillClass.onScheduledTargetHit;
+    skillClass.onScheduledTargetHit = function(_info) {
+      onScheduledTargetHitOriginal(_info);
+      if (!this.m.IsOnAfterSkillUsedScheduled) {
+        this.m.IsOnAfterSkillUsedScheduled = true;
+        this.Time.scheduleEvent(this.TimeUnit.Virtual, 1, this.onAfterSkillUsed, _info.TargetEntity.getTile());
+        local callbackData = {
+          container = this.getContainer(),
+          caller = this,
+          targetTile = _info.TargetEntity.getTile()
+        };
+        this.Time.scheduleEvent(this.TimeUnit.Virtual, 1,
+          function(callbackData) {
+            callbackData.container.onAfterSkillUsed(callbackData.caller, callbackData.targetTile);
+          },
+          callbackData);
+      }
     };
   });
 
@@ -217,8 +243,9 @@ local addExpectedDamageCalculationFlag = function() {
 
 local addPerkDoubleOrNothing = function() {
   gt.Const.Strings.PerkName.DoubleOrNothing <- "Double Or Nothing";
-  gt.Const.Strings.PerkDescription.DoubleOrNothing <- "On each attack there is an equal chance to do double damage or no damage at all." +
-    " When attacked there is an equal chance to take double damage or no damage at all.";
+  gt.Const.Strings.PerkDescription.DoubleOrNothing <-
+    "Half the hit chance when attacking or being attacked but double damage dealt and received." +
+    " The hit chance reduction is applied before clipping in the range [5, 95].";
 
   local doubleOrNothingPerkConsts = {
     ID = "perk.double_or_nothing",
@@ -284,8 +311,8 @@ local addMaxPerkPointsToPlayer = function() {
 }
 
 local addPerkVeteran = function() {
-  gt.Const.VeteranHitpointsCost <- 10;
-  gt.Const.VeteranStaminaCost <- 10;
+  gt.Const.VeteranHitpointsCost <- 9;
+  gt.Const.VeteranStaminaCost <- 9;
   gt.Const.VeteranPerkPointsBonus <- 2;
   gt.Const.Strings.PerkName.Veteran <- "Veteran";
   gt.getVeteranDescription <- function(hitpointsCost, staminaCost, perkPointsBonus) {
@@ -306,6 +333,29 @@ local addPerkVeteran = function() {
     IconDisabled = "ui/perks/perk_veteran_sw.png"
   };
   ::quirks.setPerk(veteranPerkConsts, 6);
+};
+
+local addPerkLastStand = function() {
+  gt.Const.LastStandOnHitResolveBonusPerNeighbourEnemy <- 4;
+  gt.Const.LastStandResolveBonusMax <- 60;
+  gt.Const.Strings.PerkName.LastStand <- "Last Stand";
+  gt.getLastStandDescription <- function(onHitResolveBonusPerNeighbourEnemy, resolveBonusMax) {
+    return "Upon taking damage to hitpoints increase resolve by [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      onHitResolveBonusPerNeighbourEnemy + "[/color] per enemy around you until the end of the battle. " +
+      "Maximum bonus is [color=" + this.Const.UI.Color.PositiveValue + "]" + resolveBonusMax + "[/color].";
+  };
+  gt.Const.Strings.PerkDescription.LastStand <- gt.getLastStandDescription(
+    gt.Const.LastStandOnHitResolveBonusPerNeighbourEnemy, gt.Const.LastStandResolveBonusMax);
+
+  local lastStandPerkConsts = {
+    ID = "perk.last_stand",
+    Script = "scripts/skills/perks/perk_last_stand",
+    Name = this.Const.Strings.PerkName.LastStand,
+    Tooltip = this.Const.Strings.PerkDescription.LastStand,
+    Icon = "ui/perks/perk_last_stand.png",
+    IconDisabled = "ui/perks/perk_last_stand_sw.png"
+  };
+  ::quirks.setPerk(lastStandPerkConsts, 2);
 };
 
 local addPerkPunchingBag = function() {
@@ -350,13 +400,16 @@ local addPerkSurprise = function() {
 };
 
 local addPerkRefundActionPoints = function() {
-  gt.Const.RefundActionPointsFatigueCostMultiplier <- 1.0;
+  gt.Const.RefundActionPointsAttackFatigueCostMult <- 1.0;
+  gt.Const.RefundActionPointsFatigueCostPerActionPoint <- 2;
   this.Const.Strings.PerkName.RefundActionPoints <- "Refund Action Points"
-  gt.getRefundActionPointsDescription <- function(fatigueCostMultiplier) {
-    return "Unlocks the ability to refund all action points on a missed attack. The cost is [color=" + this.Const.UI.Color.PositiveValue + "]" +
-      this.Math.round(fatigueCostMultiplier * 100) + "%[/color] of the fatigue of the attack.";
+  gt.getRefundActionPointsDescription <- function(attackFatigueCostMult, fatigueCostPerActionPoint) {
+    return "Unlocks the ability to refund all action points on a missed attack. " +
+      "The cost is [color=" + this.Const.UI.Color.NegativeValue + "]" + this.Math.round(attackFatigueCostMult * 100) + "%[/color] of the fatigue of the attack + " +
+      "[color=" + this.Const.UI.Color.NegativeValue + "]" + fatigueCostPerActionPoint + "[/color] per action point.";
   };
-  gt.Const.Strings.PerkDescription.RefundActionPoints <- gt.getRefundActionPointsDescription(gt.Const.RefundActionPointsFatigueCostMultiplier);
+  gt.Const.Strings.PerkDescription.RefundActionPoints <- gt.getRefundActionPointsDescription(
+    gt.Const.RefundActionPointsAttackFatigueCostMult, gt.Const.RefundActionPointsFatigueCostPerActionPoint);
 
   local refundActionPointsPerkConsts = {
     ID = "perk.refund_action_points",
@@ -390,14 +443,15 @@ local addPerkSlack = function() {
 };
 
 local addPerkImpenetrable = function() {
-  gt.Const.ImpenetrableBestFatigueFromArmorAndHelmet <- 32;
-  gt.Const.ImpenetrablFatigueStdDev <- 13;
+  gt.Const.ImpenetrableBestFatigueFromArmorAndHelmet <- 28;
+  gt.Const.ImpenetrablFatigueStdDev <- 16;
   gt.Const.ImpenetrableBestDamageReceivedDirectMult <- 0.66;
+  gt.Const.ImpenetrableMinDamageReceivedDirectMult <- 0.1;
   this.Const.Strings.PerkName.Impenetrable <- "Impenetrable"
   gt.getImpenetrableDescription <- function(bestFatigueFromArmorAndHelmet, bestDamageReceivedDirectMult) {
     return "Reduces armor penetration damage based on fatigue from both armor and helmet with best results at " +
       bestFatigueFromArmorAndHelmet + " fatigue when damage is reduced by [color=" + this.Const.UI.Color.PositiveValue + "]" +
-      this.Math.round(bestDamageReceivedDirectMult * 100) + "%[/color]. If the fatigue deviates from the golden value the effect is reduced.";
+      this.Math.round(bestDamageReceivedDirectMult * 100) + "%[/color]. If the fatigue is more than that the effect is gradually reduced.";
   };
   gt.Const.Strings.PerkDescription.Impenetrable <- gt.getImpenetrableDescription(
     gt.Const.ImpenetrableBestFatigueFromArmorAndHelmet, gt.Const.ImpenetrableBestDamageReceivedDirectMult);
@@ -456,6 +510,7 @@ local buffBullseye = function() {
   addPerkExertion();
   addPerkHyperactive();
   addPerkImpenetrable();
+  addPerkLastStand();
   addPerkPrecision();
   addPerkPunchingBag();
   addPerkRefundActionPoints();

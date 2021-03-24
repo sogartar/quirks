@@ -2,7 +2,8 @@ this.perk_impenetrable <- this.inherit("scripts/skills/skill", {
   m = {
     BestFatigueFromArmorAndHelmet = this.Const.ImpenetrableBestFatigueFromArmorAndHelmet,
     FatigueStdDev = this.Const.ImpenetrablFatigueStdDev,
-    BestDamageReceivedDirectMult = this.Const.ImpenetrableBestDamageReceivedDirectMult
+    BestDamageReceivedDirectMult = this.Const.ImpenetrableBestDamageReceivedDirectMult,
+    MinDamageReceivedDirectMult = this.Const.ImpenetrableMinDamageReceivedDirectMult
   },
   function create() {
     this.m.ID = "perk.impenetrable";
@@ -15,7 +16,7 @@ this.perk_impenetrable <- this.inherit("scripts/skills/skill", {
   }
 
   function getDescription() {
-    return "Only take [color=" + this.Const.UI.Color.NegativeValue + "]" +
+    return "Only take [color=" + this.Const.UI.Color.PositiveValue + "]" +
       this.Math.round(this.getDamageReceivedDirectMult(this.getFatigueFromArmorAndHelmet()) * 100) +
       "%[/color] of any damage that ignores armor.";
   }
@@ -25,10 +26,12 @@ this.perk_impenetrable <- this.inherit("scripts/skills/skill", {
   }
 
   function getDamageReceivedDirectMult(fatigueFromArmorAndHelmet) {
-    this.logInfo("DamageReceivedDirectMult = " + this.m.BestDamageReceivedDirectMult *
-      ::libreuse.gaussian(fatigueFromArmorAndHelmet, this.m.BestFatigueFromArmorAndHelmet, this.m.FatigueStdDev));
-    return this.m.BestDamageReceivedDirectMult *
-      ::libreuse.gaussian(fatigueFromArmorAndHelmet, this.m.BestFatigueFromArmorAndHelmet, this.m.FatigueStdDev);
+    if (fatigueFromArmorAndHelmet <= this.m.BestFatigueFromArmorAndHelmet) {
+      return this.m.BestDamageReceivedDirectMult;
+    } else {
+      return this.m.MinDamageReceivedDirectMult + (this.m.BestDamageReceivedDirectMult - this.m.MinDamageReceivedDirectMult) *
+        ::libreuse.gaussian(fatigueFromArmorAndHelmet, this.m.BestFatigueFromArmorAndHelmet, this.m.FatigueStdDev);
+    }
   }
 
   function getFatigueFromArmorAndHelmet() {
@@ -45,7 +48,6 @@ this.perk_impenetrable <- this.inherit("scripts/skills/skill", {
       fat = fat - head.getStaminaModifier();
     }
 
-    this.logInfo("Armor+helmet fatigue = " + fat);
     return fat;
   }
 });
