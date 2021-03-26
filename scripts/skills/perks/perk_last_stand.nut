@@ -1,8 +1,8 @@
 this.perk_last_stand <- this.inherit("scripts/skills/skill", {
   m = {
-    OnHitResolveBonusPerNeighbourEnemy = this.Const.LastStandOnHitResolveBonusPerNeighbourEnemy,
+    ResolveBonusPerNeighbourEnemy = this.Const.LastStandResolveBonusPerNeighbourEnemy,
     ResolveBonusMax = this.Const.LastStandResolveBonusMax,
-    ResolveBonus = 0
+    Stacks = 0
   }
 
   function create() {
@@ -16,11 +16,18 @@ this.perk_last_stand <- this.inherit("scripts/skills/skill", {
   }
 
   function getDescription() {
-    return this.getroottable().getLastStandDescription(this.m.OnHitResolveBonusPerNeighbourEnemy, this.m.ResolveBonusMax) +
-      "\nCurrent resolve bonus is [color=" + this.Const.UI.Color.PositiveValue + "]" + this.m.ResolveBonus + "[/color].";
+    local res = this.getroottable().getLastStandDescription(this.m.ResolveBonusPerNeighbourEnemy, this.m.ResolveBonusMax);
+    if (this.m.Stacks != 0) {
+      res += "\nCurrent resolve bonus is [color=" + this.Const.UI.Color.PositiveValue + "]" + this.getBonus()+ "[/color].";
+    }
+    return res;
   }
 
-  function getOnHitBonus() {
+  function getBonus() {
+    if (this.m.Stacks == 0) {
+      return 0;
+    }
+
     local actor = this.getContainer().getActor();
 
     if (!actor.isPlacedOnMap()) {
@@ -41,13 +48,13 @@ this.perk_last_stand <- this.inherit("scripts/skills/skill", {
       }
     }
 
-    return surroundCount * this.m.OnHitResolveBonusPerNeighbourEnemy;
+    return this.Math.min(this.m.ResolveBonusMax, surroundCount * this.m.ResolveBonusPerNeighbourEnemy * this.m.Stacks);
   }
 
   function onDamageReceived(_attacker, _damageHitpoints, _damageArmor) {
     if (_damageHitpoints > 0) {
+      this.m.Stacks += 1;
       this.m.IsHidden = false;
-      this.m.ResolveBonus = this.Math.min(this.m.ResolveBonusMax, this.m.ResolveBonus + this.getOnHitBonus());
     }
   }
 
@@ -57,11 +64,11 @@ this.perk_last_stand <- this.inherit("scripts/skills/skill", {
   }
 
   function onUpdate(_properties) {
-    _properties.Bravery += this.m.ResolveBonus;
+    _properties.Bravery += this.getBonus();
   }
 
   function reset() {
     this.m.IsHidden = true;
-    this.m.ResolveBonus = 0;
+    this.m.Stacks = 0;
   }
 });

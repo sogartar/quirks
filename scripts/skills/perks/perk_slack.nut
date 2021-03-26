@@ -18,7 +18,7 @@ this.perk_slack <- this.inherit("scripts/skills/skill", {
   }
 
   function onUpdate(_properties) {
-    _properties.FatigueRecoveryRate += this.Math.floor(this.m.UspentActionPoints * this.m.FatigueRecoveryPerUnspentActionPoint);
+    _properties.FatigueRecoveryRate += ::libreuse.roundRandomWeighted(this.m.UspentActionPoints * this.m.FatigueRecoveryPerUnspentActionPoint);
   }
 
   function onTurnEnd() {

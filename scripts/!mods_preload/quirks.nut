@@ -114,7 +114,7 @@ local addPerkHyperactive = function() {
 };
 
 local addPerkAcurate = function() {
-  gt.Const.AcurateHitChanceBonus <- 5;
+  gt.Const.AcurateHitChanceBonus <- 4.5;
   gt.Const.Strings.PerkName.Acurate <- "Acurate";
   gt.Const.Strings.PerkDescription.Acurate <- "Increases hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.AcurateHitChanceBonus + "[/color].";
 
@@ -133,7 +133,8 @@ local addPerkRefundFatigue = function() {
   gt.Const.RefundFatigueMult <- 0.5;
   gt.Const.Strings.PerkName.RefundFatigue <- "Refund Fatigue";
   gt.Const.Strings.PerkDescription.RefundFatigue <- "On a miss refund [color=" + this.Const.UI.Color.PositiveValue + "]" +
-    this.Math.floor(gt.Const.RefundFatigueMult * 100) + "%[/color] of the fatigue used.";
+    this.Math.floor(gt.Const.RefundFatigueMult * 100) + "%[/color] of the fatigue used. " +
+    " Rounding is randomized with probability to round down or up equal to the fraction.";
 
   local refundFatiguePerkConsts = {
     ID = "perk.refund_fatigue",
@@ -336,16 +337,17 @@ local addPerkVeteran = function() {
 };
 
 local addPerkLastStand = function() {
-  gt.Const.LastStandOnHitResolveBonusPerNeighbourEnemy <- 4;
-  gt.Const.LastStandResolveBonusMax <- 60;
+  gt.Const.LastStandResolveBonusPerNeighbourEnemy <- 3;
+  gt.Const.LastStandResolveBonusMax <- 30;
   gt.Const.Strings.PerkName.LastStand <- "Last Stand";
-  gt.getLastStandDescription <- function(onHitResolveBonusPerNeighbourEnemy, resolveBonusMax) {
-    return "Upon taking damage to hitpoints increase resolve by [color=" + this.Const.UI.Color.PositiveValue + "]" +
-      onHitResolveBonusPerNeighbourEnemy + "[/color] per enemy around you until the end of the battle. " +
-      "Maximum bonus is [color=" + this.Const.UI.Color.PositiveValue + "]" + resolveBonusMax + "[/color].";
+  gt.getLastStandDescription <- function(resolveBonusPerNeighbourEnemy, resolveBonusMax) {
+    return "Upon taking damage to hitpoints add a stack of Last Stand until the end of the battle. " +
+      "Each stack increases resolve by [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      resolveBonusPerNeighbourEnemy + "[/color] per enemy around you to a maximum of " +
+      "[color=" + this.Const.UI.Color.PositiveValue + "]" + resolveBonusMax + "[/color].";
   };
   gt.Const.Strings.PerkDescription.LastStand <- gt.getLastStandDescription(
-    gt.Const.LastStandOnHitResolveBonusPerNeighbourEnemy, gt.Const.LastStandResolveBonusMax);
+    gt.Const.LastStandResolveBonusPerNeighbourEnemy, gt.Const.LastStandResolveBonusMax);
 
   local lastStandPerkConsts = {
     ID = "perk.last_stand",
@@ -423,11 +425,12 @@ local addPerkRefundActionPoints = function() {
 };
 
 local addPerkSlack = function() {
-  gt.Const.SlackFatigueRecoveryPerUnspentActionPoint <- 1.75;
+  gt.Const.SlackFatigueRecoveryPerUnspentActionPoint <- 1.5;
   this.Const.Strings.PerkName.Slack <- "Slack";
   gt.getSlackDescription <- function(fatigueRecoveryPerUnspentActionPoint) {
     return "Each turn recover an aditional [color=" + this.Const.UI.Color.PositiveValue + "]" +
-      fatigueRecoveryPerUnspentActionPoint + "[/color] fatigue per unspent action point previos turn.";
+      fatigueRecoveryPerUnspentActionPoint + "[/color] fatigue per unspent action point previos turn. " +
+      " Rounding is randomized with probability to round down or up equal to the fraction.";
   };
   gt.Const.Strings.PerkDescription.Slack <- gt.getSlackDescription(gt.Const.SlackFatigueRecoveryPerUnspentActionPoint);
 
@@ -497,6 +500,56 @@ local buffBullseye = function() {
   perkConsts.Tooltip = gt.Const.Strings.PerkDescription.Bullseye;
 }
 
+local nerfThrowingMastery = function() {
+  gt.Const.ThrowingMasteryDamageMultAtDistance2 <- 1.2;
+  gt.Const.ThrowingMasteryDamageMultAtDistance3 <- 1.1;
+  gt.Const.Strings.PerkDescription.SpecThrowing <- "Master throwing weapons to wound or kill the enemy before they even get close. " +
+    "Skills build up [color=" + this.Const.UI.Color.NegativeValue + "]25%[/color] less Fatigue." +
+    "\n\nDamage is increased by [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((gt.Const.ThrowingMasteryDamageMultAtDistance2 - 1) * 100) + "%[/color] when attacking at 2 tiles of distance." +
+    "\n\nDamage is increased by [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((gt.Const.ThrowingMasteryDamageMultAtDistance3 - 1) * 100) + "%[/color] when attacking at 3 tiles of distance.",
+
+  ::mods_hookExactClass("skills/perks/perk_mastery_throwing", function(c) {
+    c.onAnySkillUsed = function(_skill, _targetEntity, _properties) {
+      if (_targetEntity == null)
+      {
+        return;
+      }
+
+      if (_skill.isRanged() && (_skill.getID() == "actives.throw_axe" || _skill.getID() == "actives.throw_balls" || _skill.getID() == "actives.throw_javelin" || _skill.getID() == "actives.throw_spear" || _skill.getID() == "actives.sling_stone"))
+      {
+        local d = this.getContainer().getActor().getTile().getDistanceTo(_targetEntity.getTile());
+
+        if (d <= 2)
+        {
+          _properties.DamageTotalMult *= this.Const.ThrowingMasteryDamageMultAtDistance2;
+        }
+        else if (d <= 3)
+        {
+          _properties.DamageTotalMult *= gt.Const.ThrowingMasteryDamageMultAtDistance3;
+        }
+      }
+    };
+  });
+
+  local perkConsts = findPerkConsts("perk.mastery.throwing");
+  perkConsts.Tooltip = gt.Const.Strings.PerkDescription.SpecThrowing;
+};
+
+local buffThrowingWithoutMastery = function() {
+  ::mods_hookDescendants("entity/tactical/actor", function(c) {
+    local actorClass = ::mods_getClassForOverride(c, "actor");
+    if (!("onInitOriginalQuirks" in actorClass)) {
+      actorClass.onInitOriginalQuirks <- actorClass.onInit;
+      actorClass.onInit = function() {
+        this.onInitOriginalQuirks();
+        this.m.Skills.add(this.new("scripts/skills/special/buff_throwing"));
+      };
+    }
+  });
+
+  nerfThrowingMastery();
+}
+
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
   addOnAfterSkillUsed();
   #addExpectedDamageCalculationFlag();
@@ -521,4 +574,5 @@ local buffBullseye = function() {
   addPerkVeteran();
 
   buffBullseye();
+  buffThrowingWithoutMastery();
 });

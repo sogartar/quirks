@@ -22,17 +22,12 @@ this.perk_teacher <- this.inherit("scripts/skills/skill", {
     local teacher = _skill.getContainer().getActor();
     local brothers = this.Tactical.Entities.getInstancesOfFaction(this.Const.Faction.Player);
     local xpGroup = this.Math.floor(_targetEntity.getXPValue() * this.m.XpMult * (1.0 - this.Const.XP.XPForKillerPct) / brothers.len());
-    local students = [];
     local teacherLevel = teacher.getLevel();
     foreach (bro in brothers) {
       if (bro.getLevel() < teacherLevel && bro != teacher) {
-        students.append(bro);
+        bro.addXP(xpGroup);
+        this.m.LifetimeXpTaught += xpGroup;
       }
-    }
-
-    foreach (student in students) {
-      student.addXP(xpGroup);
-      this.m.LifetimeXpTaught += xpGroup;
     }
   }
 

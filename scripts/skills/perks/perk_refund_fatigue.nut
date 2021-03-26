@@ -3,7 +3,8 @@ this.perk_refund_fatigue <- this.inherit("scripts/skills/skill", {
     RefundMult = this.Const.RefundFatigueMult,
     IsTargetHit = false
     IsTargetMissed = false
-  },
+  }
+
   function create() {
     this.m.ID = "perk.refund_fatigue";
     this.m.Name = this.Const.Strings.PerkName.RefundFatigue;
@@ -31,12 +32,12 @@ this.perk_refund_fatigue <- this.inherit("scripts/skills/skill", {
     if (!this.m.IsTargetHit) {
       local actor = _skill.getContainer().getActor();
       local fat = _skill.getFatigueCost();
-      actor.setFatigue(this.Math.max(0, actor.getFatigue() - fat * this.m.RefundMult));
+      actor.setFatigue(this.Math.max(0, actor.getFatigue() - ::libreuse.roundRandomWeighted(fat * this.m.RefundMult)));
     }
 
     reset();
   }
-  
+
   function reset() {
     this.m.IsTargetHit = false;
     this.m.IsTargetMissed = false;
