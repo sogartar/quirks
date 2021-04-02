@@ -171,10 +171,15 @@ local addOnAfterSkillUsed = function() {
     skillClass.onAfterSkillUsed <- function(_targetTile) {};
     skillClass.onAfterAnySkillUsed <- function(_skill, _targetTile) {};
     skillClass.m.IsOnAfterSkillUsedScheduled <- false;
+    skillClass.m.TargetTile <- null;
+    skillClass.m.IsUsedForFree <- false;
+    skillClass.isUsedForFree <- function() { return this.m.IsUsedForFree; };
 
     local useOriginal = skillClass.use;
     skillClass.use = function(_targetTile, _forFree = false) {
       this.m.IsOnAfterSkillUsedScheduled = false;
+      this.m.TargetTile = _targetTile;
+      this.m.IsUsedForFree = _forFree;
       local container = this.getContainer();
       local ret = useOriginal(_targetTile, _forFree);
       if (!ret || !this.isAttack()) {
@@ -190,11 +195,11 @@ local addOnAfterSkillUsed = function() {
       onScheduledTargetHitOriginal(_info);
       if (!this.m.IsOnAfterSkillUsedScheduled) {
         this.m.IsOnAfterSkillUsedScheduled = true;
-        this.Time.scheduleEvent(this.TimeUnit.Virtual, 1, this.onAfterSkillUsed, _info.TargetEntity.getTile());
+        this.Time.scheduleEvent(this.TimeUnit.Virtual, 1, this.onAfterSkillUsed, this.m.TargetTile);
         local callbackData = {
           container = this.getContainer(),
           caller = this,
-          targetTile = _info.TargetEntity.getTile()
+          targetTile = this.m.TargetTile
         };
         this.Time.scheduleEvent(this.TimeUnit.Virtual, 1,
           function(callbackData) {
@@ -423,7 +428,7 @@ local addPerkRefundActionPoints = function() {
   gt.Const.RefundActionPointsFatigueCostPerActionPoint <- 2;
   this.Const.Strings.PerkName.RefundActionPoints <- "Refund Action Points"
   gt.getRefundActionPointsDescription <- function(attackFatigueCostMult, fatigueCostPerActionPoint) {
-    return "Unlocks the ability to refund all action points on a missed attack. " +
+    return "Unlocks the ability to refund all action points on a missed attack. The skill can be used until the end of the turn. " +
       "The cost is [color=" + this.Const.UI.Color.NegativeValue + "]" + this.Math.round(attackFatigueCostMult * 100) + "%[/color] of the fatigue of the attack + " +
       "[color=" + this.Const.UI.Color.NegativeValue + "]" + fatigueCostPerActionPoint + "[/color] per action point.";
   };

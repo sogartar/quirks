@@ -24,9 +24,13 @@ this.perk_refund_action_points <- this.inherit("scripts/skills/skill", {
     this.m.IsTargetMissed = true;
   }
 
-  function onAfterAnySkillUsed(_skill, _targetEntity) {
+  function onAfterAnySkillUsed(_skill, _targetTile) {
     if (_skill == null || !_skill.isAttack() || (!this.m.IsTargetHit && !this.m.IsTargetMissed)) {
       return; #Not an attack skill
+    }
+
+    if (_skill.isUsedForFree()) {
+      return;
     }
 
     if (!this.m.IsTargetHit) {

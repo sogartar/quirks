@@ -18,7 +18,7 @@ this.refund_action_points_skill <- this.inherit("scripts/skills/skill", {
     this.m.IsActive = true;
     this.m.IsTargeted = false;
     this.m.IsAttack = false;
-    this.m.IsStacking
+    this.m.IsStacking = true;
     this.m.ActionPointCost = 0;
     this.m.MinRange = 0;
     this.m.MaxRange = 0;
@@ -60,7 +60,6 @@ this.refund_action_points_skill <- this.inherit("scripts/skills/skill", {
   function onUse(_user, _targetTile) {
     local actor = this.getContainer().getActor();
     actor.setActionPoints(actor.getActionPoints() + this.m.ActionPontsRefund);
-    #actor.setDirty(true);
     this.getContainer().remove(this);
     return true;
   }

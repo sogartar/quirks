@@ -28,7 +28,6 @@ this.perk_punching_bag <- this.inherit("scripts/skills/skill", {
   }
 
   function onTurnStart() {
-    this.logInfo("punching_bag.onTurnStart");
     this.m.DamageMult = 1 - (1 - this.m.DamageMult) * this.m.OnTurnStartBonusMult;
     if (this.m.DamageMult == 1.0) {
       this.m.IsHidden = true;
