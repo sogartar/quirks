@@ -27,8 +27,10 @@ this.precision_effect <- this.inherit("scripts/skills/skill", {
 
   function onAnySkillUsed(_skill, _targetEntity, _properties) {
     if (_skill.isAttack()) {
-      _properties.MeleeSkill += this.m.HitChanceBonus;
-      _properties.RangedSkill += this.m.HitChanceBonus;
+      local bonus = this.m.HitChanceBonus;
+      bonus *= _skill.isAOE() ? 0.5 : 1;
+      _properties.MeleeSkill += bonus;
+      _properties.RangedSkill += bonus;
     }
   }
 

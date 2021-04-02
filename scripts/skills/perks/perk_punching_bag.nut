@@ -1,8 +1,8 @@
 this.perk_punching_bag <- this.inherit("scripts/skills/skill", {
   m = {
     OnHitDamageMult = this.Const.PunchingBagOnHitDamageMult,
-    ThisTurnDamageMult = 1.0,
-    NextTurnDamageMult = 1.0
+    OnTurnStartBonusMult = this.Const.PunchingBagOnTurnStartBonusMult,
+    DamageMult = 1.0
   },
   function create() {
     this.m.ID = "perk.punching_bag";
@@ -15,21 +15,22 @@ this.perk_punching_bag <- this.inherit("scripts/skills/skill", {
   }
 
   function getDescription() {
-    return this.getroottable().getPunchingBagDescription(this.m.OnHitDamageMult) +
-      "\nCurrent damage reduction [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((1 - this.m.ThisTurnDamageMult) * 100) + "%[/color]." +
-      "\nNext turn damage reduction [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((1 - this.m.NextTurnDamageMult) * 100) + "%[/color].";
+    return this.getroottable().getPunchingBagDescription(this.m.OnHitDamageMult, this.m.OnTurnStartBonusMult) +
+      "\nCurrent damage reduction [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((1 - this.m.DamageMult) * 100) + "%[/color].";
   }
 
-  function onDamageReceived(_attacker, _damageHitpoints, _damageArmor) {
-    this.m.ThisTurnDamageMult *= this.m.OnHitDamageMult;
-    this.m.NextTurnDamageMult *= this.m.OnHitDamageMult;
-    this.m.IsHidden = false;
+  function onBeforeDamageReceived(_attacker, _skill, _hitInfo, _properties) {
+    _properties.DamageReceivedTotalMult *= this.m.DamageMult;
+    if (_skill != null && _skill.isAttack()) {
+      this.m.DamageMult *= this.m.OnHitDamageMult;
+      this.m.IsHidden = false;
+    }
   }
 
   function onTurnStart() {
-    this.m.ThisTurnDamageMult = this.m.NextTurnDamageMult;
-    this.m.NextTurnDamageMult = 1.0;
-    if (this.m.ThisTurnDamageMult == 1.0) {
+    this.logInfo("punching_bag.onTurnStart");
+    this.m.DamageMult = 1 - (1 - this.m.DamageMult) * this.m.OnTurnStartBonusMult;
+    if (this.m.DamageMult == 1.0) {
       this.m.IsHidden = true;
     }
   }
@@ -40,13 +41,11 @@ this.perk_punching_bag <- this.inherit("scripts/skills/skill", {
   }
 
   function onUpdate(_properties) {
-    _properties.DamageReceivedTotalMult *= this.m.ThisTurnDamageMult;
-    _properties.TargetAttractionMult *= this.m.ThisTurnDamageMult;
+    _properties.TargetAttractionMult *= this.m.DamageMult;
   }
 
   function reset() {
     this.m.IsHidden = true;
-    this.m.ThisTurnDamageMult = 1.0;
-    this.m.NextTurnDamageMult = 1.0;
+    this.m.DamageMult = 1.0;
   }
 });

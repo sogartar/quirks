@@ -2,8 +2,12 @@ this.exertion_skill <- this.inherit("scripts/skills/skill", {
   m = {
     ApBonusPerUse = this.Const.ExertionApBonus,
     MinFatigueCost = this.Const.ExertionMinFatigueCost,
-    FatigueCostMult = this.Const.ExertionFatigueCostMult,
-    FatiguePoolBase = this.Const.ExertionFatiguePoolBase,
+    FatigueCostBase = this.Const.ExertionFatigueCostBase,
+    FatiguePoolCostMult = this.Const.ExertionFatiguePoolCostMult,
+    ResolveCostMult = this.Const.ExertionResolveCostMult,
+    CurrentInitiativeCostMult = this.Const.ExertionCurrentInitiativeCostMult,
+    FatigueCostMultOnSameTurn = this.Const.ExertionFatigueCostMultOnSameTurn,
+    UsesCountThisTurn = 0,
     ApBonus = 0
   }
 
@@ -53,8 +57,15 @@ this.exertion_skill <- this.inherit("scripts/skills/skill", {
 
   function getFatigueCost() {
     local actor = this.getContainer().getActor();
-    return this.Math.ceil(this.Math.max(this.m.MinFatigueCost,
-      (this.m.FatiguePoolBase / (this.m.FatiguePoolBase + actor.getFatigueMax() - actor.getFatigue())) * this.m.FatigueCostMult));
+    local res = this.m.FatigueCostBase -
+      this.m.FatiguePoolCostMult * (actor.getFatigueMax() - actor.getFatigue()) -
+      this.m.ResolveCostMult * actor.getBravery() -
+      this.m.CurrentInitiativeCostMult * actor.getInitiative();
+    res = this.Math.max(this.m.MinFatigueCost, res);
+    if (this.m.UsesCountThisTurn > 0) {
+      res *= this.m.FatigueCostMultOnSameTurn * this.m.UsesCountThisTurn;
+    }
+    return this.Math.round(res);
   }
 
   function onUpdate(_properties) {
@@ -67,6 +78,7 @@ this.exertion_skill <- this.inherit("scripts/skills/skill", {
     actor.setActionPoints(actor.getActionPoints() + this.m.ApBonusPerUse);
     actor.getCurrentProperties().ActionPoints += this.m.ApBonusPerUse;
     actor.setDirty(true);
+    this.m.UsesCountThisTurn += 1;
     return true;
   }
 
@@ -76,5 +88,6 @@ this.exertion_skill <- this.inherit("scripts/skills/skill", {
 
   function onTurnStart() {
     this.m.ApBonus = 0;
+    this.m.UsesCountThisTurn = 0;
   }
 });

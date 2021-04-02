@@ -27,7 +27,7 @@ local addPerkBank = function() {
   gt.Const.Strings.PerkName.Bank <- "Bank";
   gt.Const.Strings.CashInName <- "Cash In";
   gt.Const.Strings.CashedInEffectName <- "Cashed In";
-  gt.Const.BankInterestRatePerTurn <- 0.25;
+  gt.Const.BankInterestRatePerTurn <- 0.3;
   gt.Const.Strings.PerkDescription.Bank <- "Unlocks the \'Bank\' ability to bank action points to be used later. " +
     "When used, banks [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.BankApIncreaseOnUse + "[/color] action point. " +
     "Breaking (cashing in) makes the action points available next turn. " +
@@ -54,14 +54,15 @@ local addPerkPrecision = function() {
   gt.Const.PrecisionFatigueCost <- 15;
   gt.Const.PrecisionApCost <- 3;
   gt.Const.Strings.PerkName.Precision <- "Precision";
-  gt.Const.PrecisionHitChanceBonus <- 20;
-  this.Const.PrecisionHitChanceBonusDecreasePerTurn <- 10;
+  gt.Const.PrecisionHitChanceBonus <- 25;
+  this.Const.PrecisionHitChanceBonusDecreasePerTurn <- 12.5;
   gt.Const.Strings.PerkDescription.Precision <- "Unlocks the \'" + gt.Const.Strings.PerkName.Precision + "\' ability to increase next attack's hit chance with [color=" +
   this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color]." +
     "If unused, each turn this bonus is decreased with [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]. Costs " + 
-    this.Const.PrecisionFatigueCost + " fatigue and " + gt.Const.PrecisionApCost + " action points.";
+    this.Const.PrecisionFatigueCost + " fatigue and " + gt.Const.PrecisionApCost + " action points. The bonus is halfed for area of effect attacks.";
   gt.Const.Strings.PrecisionSkillDescription <- "Increase next attack's hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color]. " +
-    "If unused, each turn this bonus is decreased by [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.PrecisionHitChanceBonusDecreasePerTurn + "%[/color].";
+    "If unused, each turn this bonus is decreased by [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]. " +
+    "The bonus is halfed for area of effect attacks.";
 
   local precisionPerkConsts = {
     ID = "perk.precision",
@@ -75,14 +76,23 @@ local addPerkPrecision = function() {
 };
 
 local addPerkExertion = function() {
-  gt.Const.ExertionFatigueCostMult <- 40;
-  gt.Const.ExertionMinFatigueCost <- 20;
-  gt.Const.ExertionFatiguePoolBase <- 60;
+  gt.Const.ExertionMinFatigueCost <- 12;
+  gt.Const.ExertionFatigueCostBase <- 31;
+  gt.Const.ExertionFatiguePoolCostMult <- 0.1;
+  gt.Const.ExertionResolveCostMult <- 0.1;
+  gt.Const.ExertionCurrentInitiativeCostMult <- 0.1;
   gt.Const.ExertionApBonus <- 3;
+  gt.Const.ExertionFatigueCostMultOnSameTurn <- 2;
   gt.Const.Strings.PerkName.Exertion <- "Exertion";
   gt.Const.Strings.PerkDescription.Exertion <- "Unlocks the \'" + gt.Const.Strings.PerkName.Exertion +
-    "\' ability to increase action points by " + gt.Const.ExertionApBonus + " this turn. Fatigue cost is based on the current fatigue pool left. " +
-    "It is more expensive when exhausted.";
+    "\' ability to increase action points by " + gt.Const.ExertionApBonus + " this turn. Fatigue cost is based on the current fatigue pool left, current intiative and resolve. " +
+    "The cost starts from [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.ExertionFatigueCostBase +
+    "[/color] fatigue and is reduced to a minimum of  [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.ExertionMinFatigueCost +
+    "[/color] by subtracting [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.ExertionFatiguePoolCostMult * 100) +
+    "%[/color] of current fatigue left, [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.ExertionResolveCostMult * 100) +
+    "%[/color] of resolve and [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.ExertionCurrentInitiativeCostMult * 100) +
+    "%[/color] of current initiative. The fatigue cost is increased by [color=" +
+    this.Const.UI.Color.NegativeValue + "]" + this.Math.round(gt.Const.ExertionFatigueCostMultOnSameTurn * 100) + "%[/color] afer each use in the same turn.";
 
   local exertionPerkConsts = {
     ID = "perk.exertion",
@@ -97,10 +107,15 @@ local addPerkExertion = function() {
 
 local addPerkHyperactive = function() {
   gt.Const.HyperactiveApBonus <- 3;
-  gt.Const.HyperactiveFatigueRecoveryRateModifier <- -20;
+  gt.Const.HyperactiveFatigueRecoveryRatePerTurnChange <- -3;
   gt.Const.Strings.PerkName.Hyperactive <- "Hyperactive";
-  gt.Const.Strings.PerkDescription.Hyperactive <- "Permanently increases action points by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.HyperactiveApBonus +
-    "[/color] and reduces fatigue recovery rate by [color=" + this.Const.UI.Color.NegativeValue + "]" + (-gt.Const.HyperactiveFatigueRecoveryRateModifier) + "[/color].";
+  gt.getHyperactiveDescription <- function(apBonus, fatigueRecoveryRatePerTernChange) {
+    return "Permanently increases action points by [color=" + this.Const.UI.Color.PositiveValue + "]" + apBonus +
+      "[/color] and each turn after the first reduces fatigue recovery rate by [color=" + this.Const.UI.Color.NegativeValue + "]" +
+      (-fatigueRecoveryRatePerTernChange) + "[/color].";
+  };
+  gt.Const.Strings.PerkDescription.Hyperactive <- gt.getHyperactiveDescription(
+    gt.Const.HyperactiveApBonus, gt.Const.HyperactiveFatigueRecoveryRatePerTurnChange);
 
   local hyperactivePerkConsts = {
     ID = "perk.hyperactive",
@@ -245,7 +260,7 @@ local addExpectedDamageCalculationFlag = function() {
 local addPerkDoubleOrNothing = function() {
   gt.Const.Strings.PerkName.DoubleOrNothing <- "Double Or Nothing";
   gt.Const.Strings.PerkDescription.DoubleOrNothing <-
-    "Half the hit chance when attacking or being attacked but double damage dealt and received." +
+    "Halfs the hit chance when attacking or being attacked but doubles damage dealt and received." +
     " The hit chance reduction is applied before clipping in the range [5, 95].";
 
   local doubleOrNothingPerkConsts = {
@@ -279,7 +294,7 @@ local addPerkTeacher = function() {
 };
 
 local addPerkDefensiveAdaptation = function() {
-  gt.Const.DefensiveAdaptationBonusPerStack <- 12;
+  gt.Const.DefensiveAdaptationBonusPerStack <- 13;
   gt.Const.Strings.PerkName.DefensiveAdaptation <- "Defensive Adaptation";
   gt.getDefensiveAdaptationDescription <- function(bonusPerStack) {
     return "With each hit taken increase defense by [color=" + this.Const.UI.Color.PositiveValue + "]" +
@@ -338,7 +353,7 @@ local addPerkVeteran = function() {
 
 local addPerkLastStand = function() {
   gt.Const.LastStandResolveBonusPerNeighbourEnemy <- 3;
-  gt.Const.LastStandResolveBonusMax <- 30;
+  gt.Const.LastStandResolveBonusMax <- 36;
   gt.Const.Strings.PerkName.LastStand <- "Last Stand";
   gt.getLastStandDescription <- function(resolveBonusPerNeighbourEnemy, resolveBonusMax) {
     return "Upon taking damage to hitpoints add a stack of Last Stand until the end of the battle. " +
@@ -361,13 +376,15 @@ local addPerkLastStand = function() {
 };
 
 local addPerkPunchingBag = function() {
-  gt.Const.PunchingBagOnHitDamageMult <- 0.9;
+  gt.Const.PunchingBagOnHitDamageMult <- 0.85;
+  gt.Const.PunchingBagOnTurnStartBonusMult <- 0.4;
   gt.Const.Strings.PerkName.PunchingBag <- "Punching Bag";
-  gt.getPunchingBagDescription <- function(onHitDamageMult) {
-    return "Upon taking damage decrease future incomming damage by [color=" + this.Const.UI.Color.PositiveValue + "]" +
-      this.Math.round((1 - onHitDamageMult) * 100) + "%[/color] for 2 turns.";
+  gt.getPunchingBagDescription <- function(onHitDamageMult, onTurnStartBonusMult) {
+    return "Each time being hit decrease future incomming damage by [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      this.Math.round((1 - onHitDamageMult) * 100) + "%[/color] from attacks. At the start of each turn this bonus is reduced by [color=" + this.Const.UI.Color.NegativeValue + "]" +
+      this.Math.round(onTurnStartBonusMult * 100) + "%[/color].";
   };
-  gt.Const.Strings.PerkDescription.PunchingBag <- gt.getPunchingBagDescription(gt.Const.PunchingBagOnHitDamageMult);
+  gt.Const.Strings.PerkDescription.PunchingBag <- gt.getPunchingBagDescription(gt.Const.PunchingBagOnHitDamageMult, gt.Const.PunchingBagOnTurnStartBonusMult);
 
   local punchingBagPerkConsts = {
     ID = "perk.punching_bag",
@@ -402,7 +419,7 @@ local addPerkSurprise = function() {
 };
 
 local addPerkRefundActionPoints = function() {
-  gt.Const.RefundActionPointsAttackFatigueCostMult <- 1.0;
+  gt.Const.RefundActionPointsAttackFatigueCostMult <- 0.5;
   gt.Const.RefundActionPointsFatigueCostPerActionPoint <- 2;
   this.Const.Strings.PerkName.RefundActionPoints <- "Refund Action Points"
   gt.getRefundActionPointsDescription <- function(attackFatigueCostMult, fatigueCostPerActionPoint) {
@@ -446,18 +463,21 @@ local addPerkSlack = function() {
 };
 
 local addPerkImpenetrable = function() {
-  gt.Const.ImpenetrableBestFatigueFromArmorAndHelmet <- 28;
-  gt.Const.ImpenetrablFatigueStdDev <- 16;
-  gt.Const.ImpenetrableBestDamageReceivedDirectMult <- 0.66;
-  gt.Const.ImpenetrableMinDamageReceivedDirectMult <- 0.1;
+  gt.Const.ImpenetrableBestTotalArmorMax <- 400;
+  gt.Const.ImpenetrableTotalArmorMaxStdDev <- 100;
+  gt.Const.ImpenetrableBestDamageReceivedDirectMult <- 0.33;
+  gt.Const.ImpenetrableMinDamageReceivedDirectMult <- 0.85;
   this.Const.Strings.PerkName.Impenetrable <- "Impenetrable"
-  gt.getImpenetrableDescription <- function(bestFatigueFromArmorAndHelmet, bestDamageReceivedDirectMult) {
-    return "Reduces armor penetration damage based on fatigue from both armor and helmet with best results at " +
-      bestFatigueFromArmorAndHelmet + " fatigue when damage is reduced by [color=" + this.Const.UI.Color.PositiveValue + "]" +
-      this.Math.round(bestDamageReceivedDirectMult * 100) + "%[/color]. If the fatigue is more than that the effect is gradually reduced.";
+  gt.getImpenetrableDescription <- function(bestTotalArmorMax, bestDamageReceivedDirectMult, minDamageReceivedDirectMult) {
+    return "Reduces armor penetration damage based on total max body and helmet armor with best results at " +
+      bestTotalArmorMax + " armor when damage is reduced by [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      this.Math.round((1 - bestDamageReceivedDirectMult) * 100) +
+      "%[/color]. If total max armor is more than that the effect is gradually weakend to a minimum of [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      this.Math.round((1 - minDamageReceivedDirectMult) * 100) +
+      "%[/color].";
   };
   gt.Const.Strings.PerkDescription.Impenetrable <- gt.getImpenetrableDescription(
-    gt.Const.ImpenetrableBestFatigueFromArmorAndHelmet, gt.Const.ImpenetrableBestDamageReceivedDirectMult);
+    gt.Const.ImpenetrableBestTotalArmorMax, gt.Const.ImpenetrableBestDamageReceivedDirectMult, gt.Const.ImpenetrableMinDamageReceivedDirectMult);
 
   local impenetrablePerkConsts = {
     ID = "perk.impenetrable",
