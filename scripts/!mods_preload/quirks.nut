@@ -260,7 +260,7 @@ local addExpectedDamageCalculationFlag = function() {
 local addPerkDoubleOrNothing = function() {
   gt.Const.Strings.PerkName.DoubleOrNothing <- "Double Or Nothing";
   gt.Const.Strings.PerkDescription.DoubleOrNothing <-
-    "Halfs the hit chance when attacking or being attacked but doubles damage dealt and received." +
+    "Doubles damage dealt but halfs hit chance when attacking." +
     " The hit chance reduction is applied before clipping in the range [5, 95].";
 
   local doubleOrNothingPerkConsts = {
@@ -574,7 +574,6 @@ local buffThrowingWithoutMastery = function() {
   addOnAfterSkillUsed();
   #addExpectedDamageCalculationFlag();
   addMaxPerkPointsToPlayer();
-  ::quirks.makeHitChanceMultipliersSymmetric();
 
   addPerkAcurate();
   addPerkBank();

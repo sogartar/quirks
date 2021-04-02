@@ -11,21 +11,9 @@ this.perk_double_or_nothing <- this.inherit("scripts/skills/skill", {
     this.m.IsHidden = false;
   }
 
-  function onAnySkillUsed(_skill, _targetEntity, _properties) {
-    if (!_skill.isAttack()) {
-      return;
-    }
-
+  function onUpdate(_properties) {
+    _properties.TargetAttractionMult *= 1.1;
     _properties.DamageTotalMult *= 2;
     _properties.TotalAttackToHitMult *= 0.5;
-  }
-
-  function onBeingAttacked(_attacker, _skill, _properties) {
-    _properties.TotalAttackToHitMult *= 0.5;
-  }
-
-  function onUpdate(_properties) {
-    _properties.TargetAttractionMult *= 1.2;
-    _properties.DamageReceivedTotalMult *= 2;
   }
 });
