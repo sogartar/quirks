@@ -1,6 +1,6 @@
 this.buff_throwing <- this.inherit("scripts/skills/skill", {
   m = {
-    DamageTotalMultPerDistance = [1.0, 1.0, 1.2, 1.1],
+    DamageTotalMultPerDistance = [1.0, 1.0, 1.1, 1.05],
     
   },
   function create() {

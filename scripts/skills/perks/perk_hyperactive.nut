@@ -1,8 +1,9 @@
 this.perk_hyperactive <- this.inherit("scripts/skills/skill", {
   m = {
     ApBonus = this.Const.HyperactiveApBonus,
-    FatigueRecoveryRatePerTurnChange = this.Const.HyperactiveFatigueRecoveryRatePerTurnChange,
-    TurnsCount = 0
+    FatigueRecoveryRateModifierPerSpentActionPoint = this.Const.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint,
+    SpentActionPointsThisTurn = 0,
+    SpentActionPointsLastTurn = 0
   },
   function create() {
     this.m.ID = "perk.hyperactive";
@@ -15,25 +16,36 @@ this.perk_hyperactive <- this.inherit("scripts/skills/skill", {
   }
 
   function getDescription() {
-    return this.getroottable().getHyperactiveDescription(this.m.ApBonus, this.m.FatigueRecoveryRatePerTurnChange) +
-      "\nCurrent fatigue recory rate reduction of [color=" + this.Const.UI.Color.NegativeValue + "]" +
-      (-this.getCurrentFatigueRecoveryRateModifier()) + "[/color].";
+    return this.getroottable().getHyperactiveDescription(this.m.ApBonus, this.m.FatigueRecoveryRateModifierPerSpentActionPoint) +
+      "\n[color=" + this.Const.UI.Color.NegativeValue + "]" + (-this.getCurrentFatigueRecoveryRateModifier()) +
+      "[/color] fatigue recory rate reduction for next turn.";
   }
 
   function getCurrentFatigueRecoveryRateModifier() {
-    return this.Math.min(0, (this.m.TurnsCount - 1) * this.m.FatigueRecoveryRatePerTurnChange);
+    return this.m.SpentActionPointsLastTurn * this.m.FatigueRecoveryRateModifierPerSpentActionPoint;
   }
 
   function onUpdate(_properties) {
     _properties.ActionPoints += this.m.ApBonus;
-    _properties.FatigueRecoveryRate += this.getCurrentFatigueRecoveryRateModifier();
+    _properties.FatigueRecoveryRate += ::libreuse.roundRandomWeighted(this.getCurrentFatigueRecoveryRateModifier());
   }
 
-  function onTurnStart() {
-    this.m.TurnsCount += 1;
+  function onAfterAnySkillUsed(_skill, _targetTile) {
+    if (_skill == null || _skill.isUsedForFree()) {
+      return;
+    }
+
+    this.m.SpentActionPointsThisTurn += _skill.getActionPointCost();
   }
 
-  function onCombatStarted() {
-    this.m.TurnsCount = 0;
+  function onTurnEnd() {
+    this.m.SpentActionPointsLastTurn = this.m.SpentActionPointsThisTurn;
+    this.m.SpentActionPointsThisTurn = 0;
+  }
+
+  function onCombatFinished() {
+    this.skill.onCombatFinished();
+    this.m.SpentActionPointsThisTurn = 0;
+    this.m.SpentActionPointsLastTurn = 0;
   }
 });

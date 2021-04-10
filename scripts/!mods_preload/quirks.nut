@@ -76,8 +76,8 @@ local addPerkPrecision = function() {
 };
 
 local addPerkExertion = function() {
-  gt.Const.ExertionMinFatigueCost <- 12;
-  gt.Const.ExertionFatigueCostBase <- 31;
+  gt.Const.ExertionMinFatigueCost <- 15;
+  gt.Const.ExertionFatigueCostBase <- 33;
   gt.Const.ExertionFatiguePoolCostMult <- 0.1;
   gt.Const.ExertionResolveCostMult <- 0.1;
   gt.Const.ExertionCurrentInitiativeCostMult <- 0.1;
@@ -107,15 +107,16 @@ local addPerkExertion = function() {
 
 local addPerkHyperactive = function() {
   gt.Const.HyperactiveApBonus <- 3;
-  gt.Const.HyperactiveFatigueRecoveryRatePerTurnChange <- -3;
+  gt.Const.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint <- -1.5;
   gt.Const.Strings.PerkName.Hyperactive <- "Hyperactive";
-  gt.getHyperactiveDescription <- function(apBonus, fatigueRecoveryRatePerTernChange) {
+  gt.getHyperactiveDescription <- function(apBonus, fatigueRecoveryRateModifierPerSpentActionPoint) {
     return "Permanently increases action points by [color=" + this.Const.UI.Color.PositiveValue + "]" + apBonus +
-      "[/color] and each turn after the first reduces fatigue recovery rate by [color=" + this.Const.UI.Color.NegativeValue + "]" +
-      (-fatigueRecoveryRatePerTernChange) + "[/color].";
+      "[/color] and reduces fatigue recovery rate by [color=" + this.Const.UI.Color.NegativeValue + "]" +
+      (-fatigueRecoveryRateModifierPerSpentActionPoint) + "[/color] per action point spent on skills and attacks in the previous turn." +
+      "\nRounding to the whole number is randomized with probability of rounding away from zero equal to the fraction part.";
   };
   gt.Const.Strings.PerkDescription.Hyperactive <- gt.getHyperactiveDescription(
-    gt.Const.HyperactiveApBonus, gt.Const.HyperactiveFatigueRecoveryRatePerTurnChange);
+    gt.Const.HyperactiveApBonus, gt.Const.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint);
 
   local hyperactivePerkConsts = {
     ID = "perk.hyperactive",
@@ -299,7 +300,7 @@ local addPerkTeacher = function() {
 };
 
 local addPerkDefensiveAdaptation = function() {
-  gt.Const.DefensiveAdaptationBonusPerStack <- 13;
+  gt.Const.DefensiveAdaptationBonusPerStack <- 12;
   gt.Const.Strings.PerkName.DefensiveAdaptation <- "Defensive Adaptation";
   gt.getDefensiveAdaptationDescription <- function(bonusPerStack) {
     return "With each hit taken increase defense by [color=" + this.Const.UI.Color.PositiveValue + "]" +
@@ -382,12 +383,12 @@ local addPerkLastStand = function() {
 
 local addPerkPunchingBag = function() {
   gt.Const.PunchingBagOnHitDamageMult <- 0.85;
-  gt.Const.PunchingBagOnTurnStartBonusMult <- 0.4;
+  gt.Const.PunchingBagOnTurnStartBonusMult <- 0.5;
   gt.Const.Strings.PerkName.PunchingBag <- "Punching Bag";
   gt.getPunchingBagDescription <- function(onHitDamageMult, onTurnStartBonusMult) {
     return "Each time being hit decrease future incomming damage by [color=" + this.Const.UI.Color.PositiveValue + "]" +
       this.Math.round((1 - onHitDamageMult) * 100) + "%[/color] from attacks. At the start of each turn this bonus is reduced by [color=" + this.Const.UI.Color.NegativeValue + "]" +
-      this.Math.round(onTurnStartBonusMult * 100) + "%[/color].";
+      this.Math.round((1 - onTurnStartBonusMult) * 100) + "%[/color].";
   };
   gt.Const.Strings.PerkDescription.PunchingBag <- gt.getPunchingBagDescription(gt.Const.PunchingBagOnHitDamageMult, gt.Const.PunchingBagOnTurnStartBonusMult);
 
@@ -408,7 +409,7 @@ local addPerkSurprise = function() {
   gt.Const.Strings.PerkName.Surprise <- "Surprise";
   gt.getSurpriseDescription <- function(onMissedInitiativeStolen) {
     return "With each time, being missed, steal [color=" + this.Const.UI.Color.PositiveValue + "]" +
-      onMissedInitiativeStolen + "[/color] initiative form the attacker for 2 round.";
+      onMissedInitiativeStolen + "[/color] initiative form the attacker for 2 rounds.";
   };
   gt.Const.Strings.PerkDescription.Surprise <- gt.getSurpriseDescription(gt.Const.SurpriseOnMissedInitiativeStolen);
 
@@ -425,7 +426,7 @@ local addPerkSurprise = function() {
 
 local addPerkRefundActionPoints = function() {
   gt.Const.RefundActionPointsAttackFatigueCostMult <- 0.5;
-  gt.Const.RefundActionPointsFatigueCostPerActionPoint <- 2;
+  gt.Const.RefundActionPointsFatigueCostPerActionPoint <- 2.0;
   this.Const.Strings.PerkName.RefundActionPoints <- "Refund Action Points"
   gt.getRefundActionPointsDescription <- function(attackFatigueCostMult, fatigueCostPerActionPoint) {
     return "Unlocks the ability to refund all action points on a missed attack. The skill can be used until the end of the turn. " +
@@ -563,17 +564,61 @@ local nerfThrowingMastery = function() {
 local buffThrowingWithoutMastery = function() {
   ::mods_hookDescendants("entity/tactical/actor", function(c) {
     local actorClass = ::mods_getClassForOverride(c, "actor");
-    if (!("onInitOriginalQuirks" in actorClass)) {
-      actorClass.onInitOriginalQuirks <- actorClass.onInit;
+    if (!("onInitOriginalBuffThrowingWithoutMastery" in actorClass)) {
+      actorClass.onInitOriginalBuffThrowingWithoutMastery <- actorClass.onInit;
       actorClass.onInit = function() {
-        this.onInitOriginalQuirks();
+        this.onInitOriginalBuffThrowingWithoutMastery();
         this.m.Skills.add(this.new("scripts/skills/special/buff_throwing"));
       };
     }
   });
-
-  nerfThrowingMastery();
 }
+
+local buffHitpointsLeveling = function() {
+  gt.Const.AttributesLevelUp[gt.Const.Attributes.Hitpoints].Min += 1;
+  gt.Const.AttributesLevelUp[gt.Const.Attributes.Hitpoints].Max += 1;
+};
+
+local nerfColossus = function() {
+  gt.Const.ColossusHitpointsMult <- 1.15;
+  gt.Const.Strings.PerkDescription.Colossus <- "Bring it on! Hitpoints are increased by [color=" + this.Const.UI.Color.PositiveValue + "]" +
+    this.Math.round((gt.Const.ColossusHitpointsMult - 1) * 100) + "%[/color], which also reduces the chance to sustain debilitating injuries when being hit.";
+
+  ::mods_hookExactClass("skills/perks/perk_colossus", function(c) {
+    c.onAdded = function() {
+      local actor = this.getContainer().getActor();
+
+      if (actor.getHitpoints() == actor.getHitpointsMax()) {
+        actor.setHitpoints(this.Math.floor(actor.getHitpoints() * this.Const.ColossusHitpointsMult));
+      }
+    };
+
+    c.onUpdate = function(_properties) {
+      _properties.HitpointsMult *= this.Const.ColossusHitpointsMult;
+    }
+  });
+
+  local perkConsts = findPerkConsts("perk.colossus");
+  perkConsts.Tooltip = gt.Const.Strings.PerkDescription.Colossus;
+};
+
+local addEffectKnackered = function() {
+  gt.Const.KnackeredDefenseModifier <- -10;
+  gt.getKnackeredDescription <- function(defenseModifier) {
+    return "This character has reached the limit of his endurance. Melee and ranged defense is reduced by [color=" + this.Const.UI.Color.NegativeValue + "]" + (-defenseModifier) + "[/color].";
+  };
+
+  ::mods_hookDescendants("entity/tactical/actor", function(c) {
+    local actorClass = ::mods_getClassForOverride(c, "actor");
+    if (!("onInitOriginalAddEffectKnackered" in actorClass)) {
+      actorClass.onInitOriginalAddEffectKnackered <- actorClass.onInit;
+      actorClass.onInit = function() {
+        this.onInitOriginalAddEffectKnackered();
+        this.m.Skills.add(this.new("scripts/skills/effects/knackered_effect"));
+      };
+    }
+  });
+};
 
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
   addOnAfterSkillUsed();
@@ -598,5 +643,12 @@ local buffThrowingWithoutMastery = function() {
   addPerkVeteran();
 
   buffBullseye();
+
   buffThrowingWithoutMastery();
+  nerfThrowingMastery();
+
+  nerfColossus();
+  buffHitpointsLeveling();
+
+  addEffectKnackered();
 });

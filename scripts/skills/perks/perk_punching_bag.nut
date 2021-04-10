@@ -20,8 +20,8 @@ this.perk_punching_bag <- this.inherit("scripts/skills/skill", {
   }
 
   function onBeforeDamageReceived(_attacker, _skill, _hitInfo, _properties) {
-    _properties.DamageReceivedTotalMult *= this.m.DamageMult;
     if (_skill != null && _skill.isAttack()) {
+      _properties.DamageReceivedTotalMult *= this.m.DamageMult;
       this.m.DamageMult *= this.m.OnHitDamageMult;
       this.m.IsHidden = false;
     }

@@ -8,4 +8,5 @@
   <sprite id="active_exertion" ic="FF624556" img="ui\perks\active_exertion.png" />
   <sprite id="surprised_effect" ic="FF624556" img="ui\perks\surprised_effect.png" />
   <sprite id="active_refund_action_points" ic="FF624556" img="ui\perks\active_refund_action_points.png" />
+  <sprite id="knackered_effect" ic="FF624556" img="ui\effects\knackered_effect.png" />
 </brush>

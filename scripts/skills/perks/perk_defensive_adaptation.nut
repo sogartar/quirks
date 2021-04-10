@@ -27,7 +27,7 @@ this.perk_defensive_adaptation <- this.inherit("scripts/skills/skill", {
     local bonus = this.getBonus();
     _properties.MeleeDefense += bonus;
     _properties.RangedDefense += bonus;
-    _properties.TargetAttractionMult *= this.Math.pow(1.007, bonus);
+    _properties.TargetAttractionMult *= this.Math.pow(1.008, bonus);
   }
 
   function onDamageReceived(_attacker, _damageHitpoints, _damageArmor) {
