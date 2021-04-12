@@ -3,7 +3,8 @@ this.perk_refund_action_points <- this.inherit("scripts/skills/skill", {
     AttackFatigueCostMult = this.Const.RefundActionPointsAttackFatigueCostMult,
     FatigueCostPerActionPoint = this.Const.RefundActionPointsFatigueCostPerActionPoint,
     IsTargetHit = false,
-    IsTargetMissed = false
+    IsTargetMissed = false,
+    LastSkillActionPonts = 0
   }
 
   function create() {
@@ -14,6 +15,10 @@ this.perk_refund_action_points <- this.inherit("scripts/skills/skill", {
     this.m.Order = this.Const.SkillOrder.Perk;
     this.m.IsActive = false;
     this.m.IsHidden = false;
+  }
+
+  function onAnySkillUsed(_skill, _targetEntity, _properties) {
+    this.m.LastSkillActionPonts = _skill.getActionPointCost();
   }
 
   function onTargetHit(_caller, _targetEntity, _bodyPart, _damageInflictedHitpoints, _damageInflictedArmor) {
@@ -42,9 +47,8 @@ this.perk_refund_action_points <- this.inherit("scripts/skills/skill", {
 
   function enableRefundActionPointsSkill(_skill) {
     local active = this.new("scripts/skills/actives/refund_action_points_skill");
-    local ap = _skill.getActionPointCost();
-    active.setFatigueCost(this.Math.round(_skill.getFatigueCost() * this.m.AttackFatigueCostMult + this.m.FatigueCostPerActionPoint * ap));
-    active.setActionPontsRefund(ap);
+    active.setFatigueCost(this.Math.round(_skill.getFatigueCost() * this.m.AttackFatigueCostMult + this.m.FatigueCostPerActionPoint * this.m.LastSkillActionPonts));
+    active.setActionPontsRefund(this.m.LastSkillActionPonts);
     this.getContainer().add(active);
   }
 

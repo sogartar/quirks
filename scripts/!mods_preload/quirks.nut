@@ -62,7 +62,7 @@ local addPerkPrecision = function() {
     this.Const.PrecisionFatigueCost + " fatigue and " + gt.Const.PrecisionApCost + " action points. The bonus is halfed for area of effect attacks.";
   gt.Const.Strings.PrecisionSkillDescription <- "Increase next attack's hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color]. " +
     "If unused, each turn this bonus is decreased by [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]. " +
-    "The bonus is halfed for area of effect attacks.";
+    "The bonus is halved for area of effect attacks.";
 
   local precisionPerkConsts = {
     ID = "perk.precision",
@@ -85,14 +85,14 @@ local addPerkExertion = function() {
   gt.Const.ExertionFatigueCostMultOnSameTurn <- 2;
   gt.Const.Strings.PerkName.Exertion <- "Exertion";
   gt.Const.Strings.PerkDescription.Exertion <- "Unlocks the \'" + gt.Const.Strings.PerkName.Exertion +
-    "\' ability to increase action points by " + gt.Const.ExertionApBonus + " this turn. Fatigue cost is based on the current fatigue pool left, current intiative and resolve. " +
+    "\' ability to increase action points by " + gt.Const.ExertionApBonus + " this turn. Fatigue cost is based on the current fatigue pool left, current initiative and resolve. " +
     "The cost starts from [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.ExertionFatigueCostBase +
     "[/color] fatigue and is reduced to a minimum of  [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.ExertionMinFatigueCost +
     "[/color] by subtracting [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.ExertionFatiguePoolCostMult * 100) +
     "%[/color] of current fatigue left, [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.ExertionResolveCostMult * 100) +
     "%[/color] of resolve and [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.ExertionCurrentInitiativeCostMult * 100) +
     "%[/color] of current initiative. The fatigue cost is increased by [color=" +
-    this.Const.UI.Color.NegativeValue + "]" + this.Math.round(gt.Const.ExertionFatigueCostMultOnSameTurn * 100) + "%[/color] afer each use in the same turn.";
+    this.Const.UI.Color.NegativeValue + "]" + this.Math.round(gt.Const.ExertionFatigueCostMultOnSameTurn * 100) + "%[/color] after each use in the same turn.";
 
   local exertionPerkConsts = {
     ID = "perk.exertion",
@@ -107,7 +107,7 @@ local addPerkExertion = function() {
 
 local addPerkHyperactive = function() {
   gt.Const.HyperactiveApBonus <- 3;
-  gt.Const.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint <- -1.5;
+  gt.Const.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint <- -1.25;
   gt.Const.Strings.PerkName.Hyperactive <- "Hyperactive";
   gt.getHyperactiveDescription <- function(apBonus, fatigueRecoveryRateModifierPerSpentActionPoint) {
     return "Permanently increases action points by [color=" + this.Const.UI.Color.PositiveValue + "]" + apBonus +
@@ -266,7 +266,7 @@ local addExpectedDamageCalculationFlag = function() {
 local addPerkDoubleOrNothing = function() {
   gt.Const.Strings.PerkName.DoubleOrNothing <- "Double Or Nothing";
   gt.Const.Strings.PerkDescription.DoubleOrNothing <-
-    "Doubles damage dealt but halfs hit chance when attacking." +
+    "Doubles damage dealt but halves hit chance when attacking." +
     " The hit chance reduction is applied before clipping in the range [5, 95].";
 
   local doubleOrNothingPerkConsts = {
@@ -303,7 +303,7 @@ local addPerkDefensiveAdaptation = function() {
   gt.Const.DefensiveAdaptationBonusPerStack <- 12;
   gt.Const.Strings.PerkName.DefensiveAdaptation <- "Defensive Adaptation";
   gt.getDefensiveAdaptationDescription <- function(bonusPerStack) {
-    return "With each hit taken increase defense by [color=" + this.Const.UI.Color.PositiveValue + "]" +
+    return "With each hit taken increase melee and ranged defense by [color=" + this.Const.UI.Color.PositiveValue + "]" +
     bonusPerStack + "[/color]. Upon being missed the counter is reset."; };
   gt.Const.Strings.PerkDescription.DefensiveAdaptation <- gt.getDefensiveAdaptationDescription(gt.Const.DefensiveAdaptationBonusPerStack);
 
@@ -386,7 +386,7 @@ local addPerkPunchingBag = function() {
   gt.Const.PunchingBagOnTurnStartBonusMult <- 0.5;
   gt.Const.Strings.PerkName.PunchingBag <- "Punching Bag";
   gt.getPunchingBagDescription <- function(onHitDamageMult, onTurnStartBonusMult) {
-    return "Each time being hit decrease future incomming damage by [color=" + this.Const.UI.Color.PositiveValue + "]" +
+    return "Each time being hit decrease future incoming damage by [color=" + this.Const.UI.Color.PositiveValue + "]" +
       this.Math.round((1 - onHitDamageMult) * 100) + "%[/color] from attacks. At the start of each turn this bonus is reduced by [color=" + this.Const.UI.Color.NegativeValue + "]" +
       this.Math.round((1 - onTurnStartBonusMult) * 100) + "%[/color].";
   };
@@ -430,7 +430,7 @@ local addPerkRefundActionPoints = function() {
   this.Const.Strings.PerkName.RefundActionPoints <- "Refund Action Points"
   gt.getRefundActionPointsDescription <- function(attackFatigueCostMult, fatigueCostPerActionPoint) {
     return "Unlocks the ability to refund all action points on a missed attack. The skill can be used until the end of the turn. " +
-      "The cost is [color=" + this.Const.UI.Color.NegativeValue + "]" + this.Math.round(attackFatigueCostMult * 100) + "%[/color] of the fatigue of the attack + " +
+      "The cost is [color=" + this.Const.UI.Color.NegativeValue + "]" + this.Math.round(attackFatigueCostMult * 100) + "%[/color] of the attack's fatigue + " +
       "[color=" + this.Const.UI.Color.NegativeValue + "]" + fatigueCostPerActionPoint + "[/color] per action point.";
   };
   gt.Const.Strings.PerkDescription.RefundActionPoints <- gt.getRefundActionPointsDescription(
@@ -451,9 +451,9 @@ local addPerkSlack = function() {
   gt.Const.SlackFatigueRecoveryPerUnspentActionPoint <- 1.5;
   this.Const.Strings.PerkName.Slack <- "Slack";
   gt.getSlackDescription <- function(fatigueRecoveryPerUnspentActionPoint) {
-    return "Each turn recover an aditional [color=" + this.Const.UI.Color.PositiveValue + "]" +
-      fatigueRecoveryPerUnspentActionPoint + "[/color] fatigue per unspent action point previos turn. " +
-      " Rounding is randomized with probability to round down or up equal to the fraction.";
+    return "Each turn recover an additional [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      fatigueRecoveryPerUnspentActionPoint + "[/color] fatigue per unspent action point in the previous turn. " +
+      " Rounding is randomized with probability to round down or up equal to the fraction part.";
   };
   gt.Const.Strings.PerkDescription.Slack <- gt.getSlackDescription(gt.Const.SlackFatigueRecoveryPerUnspentActionPoint);
 
@@ -478,7 +478,7 @@ local addPerkImpenetrable = function() {
     return "Reduces armor penetration damage based on total max body and helmet armor with best results at " +
       bestTotalArmorMax + " armor when damage is reduced by [color=" + this.Const.UI.Color.PositiveValue + "]" +
       this.Math.round((1 - bestDamageReceivedDirectMult) * 100) +
-      "%[/color]. If total max armor is more than that the effect is gradually weakend to a minimum of [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      "%[/color]. If total max armor is more than that the effect is gradually weakened to a minimum of [color=" + this.Const.UI.Color.PositiveValue + "]" +
       this.Math.round((1 - minDamageReceivedDirectMult) * 100) +
       "%[/color].";
   };
@@ -527,8 +527,8 @@ local buffBullseye = function() {
 }
 
 local nerfThrowingMastery = function() {
-  gt.Const.ThrowingMasteryDamageMultAtDistance2 <- 1.2;
-  gt.Const.ThrowingMasteryDamageMultAtDistance3 <- 1.1;
+  gt.Const.ThrowingMasteryDamageMultAtDistance2 <- 1.217;
+  gt.Const.ThrowingMasteryDamageMultAtDistance3 <- 1.116;
   gt.Const.Strings.PerkDescription.SpecThrowing <- "Master throwing weapons to wound or kill the enemy before they even get close. " +
     "Skills build up [color=" + this.Const.UI.Color.NegativeValue + "]25%[/color] less Fatigue." +
     "\n\nDamage is increased by [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((gt.Const.ThrowingMasteryDamageMultAtDistance2 - 1) * 100) + "%[/color] when attacking at 2 tiles of distance." +
@@ -579,8 +579,18 @@ local buffHitpointsLeveling = function() {
   gt.Const.AttributesLevelUp[gt.Const.Attributes.Hitpoints].Max += 1;
 };
 
+local buffBaseHitpoints = function() {
+  ::mods_hookExactClass("entity/tactical/player", function(c) {
+    c.onInitOriginalQuirksBuffBaseHitpoints <- c.onInit;
+    c.onInit = function() {
+      this.onInitOriginalQuirksBuffBaseHitpoints();
+      this.m.Skills.add(this.new("scripts/skills/special/buff_hitpoints"));
+    };
+  });
+}
+
 local nerfColossus = function() {
-  gt.Const.ColossusHitpointsMult <- 1.15;
+  gt.Const.ColossusHitpointsMult <- 1.16;
   gt.Const.Strings.PerkDescription.Colossus <- "Bring it on! Hitpoints are increased by [color=" + this.Const.UI.Color.PositiveValue + "]" +
     this.Math.round((gt.Const.ColossusHitpointsMult - 1) * 100) + "%[/color], which also reduces the chance to sustain debilitating injuries when being hit.";
 
@@ -648,7 +658,8 @@ local addEffectKnackered = function() {
   nerfThrowingMastery();
 
   nerfColossus();
-  buffHitpointsLeveling();
+  buffBaseHitpoints();
+  #buffHitpointsLeveling();
 
   addEffectKnackered();
 });

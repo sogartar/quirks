@@ -3,7 +3,8 @@ this.perk_hyperactive <- this.inherit("scripts/skills/skill", {
     ApBonus = this.Const.HyperactiveApBonus,
     FatigueRecoveryRateModifierPerSpentActionPoint = this.Const.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint,
     SpentActionPointsThisTurn = 0,
-    SpentActionPointsLastTurn = 0
+    SpentActionPointsLastTurn = 0,
+    LastSkillActionPonts = 0
   },
   function create() {
     this.m.ID = "perk.hyperactive";
@@ -17,17 +18,18 @@ this.perk_hyperactive <- this.inherit("scripts/skills/skill", {
 
   function getDescription() {
     return this.getroottable().getHyperactiveDescription(this.m.ApBonus, this.m.FatigueRecoveryRateModifierPerSpentActionPoint) +
-      "\n[color=" + this.Const.UI.Color.NegativeValue + "]" + (-this.getCurrentFatigueRecoveryRateModifier()) +
+      "\n[color=" + this.Const.UI.Color.NegativeValue + "]" + (-this.m.SpentActionPointsThisTurn * this.m.FatigueRecoveryRateModifierPerSpentActionPoint) +
       "[/color] fatigue recory rate reduction for next turn.";
-  }
-
-  function getCurrentFatigueRecoveryRateModifier() {
-    return this.m.SpentActionPointsLastTurn * this.m.FatigueRecoveryRateModifierPerSpentActionPoint;
   }
 
   function onUpdate(_properties) {
     _properties.ActionPoints += this.m.ApBonus;
-    _properties.FatigueRecoveryRate += ::libreuse.roundRandomWeighted(this.getCurrentFatigueRecoveryRateModifier());
+    _properties.FatigueRecoveryRate += ::libreuse.roundRandomWeighted(
+      this.m.SpentActionPointsLastTurn * this.m.FatigueRecoveryRateModifierPerSpentActionPoint);
+  }
+
+  function onAnySkillUsed(_skill, _targetEntity, _properties) {
+    this.m.LastSkillActionPonts = _skill.getActionPointCost();
   }
 
   function onAfterAnySkillUsed(_skill, _targetTile) {
@@ -35,7 +37,7 @@ this.perk_hyperactive <- this.inherit("scripts/skills/skill", {
       return;
     }
 
-    this.m.SpentActionPointsThisTurn += _skill.getActionPointCost();
+    this.m.SpentActionPointsThisTurn += this.m.LastSkillActionPonts;
   }
 
   function onTurnEnd() {
