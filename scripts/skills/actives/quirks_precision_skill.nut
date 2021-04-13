@@ -9,9 +9,9 @@ this.quirks_precision_skill <- this.inherit("scripts/skills/skill", {
     this.m.IconDisabled = "ui/actives/active_quirks_precision_sw.png";
     this.m.Overlay = "active_quirks_precision";
     this.m.SoundOnUse = [
-      "sounds/combat/active_precision_1.wav",
-      "sounds/combat/active_precision_2.wav",
-      "sounds/combat/active_precision_3.wav"
+      "sounds/combat/active_quirks_precision_1.wav",
+      "sounds/combat/active_quirks_precision_2.wav",
+      "sounds/combat/active_quirks_precision_3.wav"
     ];
     this.m.Type = this.Const.SkillType.Active;
     this.m.Order = this.Const.SkillOrder.Any;

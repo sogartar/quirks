@@ -10,7 +10,7 @@ this.quirks_refund_action_points_skill <- this.inherit("scripts/skills/skill", {
     this.m.IconDisabled = "ui/actives/active_quirks_refund_action_points_sw.png";
     this.m.Overlay = "active_quirks_refund_action_points";
     this.m.SoundOnUse = [
-      "sounds/combat/active_refund_action_points.wav"
+      "sounds/combat/active_quirks_refund_action_points.wav"
     ];
     this.m.Type = this.Const.SkillType.Active;
     this.m.Order = this.Const.SkillOrder.Any;

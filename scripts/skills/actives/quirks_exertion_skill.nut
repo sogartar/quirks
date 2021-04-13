@@ -18,8 +18,8 @@ this.quirks_exertion_skill <- this.inherit("scripts/skills/skill", {
     this.m.IconDisabled = "ui/actives/active_quirks_exertion_sw.png";
     this.m.Overlay = "active_quirks_exertion";
     this.m.SoundOnUse = [
-      "sounds/combat/active_exertion_1.wav",
-      "sounds/combat/active_exertion_2.wav",
+      "sounds/combat/active_quirks_exertion_1.wav",
+      "sounds/combat/active_quirks_exertion_2.wav",
     ];
     this.m.Type = this.Const.SkillType.Active;
     this.m.Order = this.Const.SkillOrder.Any;

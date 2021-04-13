@@ -685,7 +685,7 @@ local addPerkSlowDown = function() {
   addPerkPunchingBag();
   addPerkRefundActionPoints();
   addPerkRefundFatigue();
-  addPerkSlowDown();
+  #addPerkSlowDown();
   addPerkSlack();
   addPerkSurprise();
   addPerkTeacher();
