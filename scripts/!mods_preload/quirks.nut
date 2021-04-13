@@ -165,7 +165,7 @@ local addPerkRefundFatigue = function() {
     Icon = "ui/perks/perk_quirks_refund_fatigue.png",
     IconDisabled = "ui/perks/perk_quirks_refund_fatigue_sw.png"
   };
-  ::quirks.setPerk(refundFatiguePerkConsts, 4);
+  ::quirks.setPerk(refundFatiguePerkConsts, 2);
 };
 
 local addOnAfterSkillUsed = function() {
