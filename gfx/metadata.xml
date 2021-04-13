@@ -1,12 +1,14 @@
 <brush name="gfx/quirks_ui.png" version="17" b1="2" b5="0">
-  <sprite id="perk_bank" ic="FF624551" img="ui\perks\perk_bank.png" />
-  <sprite id="active_bank" ic="FF624552" img="ui\perks\active_bank.png" />
-  <sprite id="active_cash_in" ic="FF624553" img="ui\perks\active_cash_in.png" />
-  <sprite id="cashed_in_effect" ic="FF624554" img="ui\perks\cashed_in_effect.png" />
-  <sprite id="perk_precision" ic="FF624555" img="ui\perks\perk_precision.png" />
-  <sprite id="active_precision" ic="FF624556" img="ui\perks\active_precision.png" />
-  <sprite id="active_exertion" ic="FF624556" img="ui\perks\active_exertion.png" />
-  <sprite id="surprised_effect" ic="FF624556" img="ui\perks\surprised_effect.png" />
-  <sprite id="active_refund_action_points" ic="FF624556" img="ui\perks\active_refund_action_points.png" />
-  <sprite id="knackered_effect" ic="FF624556" img="ui\effects\knackered_effect.png" />
+  <sprite id="perk_quirks_bank" ic="FF624551" img="ui\perks\perk_quirks_bank.png" />
+  <sprite id="active_quirks_bank" ic="FF624552" img="ui\actives\active_quirks_bank.png" />
+  <sprite id="active_quirks_cash_in" ic="FF624553" img="ui\actives\active_quirks_cash_in.png" />
+  <sprite id="quirks_cashed_in_effect" ic="FF624554" img="ui\effects\quirks_cashed_in_effect.png" />
+  <sprite id="perk_quirks_precision" ic="FF624555" img="ui\perks\perk_quirks_precision.png" />
+  <sprite id="active_quirks_precision" ic="FF624556" img="ui\actives\active_quirks_precision.png" />
+  <sprite id="active_quirks_exertion" ic="FF624556" img="ui\actives\active_quirks_exertion.png" />
+  <sprite id="quirks_surprised_effect" ic="FF624556" img="ui\effects\quirks_surprised_effect.png" />
+  <sprite id="active_quirks_refund_action_points" ic="FF624556" img="ui\actives\active_quirks_refund_action_points.png" />
+  <sprite id="quirks_knackered_effect" ic="FF624556" img="ui\effects\quirks_knackered_effect.png" />
+  <sprite id="perk_quirks_slow_down" ic="FF624551" img="ui\perks\perk_quirks_slow_down.png" />
+  <sprite id="active_quirks_slow_down" ic="FF624552" img="ui\actives\active_quirks_slow_down.png" />
 </brush>

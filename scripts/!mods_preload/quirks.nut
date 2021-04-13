@@ -6,6 +6,11 @@ if (!("quirks" in gt)) {
   ::quirks <- {};
 }
 
+local setupRootTableStructure = function() {
+  gt.Quirks <- {};
+  gt.Const.Quirks <- {};
+};
+
 ::quirks.setPerk <- function(perk, row, col = null) {
   gt.Const.Perks.Perks.resize(this.Math.max(row + 1, gt.Const.Perks.Perks.len()), []);
   if (col == null) {
@@ -19,31 +24,31 @@ if (!("quirks" in gt)) {
 };
 
 local addPerkBank = function() {
-  gt.Const.BankFatigueCost <- 50;
-  gt.Const.BankApCost <- 9;
-  gt.Const.BankApIncreaseOnUse <- 1;
-  gt.Const.CashInFatigueCost <- 50;
-  gt.Const.CashInApCost <- 9;
-  gt.Const.Strings.PerkName.Bank <- "Bank";
+  gt.Const.Quirks.BankFatigueCost <- 50;
+  gt.Const.Quirks.BankApCost <- 9;
+  gt.Const.Quirks.BankApIncreaseOnUse <- 1;
+  gt.Const.Quirks.CashInFatigueCost <- 50;
+  gt.Const.Quirks.CashInApCost <- 9;
+  gt.Const.Strings.PerkName.QuirksBank <- "Bank";
   gt.Const.Strings.CashInName <- "Cash In";
   gt.Const.Strings.CashedInEffectName <- "Cashed In";
-  gt.Const.BankInterestRatePerTurn <- 0.3;
-  gt.Const.Strings.PerkDescription.Bank <- "Unlocks the \'Bank\' ability to bank action points to be used later. " +
-    "When used, banks [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.BankApIncreaseOnUse + "[/color] action point. " +
+  gt.Const.Quirks.BankInterestRatePerTurn <- 0.3;
+  gt.Const.Strings.PerkDescription.QuirksBank <- "Unlocks the \'Bank\' ability to bank action points to be used later. " +
+    "When used, banks [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.Quirks.BankApIncreaseOnUse + "[/color] action point. " +
     "Breaking (cashing in) makes the action points available next turn. " +
-    "Each turn the bank is not spent it is increased by [color=" + gt.Const.UI.Color.PositiveValue + "]" + (gt.Const.BankInterestRatePerTurn * 100) + "%[/color]. " +
-    "\'" + gt.Const.Strings.PerkName.Bank + "\' costs " + this.Const.BankFatigueCost + " fatigue and " + gt.Const.BankApCost + " action points. " +
-    "\'" + gt.Const.Strings.CashInName + "\' costs " + this.Const.CashInFatigueCost + " fatigue and " + gt.Const.CashInApCost + " action points.";
+    "Each turn the bank is not spent it is increased by [color=" + gt.Const.UI.Color.PositiveValue + "]" + (gt.Const.Quirks.BankInterestRatePerTurn * 100) + "%[/color]. " +
+    "\'" + gt.Const.Strings.PerkName.QuirksBank + "\' costs " + this.Const.Quirks.BankFatigueCost + " fatigue and " + gt.Const.Quirks.BankApCost + " action points. " +
+    "\'" + gt.Const.Strings.CashInName + "\' costs " + this.Const.Quirks.CashInFatigueCost + " fatigue and " + gt.Const.Quirks.CashInApCost + " action points.";
   gt.Const.Strings.BankSkillDescription <- "Adds [color=" + gt.Const.UI.Color.PositiveValue + "]" +
-    gt.Const.BankApIncreaseOnUse + "[/color] action point to the bank.";
+    gt.Const.Quirks.BankApIncreaseOnUse + "[/color] action point to the bank.";
 
   local bankPerkConsts = {
-    ID = "perk.bank",
-    Script = "scripts/skills/perks/perk_bank",
-    Name = this.Const.Strings.PerkName.Bank,
-    Tooltip = this.Const.Strings.PerkDescription.Bank,
-    Icon = "ui/perks/perk_bank.png",
-    IconDisabled = "ui/perks/perk_bank_sw.png"
+    ID = "perk.quirks.bank",
+    Script = "scripts/skills/perks/perk_quirks_bank",
+    Name = this.Const.Strings.PerkName.QuirksBank,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksBank,
+    Icon = "ui/perks/perk_quirks_bank.png",
+    IconDisabled = "ui/perks/perk_quirks_bank_sw.png"
   };
   ::quirks.setPerk(bankPerkConsts, 6);
 
@@ -51,114 +56,114 @@ local addPerkBank = function() {
 };
 
 local addPerkPrecision = function() {
-  gt.Const.PrecisionFatigueCost <- 15;
-  gt.Const.PrecisionApCost <- 3;
-  gt.Const.Strings.PerkName.Precision <- "Precision";
-  gt.Const.PrecisionHitChanceBonus <- 25;
-  this.Const.PrecisionHitChanceBonusDecreasePerTurn <- 12.5;
-  gt.Const.Strings.PerkDescription.Precision <- "Unlocks the \'" + gt.Const.Strings.PerkName.Precision + "\' ability to increase next attack's hit chance with [color=" +
-  this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color]." +
-    "If unused, each turn this bonus is decreased with [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]. Costs " + 
-    this.Const.PrecisionFatigueCost + " fatigue and " + gt.Const.PrecisionApCost + " action points. The bonus is halfed for area of effect attacks.";
-  gt.Const.Strings.PrecisionSkillDescription <- "Increase next attack's hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.PrecisionHitChanceBonus + "%[/color]. " +
-    "If unused, each turn this bonus is decreased by [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]. " +
+  gt.Const.Quirks.PrecisionFatigueCost <- 15;
+  gt.Const.Quirks.PrecisionApCost <- 3;
+  gt.Const.Strings.PerkName.QuirksPrecision <- "Precision";
+  gt.Const.Quirks.PrecisionHitChanceBonus <- 25;
+  this.Const.Quirks.PrecisionHitChanceBonusDecreasePerTurn <- 12.5;
+  gt.Const.Strings.PerkDescription.QuirksPrecision <- "Unlocks the \'" + gt.Const.Strings.PerkName.QuirksPrecision + "\' ability to increase next attack's hit chance with [color=" +
+  this.Const.UI.Color.PositiveValue + "]" + gt.Const.Quirks.PrecisionHitChanceBonus + "%[/color]." +
+    "If unused, each turn this bonus is decreased with [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.Quirks.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]. Costs " + 
+    this.Const.Quirks.PrecisionFatigueCost + " fatigue and " + gt.Const.Quirks.PrecisionApCost + " action points. The bonus is halfed for area of effect attacks.";
+  gt.Const.Strings.PrecisionSkillDescription <- "Increase next attack's hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.Quirks.PrecisionHitChanceBonus + "%[/color]. " +
+    "If unused, each turn this bonus is decreased by [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.Quirks.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]. " +
     "The bonus is halved for area of effect attacks.";
 
   local precisionPerkConsts = {
-    ID = "perk.precision",
-    Script = "scripts/skills/perks/perk_precision",
-    Name = this.Const.Strings.PerkName.Precision,
-    Tooltip = this.Const.Strings.PerkDescription.Precision,
-    Icon = "ui/perks/perk_precision.png",
-    IconDisabled = "ui/perks/perk_precision_sw.png"
+    ID = "perk.quirks.precision",
+    Script = "scripts/skills/perks/perk_quirks_precision",
+    Name = this.Const.Strings.PerkName.QuirksPrecision,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksPrecision,
+    Icon = "ui/perks/perk_quirks_precision.png",
+    IconDisabled = "ui/perks/perk_quirks_precision_sw.png"
   };
   ::quirks.setPerk(precisionPerkConsts, 4);
 };
 
 local addPerkExertion = function() {
-  gt.Const.ExertionMinFatigueCost <- 15;
-  gt.Const.ExertionFatigueCostBase <- 33;
-  gt.Const.ExertionFatiguePoolCostMult <- 0.1;
-  gt.Const.ExertionResolveCostMult <- 0.1;
-  gt.Const.ExertionCurrentInitiativeCostMult <- 0.1;
-  gt.Const.ExertionApBonus <- 3;
-  gt.Const.ExertionFatigueCostMultOnSameTurn <- 2;
-  gt.Const.Strings.PerkName.Exertion <- "Exertion";
-  gt.Const.Strings.PerkDescription.Exertion <- "Unlocks the \'" + gt.Const.Strings.PerkName.Exertion +
-    "\' ability to increase action points by " + gt.Const.ExertionApBonus + " this turn. Fatigue cost is based on the current fatigue pool left, current initiative and resolve. " +
-    "The cost starts from [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.ExertionFatigueCostBase +
-    "[/color] fatigue and is reduced to a minimum of  [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.ExertionMinFatigueCost +
-    "[/color] by subtracting [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.ExertionFatiguePoolCostMult * 100) +
-    "%[/color] of current fatigue left, [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.ExertionResolveCostMult * 100) +
-    "%[/color] of resolve and [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.ExertionCurrentInitiativeCostMult * 100) +
+  gt.Const.Quirks.ExertionMinFatigueCost <- 15;
+  gt.Const.Quirks.ExertionFatigueCostBase <- 33;
+  gt.Const.Quirks.ExertionFatiguePoolCostMult <- 0.1;
+  gt.Const.Quirks.ExertionResolveCostMult <- 0.1;
+  gt.Const.Quirks.ExertionCurrentInitiativeCostMult <- 0.1;
+  gt.Const.Quirks.ExertionApBonus <- 3;
+  gt.Const.Quirks.ExertionFatigueCostMultOnSameTurn <- 2;
+  gt.Const.Strings.PerkName.QuirksExertion <- "Exertion";
+  gt.Const.Strings.PerkDescription.QuirksExertion <- "Unlocks the \'" + gt.Const.Strings.PerkName.QuirksExertion +
+    "\' ability to increase action points by " + gt.Const.Quirks.ExertionApBonus + " this turn. Fatigue cost is based on the current fatigue pool left, current initiative and resolve. " +
+    "The cost starts from [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.Quirks.ExertionFatigueCostBase +
+    "[/color] fatigue and is reduced to a minimum of  [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.Quirks.ExertionMinFatigueCost +
+    "[/color] by subtracting [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.Quirks.ExertionFatiguePoolCostMult * 100) +
+    "%[/color] of current fatigue left, [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.Quirks.ExertionResolveCostMult * 100) +
+    "%[/color] of resolve and [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.Quirks.ExertionCurrentInitiativeCostMult * 100) +
     "%[/color] of current initiative. The fatigue cost is increased by [color=" +
-    this.Const.UI.Color.NegativeValue + "]" + this.Math.round(gt.Const.ExertionFatigueCostMultOnSameTurn * 100) + "%[/color] after each use in the same turn.";
+    this.Const.UI.Color.NegativeValue + "]" + this.Math.round(gt.Const.Quirks.ExertionFatigueCostMultOnSameTurn * 100) + "%[/color] after each use in the same turn.";
 
   local exertionPerkConsts = {
-    ID = "perk.exertion",
-    Script = "scripts/skills/perks/perk_exertion",
-    Name = this.Const.Strings.PerkName.Exertion,
-    Tooltip = this.Const.Strings.PerkDescription.Exertion,
-    Icon = "ui/perks/perk_exertion.png",
-    IconDisabled = "ui/perks/perk_exertion_sw.png"
+    ID = "perk.quirks.exertion",
+    Script = "scripts/skills/perks/perk_quirks_exertion",
+    Name = this.Const.Strings.PerkName.QuirksExertion,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksExertion,
+    Icon = "ui/perks/perk_quirks_exertion.png",
+    IconDisabled = "ui/perks/perk_quirks_exertion_sw.png"
   };
   ::quirks.setPerk(exertionPerkConsts, 4);
 };
 
 local addPerkHyperactive = function() {
-  gt.Const.HyperactiveApBonus <- 3;
-  gt.Const.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint <- -1.25;
-  gt.Const.Strings.PerkName.Hyperactive <- "Hyperactive";
-  gt.getHyperactiveDescription <- function(apBonus, fatigueRecoveryRateModifierPerSpentActionPoint) {
+  gt.Const.Quirks.HyperactiveApBonus <- 3;
+  gt.Const.Quirks.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint <- -1.25;
+  gt.Const.Strings.PerkName.QuirksHyperactive <- "Hyperactive";
+  gt.Quirks.getHyperactiveDescription <- function(apBonus, fatigueRecoveryRateModifierPerSpentActionPoint) {
     return "Permanently increases action points by [color=" + this.Const.UI.Color.PositiveValue + "]" + apBonus +
       "[/color] and reduces fatigue recovery rate by [color=" + this.Const.UI.Color.NegativeValue + "]" +
       (-fatigueRecoveryRateModifierPerSpentActionPoint) + "[/color] per action point spent on skills and attacks in the previous turn." +
       "\nRounding to the whole number is randomized with probability of rounding away from zero equal to the fraction part.";
   };
-  gt.Const.Strings.PerkDescription.Hyperactive <- gt.getHyperactiveDescription(
-    gt.Const.HyperactiveApBonus, gt.Const.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint);
+  gt.Const.Strings.PerkDescription.QuirksHyperactive <- gt.Quirks.getHyperactiveDescription(
+    gt.Const.Quirks.HyperactiveApBonus, gt.Const.Quirks.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint);
 
   local hyperactivePerkConsts = {
-    ID = "perk.hyperactive",
-    Script = "scripts/skills/perks/perk_hyperactive",
-    Name = this.Const.Strings.PerkName.Hyperactive,
-    Tooltip = this.Const.Strings.PerkDescription.Hyperactive,
-    Icon = "ui/perks/perk_hyperactive.png",
-    IconDisabled = "ui/perks/perk_hyperactive_sw.png"
+    ID = "perk.quirks.hyperactive",
+    Script = "scripts/skills/perks/perk_quirks_hyperactive",
+    Name = this.Const.Strings.PerkName.QuirksHyperactive,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksHyperactive,
+    Icon = "ui/perks/perk_quirks_hyperactive.png",
+    IconDisabled = "ui/perks/perk_quirks_hyperactive_sw.png"
   };
   ::quirks.setPerk(hyperactivePerkConsts, 5);
 };
 
 local addPerkAcurate = function() {
-  gt.Const.AcurateHitChanceBonus <- 4.5;
-  gt.Const.Strings.PerkName.Acurate <- "Acurate";
-  gt.Const.Strings.PerkDescription.Acurate <- "Increases hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.AcurateHitChanceBonus + "[/color].";
+  gt.Const.Quirks.AcurateHitChanceBonus <- 4.5;
+  gt.Const.Strings.PerkName.QuirksAcurate <- "Acurate";
+  gt.Const.Strings.PerkDescription.QuirksAcurate <- "Increases hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.Quirks.AcurateHitChanceBonus + "[/color].";
 
   local acuratePerkConsts = {
-    ID = "perk.acurate",
-    Script = "scripts/skills/perks/perk_acurate",
-    Name = this.Const.Strings.PerkName.Acurate,
-    Tooltip = this.Const.Strings.PerkDescription.Acurate,
-    Icon = "ui/perks/perk_acurate.png",
-    IconDisabled = "ui/perks/perk_acurate_sw.png"
+    ID = "perk.quirks.acurate",
+    Script = "scripts/skills/perks/perk_quirks_acurate",
+    Name = this.Const.Strings.PerkName.QuirksAcurate,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksAcurate,
+    Icon = "ui/perks/perk_quirks_acurate.png",
+    IconDisabled = "ui/perks/perk_quirks_acurate_sw.png"
   };
   ::quirks.setPerk(acuratePerkConsts, 2);
 };
 
 local addPerkRefundFatigue = function() {
-  gt.Const.RefundFatigueMult <- 0.5;
-  gt.Const.Strings.PerkName.RefundFatigue <- "Refund Fatigue";
-  gt.Const.Strings.PerkDescription.RefundFatigue <- "On a miss refund [color=" + this.Const.UI.Color.PositiveValue + "]" +
-    this.Math.floor(gt.Const.RefundFatigueMult * 100) + "%[/color] of the fatigue used. " +
+  gt.Const.Quirks.RefundFatigueMult <- 0.5;
+  gt.Const.Strings.PerkName.QuirksRefundFatigue <- "Refund Fatigue";
+  gt.Const.Strings.PerkDescription.QuirksRefundFatigue <- "On a miss refund [color=" + this.Const.UI.Color.PositiveValue + "]" +
+    this.Math.floor(gt.Const.Quirks.RefundFatigueMult * 100) + "%[/color] of the fatigue used. " +
     " Rounding is randomized with probability to round down or up equal to the fraction.";
 
   local refundFatiguePerkConsts = {
-    ID = "perk.refund_fatigue",
-    Script = "scripts/skills/perks/perk_refund_fatigue",
-    Name = this.Const.Strings.PerkName.RefundFatigue,
-    Tooltip = this.Const.Strings.PerkDescription.RefundFatigue,
-    Icon = "ui/perks/perk_refund_fatigue.png",
-    IconDisabled = "ui/perks/perk_refund_fatigue_sw.png"
+    ID = "perk.quirks.refund_fatigue",
+    Script = "scripts/skills/perks/perk_quirks_refund_fatigue",
+    Name = this.Const.Strings.PerkName.QuirksRefundFatigue,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksRefundFatigue,
+    Icon = "ui/perks/perk_quirks_refund_fatigue.png",
+    IconDisabled = "ui/perks/perk_quirks_refund_fatigue_sw.png"
   };
   ::quirks.setPerk(refundFatiguePerkConsts, 4);
 };
@@ -264,56 +269,56 @@ local addExpectedDamageCalculationFlag = function() {
 }
 
 local addPerkDoubleOrNothing = function() {
-  gt.Const.Strings.PerkName.DoubleOrNothing <- "Double Or Nothing";
-  gt.Const.Strings.PerkDescription.DoubleOrNothing <-
+  gt.Const.Strings.PerkName.QuirksDoubleOrNothing <- "Double Or Nothing";
+  gt.Const.Strings.PerkDescription.QuirksDoubleOrNothing <-
     "Doubles damage dealt but halves hit chance when attacking." +
     " The hit chance reduction is applied before clipping in the range [5, 95].";
 
   local doubleOrNothingPerkConsts = {
-    ID = "perk.double_or_nothing",
-    Script = "scripts/skills/perks/perk_double_or_nothing",
-    Name = this.Const.Strings.PerkName.DoubleOrNothing,
-    Tooltip = this.Const.Strings.PerkDescription.DoubleOrNothing,
-    Icon = "ui/perks/perk_double_or_nothing.png",
-    IconDisabled = "ui/perks/perk_double_or_nothing_sw.png"
+    ID = "perk.quirks.double_or_nothing",
+    Script = "scripts/skills/perks/perk_quirks_double_or_nothing",
+    Name = this.Const.Strings.PerkName.QuirksDoubleOrNothing,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksDoubleOrNothing,
+    Icon = "ui/perks/perk_quirks_double_or_nothing.png",
+    IconDisabled = "ui/perks/perk_quirks_double_or_nothing_sw.png"
   };
   ::quirks.setPerk(doubleOrNothingPerkConsts, 6);
 };
 
 local addPerkTeacher = function() {
-  gt.Const.TeacherXpMult <- 1.4;
-  gt.Const.Strings.PerkName.Teacher <- "Teacher";
-  gt.getTeacherDescription <- function(xpMult) {
+  gt.Const.Quirks.TeacherXpMult <- 1.4;
+  gt.Const.Strings.PerkName.QuirksTeacher <- "Teacher";
+  gt.Quirks.getTeacherDescription <- function(xpMult) {
     return "Each kill by this character grants addition [color=" + this.Const.UI.Color.PositiveValue + "]" +
     this.Math.round((xpMult - 1) * 100) + "%[/color] XP for the kill to everybody in the battle who is a lower level."; };
-  gt.Const.Strings.PerkDescription.Teacher <- gt.getTeacherDescription(gt.Const.TeacherXpMult);
+  gt.Const.Strings.PerkDescription.QuirksTeacher <- gt.Quirks.getTeacherDescription(gt.Const.Quirks.TeacherXpMult);
 
   local teacherPerkConsts = {
-    ID = "perk.teacher",
-    Script = "scripts/skills/perks/perk_teacher",
-    Name = this.Const.Strings.PerkName.Teacher,
-    Tooltip = this.Const.Strings.PerkDescription.Teacher,
-    Icon = "ui/perks/perk_teacher.png",
-    IconDisabled = "ui/perks/perk_teacher_sw.png"
+    ID = "perk.quirks.teacher",
+    Script = "scripts/skills/perks/perk_quirks_teacher",
+    Name = this.Const.Strings.PerkName.QuirksTeacher,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksTeacher,
+    Icon = "ui/perks/perk_quirks_teacher.png",
+    IconDisabled = "ui/perks/perk_quirks_teacher_sw.png"
   };
   ::quirks.setPerk(teacherPerkConsts, 4);
 };
 
 local addPerkDefensiveAdaptation = function() {
-  gt.Const.DefensiveAdaptationBonusPerStack <- 12;
-  gt.Const.Strings.PerkName.DefensiveAdaptation <- "Defensive Adaptation";
-  gt.getDefensiveAdaptationDescription <- function(bonusPerStack) {
+  gt.Const.Quirks.DefensiveAdaptationBonusPerStack <- 12;
+  gt.Const.Strings.PerkName.QuirksDefensiveAdaptation <- "Defensive Adaptation";
+  gt.Quirks.getDefensiveAdaptationDescription <- function(bonusPerStack) {
     return "With each hit taken increase melee and ranged defense by [color=" + this.Const.UI.Color.PositiveValue + "]" +
     bonusPerStack + "[/color]. Upon being missed the counter is reset."; };
-  gt.Const.Strings.PerkDescription.DefensiveAdaptation <- gt.getDefensiveAdaptationDescription(gt.Const.DefensiveAdaptationBonusPerStack);
+  gt.Const.Strings.PerkDescription.QuirksDefensiveAdaptation <- gt.Quirks.getDefensiveAdaptationDescription(gt.Const.Quirks.DefensiveAdaptationBonusPerStack);
 
   local defensiveAdaptationPerkConsts = {
-    ID = "perk.defensive_adaptation",
-    Script = "scripts/skills/perks/perk_defensive_adaptation",
-    Name = this.Const.Strings.PerkName.DefensiveAdaptation,
-    Tooltip = this.Const.Strings.PerkDescription.DefensiveAdaptation,
-    Icon = "ui/perks/perk_defensive_adaptation.png",
-    IconDisabled = "ui/perks/perk_defensive_adaptation_sw.png"
+    ID = "perk.quirks.defensive_adaptation",
+    Script = "scripts/skills/perks/perk_quirks_defensive_adaptation",
+    Name = this.Const.Strings.PerkName.QuirksDefensiveAdaptation,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksDefensiveAdaptation,
+    Icon = "ui/perks/perk_quirks_defensive_adaptation.png",
+    IconDisabled = "ui/perks/perk_quirks_defensive_adaptation_sw.png"
   };
   ::quirks.setPerk(defensiveAdaptationPerkConsts, 0);
 };
@@ -324,7 +329,7 @@ local addMaxPerkPointsToPlayer = function() {
     local updateLevelOriginal = c.updateLevel;
     c.updateLevel = function() {
       updateLevelOriginal();
-      local hasStudent = this.getSkills().getSkillByID("perk.student") != null;
+      local hasStudent = this.getSkills().getSkillByID("perk.quirks.student") != null;
       local spentAndUnspentPerkPoints = this.m.PerkPoints + this.m.PerkPointsSpent;
       local perkPointsToAdd = this.Math.min(this.m.MaxPerkPoints + (hasStudent ? 1 : 0), this.getLevel() - 1) - spentAndUnspentPerkPoints;
       this.m.PerkPoints += perkPointsToAdd;
@@ -333,148 +338,148 @@ local addMaxPerkPointsToPlayer = function() {
 }
 
 local addPerkVeteran = function() {
-  gt.Const.VeteranHitpointsCost <- 9;
-  gt.Const.VeteranStaminaCost <- 9;
-  gt.Const.VeteranPerkPointsBonus <- 2;
-  gt.Const.Strings.PerkName.Veteran <- "Veteran";
-  gt.getVeteranDescription <- function(hitpointsCost, staminaCost, perkPointsBonus) {
+  gt.Const.Quirks.VeteranHitpointsCost <- 9;
+  gt.Const.Quirks.VeteranStaminaCost <- 9;
+  gt.Const.Quirks.VeteranPerkPointsBonus <- 2;
+  gt.Const.Strings.PerkName.QuirksVeteran <- "Veteran";
+  gt.Quirks.getVeteranDescription <- function(hitpointsCost, staminaCost, perkPointsBonus) {
     return "Increase maximum perk points by [color=" + this.Const.UI.Color.PositiveValue + "]" +
     perkPointsBonus + "[/color], but lose [color=" + this.Const.UI.Color.NegativeValue + "]" +
     hitpointsCost + "[/color] hitpoints and [color=" + this.Const.UI.Color.NegativeValue + "]" +
     staminaCost + "[/color] maximum fatigue.";
   };
-  gt.Const.Strings.PerkDescription.Veteran <- gt.getVeteranDescription(
-    gt.Const.VeteranHitpointsCost, gt.Const.VeteranStaminaCost, gt.Const.VeteranPerkPointsBonus);
+  gt.Const.Strings.PerkDescription.QuirksVeteran <- gt.Quirks.getVeteranDescription(
+    gt.Const.Quirks.VeteranHitpointsCost, gt.Const.Quirks.VeteranStaminaCost, gt.Const.Quirks.VeteranPerkPointsBonus);
 
   local veteranPerkConsts = {
-    ID = "perk.veteran",
-    Script = "scripts/skills/perks/perk_veteran",
-    Name = this.Const.Strings.PerkName.Veteran,
-    Tooltip = this.Const.Strings.PerkDescription.Veteran,
-    Icon = "ui/perks/perk_veteran.png",
-    IconDisabled = "ui/perks/perk_veteran_sw.png"
+    ID = "perk.quirks.veteran",
+    Script = "scripts/skills/perks/perk_quirks_veteran",
+    Name = this.Const.Strings.PerkName.QuirksVeteran,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksVeteran,
+    Icon = "ui/perks/perk_quirks_veteran.png",
+    IconDisabled = "ui/perks/perk_quirks_veteran_sw.png"
   };
   ::quirks.setPerk(veteranPerkConsts, 6);
 };
 
 local addPerkLastStand = function() {
-  gt.Const.LastStandResolveBonusPerNeighbourEnemy <- 3;
-  gt.Const.LastStandResolveBonusMax <- 36;
-  gt.Const.Strings.PerkName.LastStand <- "Last Stand";
-  gt.getLastStandDescription <- function(resolveBonusPerNeighbourEnemy, resolveBonusMax) {
+  gt.Const.Quirks.LastStandResolveBonusPerNeighbourEnemy <- 3;
+  gt.Const.Quirks.LastStandResolveBonusMax <- 36;
+  gt.Const.Strings.PerkName.QuirksLastStand <- "Last Stand";
+  gt.Quirks.getLastStandDescription <- function(resolveBonusPerNeighbourEnemy, resolveBonusMax) {
     return "Upon taking damage to hitpoints add a stack of Last Stand until the end of the battle. " +
       "Each stack increases resolve by [color=" + this.Const.UI.Color.PositiveValue + "]" +
       resolveBonusPerNeighbourEnemy + "[/color] per enemy around you to a maximum of " +
       "[color=" + this.Const.UI.Color.PositiveValue + "]" + resolveBonusMax + "[/color].";
   };
-  gt.Const.Strings.PerkDescription.LastStand <- gt.getLastStandDescription(
-    gt.Const.LastStandResolveBonusPerNeighbourEnemy, gt.Const.LastStandResolveBonusMax);
+  gt.Const.Strings.PerkDescription.QuirksLastStand <- gt.Quirks.getLastStandDescription(
+    gt.Const.Quirks.LastStandResolveBonusPerNeighbourEnemy, gt.Const.Quirks.LastStandResolveBonusMax);
 
   local lastStandPerkConsts = {
-    ID = "perk.last_stand",
-    Script = "scripts/skills/perks/perk_last_stand",
-    Name = this.Const.Strings.PerkName.LastStand,
-    Tooltip = this.Const.Strings.PerkDescription.LastStand,
-    Icon = "ui/perks/perk_last_stand.png",
-    IconDisabled = "ui/perks/perk_last_stand_sw.png"
+    ID = "perk.quirks.last_stand",
+    Script = "scripts/skills/perks/perk_quirks_last_stand",
+    Name = this.Const.Strings.PerkName.QuirksLastStand,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksLastStand,
+    Icon = "ui/perks/perk_quirks_last_stand.png",
+    IconDisabled = "ui/perks/perk_quirks_last_stand_sw.png"
   };
   ::quirks.setPerk(lastStandPerkConsts, 2);
 };
 
 local addPerkPunchingBag = function() {
-  gt.Const.PunchingBagOnHitDamageMult <- 0.85;
-  gt.Const.PunchingBagOnTurnStartBonusMult <- 0.5;
-  gt.Const.Strings.PerkName.PunchingBag <- "Punching Bag";
-  gt.getPunchingBagDescription <- function(onHitDamageMult, onTurnStartBonusMult) {
+  gt.Const.Quirks.PunchingBagOnHitDamageMult <- 0.85;
+  gt.Const.Quirks.PunchingBagOnTurnStartBonusMult <- 0.5;
+  gt.Const.Strings.PerkName.QuirksPunchingBag <- "Punching Bag";
+  gt.Quirks.getPunchingBagDescription <- function(onHitDamageMult, onTurnStartBonusMult) {
     return "Each time being hit decrease future incoming damage by [color=" + this.Const.UI.Color.PositiveValue + "]" +
       this.Math.round((1 - onHitDamageMult) * 100) + "%[/color] from attacks. At the start of each turn this bonus is reduced by [color=" + this.Const.UI.Color.NegativeValue + "]" +
       this.Math.round((1 - onTurnStartBonusMult) * 100) + "%[/color].";
   };
-  gt.Const.Strings.PerkDescription.PunchingBag <- gt.getPunchingBagDescription(gt.Const.PunchingBagOnHitDamageMult, gt.Const.PunchingBagOnTurnStartBonusMult);
+  gt.Const.Strings.PerkDescription.QuirksPunchingBag <- gt.Quirks.getPunchingBagDescription(gt.Const.Quirks.PunchingBagOnHitDamageMult, gt.Const.Quirks.PunchingBagOnTurnStartBonusMult);
 
   local punchingBagPerkConsts = {
-    ID = "perk.punching_bag",
-    Script = "scripts/skills/perks/perk_punching_bag",
-    Name = this.Const.Strings.PerkName.PunchingBag,
-    Tooltip = this.Const.Strings.PerkDescription.PunchingBag,
-    Icon = "ui/perks/perk_punching_bag.png",
-    IconDisabled = "ui/perks/perk_punching_bag_sw.png"
+    ID = "perk.quirks.punching_bag",
+    Script = "scripts/skills/perks/perk_quirks_punching_bag",
+    Name = this.Const.Strings.PerkName.QuirksPunchingBag,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksPunchingBag,
+    Icon = "ui/perks/perk_quirks_punching_bag.png",
+    IconDisabled = "ui/perks/perk_quirks_punching_bag_sw.png"
   };
   ::quirks.setPerk(punchingBagPerkConsts, 1);
 };
 
 local addPerkSurprise = function() {
   gt.Const.Strings.SurprisedEffectName <- "Surprised";
-  gt.Const.SurpriseOnMissedInitiativeStolen <- 10;
-  gt.Const.Strings.PerkName.Surprise <- "Surprise";
-  gt.getSurpriseDescription <- function(onMissedInitiativeStolen) {
+  gt.Const.Quirks.SurpriseOnMissedInitiativeStolen <- 10;
+  gt.Const.Strings.PerkName.QuirksSurprise <- "Surprise";
+  gt.Quirks.getSurpriseDescription <- function(onMissedInitiativeStolen) {
     return "With each time, being missed, steal [color=" + this.Const.UI.Color.PositiveValue + "]" +
       onMissedInitiativeStolen + "[/color] initiative form the attacker for 2 rounds.";
   };
-  gt.Const.Strings.PerkDescription.Surprise <- gt.getSurpriseDescription(gt.Const.SurpriseOnMissedInitiativeStolen);
+  gt.Const.Strings.PerkDescription.QuirksSurprise <- gt.Quirks.getSurpriseDescription(gt.Const.Quirks.SurpriseOnMissedInitiativeStolen);
 
   local surprisePerkConsts = {
-    ID = "perk.surprise",
-    Script = "scripts/skills/perks/perk_surprise",
-    Name = this.Const.Strings.PerkName.Surprise,
-    Tooltip = this.Const.Strings.PerkDescription.Surprise,
-    Icon = "ui/perks/perk_surprise.png",
-    IconDisabled = "ui/perks/perk_surprise_sw.png"
+    ID = "perk.quirks.surprise",
+    Script = "scripts/skills/perks/perk_quirks_surprise",
+    Name = this.Const.Strings.PerkName.QuirksSurprise,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksSurprise,
+    Icon = "ui/perks/perk_quirks_surprise.png",
+    IconDisabled = "ui/perks/perk_quirks_surprise_sw.png"
   };
   ::quirks.setPerk(surprisePerkConsts, 4);
 };
 
 local addPerkRefundActionPoints = function() {
-  gt.Const.RefundActionPointsAttackFatigueCostMult <- 0.5;
-  gt.Const.RefundActionPointsFatigueCostPerActionPoint <- 2.0;
-  this.Const.Strings.PerkName.RefundActionPoints <- "Refund Action Points"
-  gt.getRefundActionPointsDescription <- function(attackFatigueCostMult, fatigueCostPerActionPoint) {
+  gt.Const.Quirks.RefundActionPointsAttackFatigueCostMult <- 0.5;
+  gt.Const.Quirks.RefundActionPointsFatigueCostPerActionPoint <- 2.0;
+  this.Const.Strings.PerkName.QuirksRefundActionPoints <- "Refund Action Points"
+  gt.Quirks.getRefundActionPointsDescription <- function(attackFatigueCostMult, fatigueCostPerActionPoint) {
     return "Unlocks the ability to refund all action points on a missed attack. The skill can be used until the end of the turn. " +
       "The cost is [color=" + this.Const.UI.Color.NegativeValue + "]" + this.Math.round(attackFatigueCostMult * 100) + "%[/color] of the attack's fatigue + " +
       "[color=" + this.Const.UI.Color.NegativeValue + "]" + fatigueCostPerActionPoint + "[/color] per action point.";
   };
-  gt.Const.Strings.PerkDescription.RefundActionPoints <- gt.getRefundActionPointsDescription(
-    gt.Const.RefundActionPointsAttackFatigueCostMult, gt.Const.RefundActionPointsFatigueCostPerActionPoint);
+  gt.Const.Strings.PerkDescription.QuirksRefundActionPoints <- gt.Quirks.getRefundActionPointsDescription(
+    gt.Const.Quirks.RefundActionPointsAttackFatigueCostMult, gt.Const.Quirks.RefundActionPointsFatigueCostPerActionPoint);
 
   local refundActionPointsPerkConsts = {
-    ID = "perk.refund_action_points",
-    Script = "scripts/skills/perks/perk_refund_action_points",
-    Name = this.Const.Strings.PerkName.RefundActionPoints,
-    Tooltip = this.Const.Strings.PerkDescription.RefundActionPoints,
-    Icon = "ui/perks/perk_refund_action_points.png",
-    IconDisabled = "ui/perks/perk_refund_action_points_sw.png"
+    ID = "perk.quirks.refund_action_points",
+    Script = "scripts/skills/perks/perk_quirks_refund_action_points",
+    Name = this.Const.Strings.PerkName.QuirksRefundActionPoints,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksRefundActionPoints,
+    Icon = "ui/perks/perk_quirks_refund_action_points.png",
+    IconDisabled = "ui/perks/perk_quirks_refund_action_points_sw.png"
   };
   ::quirks.setPerk(refundActionPointsPerkConsts, 5);
 };
 
 local addPerkSlack = function() {
-  gt.Const.SlackFatigueRecoveryPerUnspentActionPoint <- 1.5;
-  this.Const.Strings.PerkName.Slack <- "Slack";
-  gt.getSlackDescription <- function(fatigueRecoveryPerUnspentActionPoint) {
+  gt.Const.Quirks.SlackFatigueRecoveryPerUnspentActionPoint <- 1.5;
+  this.Const.Strings.PerkName.QuirksSlack <- "Slack";
+  gt.Quirks.getSlackDescription <- function(fatigueRecoveryPerUnspentActionPoint) {
     return "Each turn recover an additional [color=" + this.Const.UI.Color.PositiveValue + "]" +
       fatigueRecoveryPerUnspentActionPoint + "[/color] fatigue per unspent action point in the previous turn. " +
       " Rounding is randomized with probability to round down or up equal to the fraction part.";
   };
-  gt.Const.Strings.PerkDescription.Slack <- gt.getSlackDescription(gt.Const.SlackFatigueRecoveryPerUnspentActionPoint);
+  gt.Const.Strings.PerkDescription.QuirksSlack <- gt.Quirks.getSlackDescription(gt.Const.Quirks.SlackFatigueRecoveryPerUnspentActionPoint);
 
   local slackPerkConsts = {
-    ID = "perk.slack",
-    Script = "scripts/skills/perks/perk_slack",
-    Name = this.Const.Strings.PerkName.Slack,
-    Tooltip = this.Const.Strings.PerkDescription.Slack,
-    Icon = "ui/perks/perk_slack.png",
-    IconDisabled = "ui/perks/perk_slack_sw.png"
+    ID = "perk.quirks.slack",
+    Script = "scripts/skills/perks/perk_quirks_slack",
+    Name = this.Const.Strings.PerkName.QuirksSlack,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksSlack,
+    Icon = "ui/perks/perk_quirks_slack.png",
+    IconDisabled = "ui/perks/perk_quirks_slack_sw.png"
   };
   ::quirks.setPerk(slackPerkConsts, 1);
 };
 
 local addPerkImpenetrable = function() {
-  gt.Const.ImpenetrableBestTotalArmorMax <- 400;
-  gt.Const.ImpenetrableTotalArmorMaxStdDev <- 100;
-  gt.Const.ImpenetrableBestDamageReceivedDirectMult <- 0.33;
-  gt.Const.ImpenetrableMinDamageReceivedDirectMult <- 0.85;
-  this.Const.Strings.PerkName.Impenetrable <- "Impenetrable"
-  gt.getImpenetrableDescription <- function(bestTotalArmorMax, bestDamageReceivedDirectMult, minDamageReceivedDirectMult) {
+  gt.Const.Quirks.ImpenetrableBestTotalArmorMax <- 400;
+  gt.Const.Quirks.ImpenetrableTotalArmorMaxStdDev <- 100;
+  gt.Const.Quirks.ImpenetrableBestDamageReceivedDirectMult <- 0.33;
+  gt.Const.Quirks.ImpenetrableMinDamageReceivedDirectMult <- 0.85;
+  this.Const.Strings.PerkName.QuirksImpenetrable <- "Impenetrable"
+  gt.Quirks.getImpenetrableDescription <- function(bestTotalArmorMax, bestDamageReceivedDirectMult, minDamageReceivedDirectMult) {
     return "Reduces armor penetration damage based on total max body and helmet armor with best results at " +
       bestTotalArmorMax + " armor when damage is reduced by [color=" + this.Const.UI.Color.PositiveValue + "]" +
       this.Math.round((1 - bestDamageReceivedDirectMult) * 100) +
@@ -482,16 +487,16 @@ local addPerkImpenetrable = function() {
       this.Math.round((1 - minDamageReceivedDirectMult) * 100) +
       "%[/color].";
   };
-  gt.Const.Strings.PerkDescription.Impenetrable <- gt.getImpenetrableDescription(
-    gt.Const.ImpenetrableBestTotalArmorMax, gt.Const.ImpenetrableBestDamageReceivedDirectMult, gt.Const.ImpenetrableMinDamageReceivedDirectMult);
+  gt.Const.Strings.PerkDescription.QuirksImpenetrable <- gt.Quirks.getImpenetrableDescription(
+    gt.Const.Quirks.ImpenetrableBestTotalArmorMax, gt.Const.Quirks.ImpenetrableBestDamageReceivedDirectMult, gt.Const.Quirks.ImpenetrableMinDamageReceivedDirectMult);
 
   local impenetrablePerkConsts = {
-    ID = "perk.impenetrable",
-    Script = "scripts/skills/perks/perk_impenetrable",
-    Name = this.Const.Strings.PerkName.Impenetrable,
-    Tooltip = this.Const.Strings.PerkDescription.Impenetrable,
-    Icon = "ui/perks/perk_impenetrable.png",
-    IconDisabled = "ui/perks/perk_impenetrable_sw.png"
+    ID = "perk.quirks.impenetrable",
+    Script = "scripts/skills/perks/perk_quirks_impenetrable",
+    Name = this.Const.Strings.PerkName.QuirksImpenetrable,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksImpenetrable,
+    Icon = "ui/perks/perk_quirks_impenetrable.png",
+    IconDisabled = "ui/perks/perk_quirks_impenetrable_sw.png"
   };
   ::quirks.setPerk(impenetrablePerkConsts, 5);
 };
@@ -509,32 +514,32 @@ local findPerkConsts = function(perkId, perks=gt.Const.Perks.Perks) {
 }
 
 local buffBullseye = function() {
-  gt.Const.BullseyeRangedAttackBlockedChanceMult <- 0.533;
-  local total = this.Const.Combat.RangedAttackBlockedChance * gt.Const.BullseyeRangedAttackBlockedChanceMult;
-  gt.Const.Strings.PerkDescription.Bullseye <- "Nailed it! The penalty to hitchance when shooting at a target you have no clear line of fire to is reduced from [color=" +
+  gt.Const.Quirks.BullseyeRangedAttackBlockedChanceMult <- 0.533;
+  local total = this.Const.Combat.RangedAttackBlockedChance * gt.Const.Quirks.BullseyeRangedAttackBlockedChanceMult;
+  gt.Const.Strings.PerkDescription.QuirksBullseye <- "Nailed it! The penalty to hitchance when shooting at a target you have no clear line of fire to is reduced from [color=" +
     this.Const.UI.Color.NegativeValue + "]" + this.Math.round(this.Const.Combat.RangedAttackBlockedChance * 100) +
     "%[/color] to [color=" + this.Const.UI.Color.NegativeValue + "]" + this.Math.round(total * 100) + "%[/color] for ranged weapons.";
   
-  ::mods_hookExactClass("skills/perks/perk_bullseye", function(c) {
-    c.m.RangedAttackBlockedChanceMult <- this.Const.BullseyeRangedAttackBlockedChanceMult;
+  ::mods_hookExactClass("skills/perks/perk_quirks_bullseye", function(c) {
+    c.m.RangedAttackBlockedChanceMult <- this.Const.Quirks.BullseyeRangedAttackBlockedChanceMult;
     c.onUpdate = function(_properties) {
       _properties.RangedAttackBlockedChanceMult *= this.m.RangedAttackBlockedChanceMult;
     };
   });
 
   local perkConsts = findPerkConsts("perk.bullseye");
-  perkConsts.Tooltip = gt.Const.Strings.PerkDescription.Bullseye;
+  perkConsts.Tooltip = gt.Const.Strings.PerkDescription.QuirksBullseye;
 }
 
 local nerfThrowingMastery = function() {
-  gt.Const.ThrowingMasteryDamageMultAtDistance2 <- 1.217;
-  gt.Const.ThrowingMasteryDamageMultAtDistance3 <- 1.116;
+  gt.Const.Quirks.ThrowingMasteryDamageMultAtDistance2 <- 1.217;
+  gt.Const.Quirks.ThrowingMasteryDamageMultAtDistance3 <- 1.116;
   gt.Const.Strings.PerkDescription.SpecThrowing <- "Master throwing weapons to wound or kill the enemy before they even get close. " +
     "Skills build up [color=" + this.Const.UI.Color.NegativeValue + "]25%[/color] less Fatigue." +
-    "\n\nDamage is increased by [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((gt.Const.ThrowingMasteryDamageMultAtDistance2 - 1) * 100) + "%[/color] when attacking at 2 tiles of distance." +
-    "\n\nDamage is increased by [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((gt.Const.ThrowingMasteryDamageMultAtDistance3 - 1) * 100) + "%[/color] when attacking at 3 tiles of distance.",
+    "\n\nDamage is increased by [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((gt.Const.Quirks.ThrowingMasteryDamageMultAtDistance2 - 1) * 100) + "%[/color] when attacking at 2 tiles of distance." +
+    "\n\nDamage is increased by [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((gt.Const.Quirks.ThrowingMasteryDamageMultAtDistance3 - 1) * 100) + "%[/color] when attacking at 3 tiles of distance.",
 
-  ::mods_hookExactClass("skills/perks/perk_mastery_throwing", function(c) {
+  ::mods_hookExactClass("skills/perks/perk_quirks_mastery_throwing", function(c) {
     c.onAnySkillUsed = function(_skill, _targetEntity, _properties) {
       if (_targetEntity == null)
       {
@@ -547,11 +552,11 @@ local nerfThrowingMastery = function() {
 
         if (d <= 2)
         {
-          _properties.DamageTotalMult *= this.Const.ThrowingMasteryDamageMultAtDistance2;
+          _properties.DamageTotalMult *= this.Const.Quirks.ThrowingMasteryDamageMultAtDistance2;
         }
         else if (d <= 3)
         {
-          _properties.DamageTotalMult *= gt.Const.ThrowingMasteryDamageMultAtDistance3;
+          _properties.DamageTotalMult *= gt.Const.Quirks.ThrowingMasteryDamageMultAtDistance3;
         }
       }
     };
@@ -568,7 +573,7 @@ local buffThrowingWithoutMastery = function() {
       actorClass.onInitOriginalBuffThrowingWithoutMastery <- actorClass.onInit;
       actorClass.onInit = function() {
         this.onInitOriginalBuffThrowingWithoutMastery();
-        this.m.Skills.add(this.new("scripts/skills/special/buff_throwing"));
+        this.m.Skills.add(this.new("scripts/skills/special/quirks_buff_throwing"));
       };
     }
   });
@@ -584,27 +589,27 @@ local buffBaseHitpoints = function() {
     c.onInitOriginalQuirksBuffBaseHitpoints <- c.onInit;
     c.onInit = function() {
       this.onInitOriginalQuirksBuffBaseHitpoints();
-      this.m.Skills.add(this.new("scripts/skills/special/buff_hitpoints"));
+      this.m.Skills.add(this.new("scripts/skills/special/quirks_buff_hitpoints"));
     };
   });
 }
 
 local nerfColossus = function() {
-  gt.Const.ColossusHitpointsMult <- 1.16;
+  gt.Const.Quirks.ColossusHitpointsMult <- 1.16;
   gt.Const.Strings.PerkDescription.Colossus <- "Bring it on! Hitpoints are increased by [color=" + this.Const.UI.Color.PositiveValue + "]" +
-    this.Math.round((gt.Const.ColossusHitpointsMult - 1) * 100) + "%[/color], which also reduces the chance to sustain debilitating injuries when being hit.";
+    this.Math.round((gt.Const.Quirks.ColossusHitpointsMult - 1) * 100) + "%[/color], which also reduces the chance to sustain debilitating injuries when being hit.";
 
-  ::mods_hookExactClass("skills/perks/perk_colossus", function(c) {
+  ::mods_hookExactClass("skills/perks/perk_quirks_colossus", function(c) {
     c.onAdded = function() {
       local actor = this.getContainer().getActor();
 
       if (actor.getHitpoints() == actor.getHitpointsMax()) {
-        actor.setHitpoints(this.Math.floor(actor.getHitpoints() * this.Const.ColossusHitpointsMult));
+        actor.setHitpoints(this.Math.floor(actor.getHitpoints() * this.Const.Quirks.ColossusHitpointsMult));
       }
     };
 
     c.onUpdate = function(_properties) {
-      _properties.HitpointsMult *= this.Const.ColossusHitpointsMult;
+      _properties.HitpointsMult *= this.Const.Quirks.ColossusHitpointsMult;
     }
   });
 
@@ -613,8 +618,8 @@ local nerfColossus = function() {
 };
 
 local addEffectKnackered = function() {
-  gt.Const.KnackeredDefenseModifier <- -10;
-  gt.getKnackeredDescription <- function(defenseModifier) {
+  gt.Const.Quirks.KnackeredDefenseModifier <- -10;
+  gt.Quirks.getKnackeredDescription <- function(defenseModifier) {
     return "This character has reached the limit of his endurance. Melee and ranged defense is reduced by [color=" + this.Const.UI.Color.NegativeValue + "]" + (-defenseModifier) + "[/color].";
   };
 
@@ -624,13 +629,46 @@ local addEffectKnackered = function() {
       actorClass.onInitOriginalAddEffectKnackered <- actorClass.onInit;
       actorClass.onInit = function() {
         this.onInitOriginalAddEffectKnackered();
-        this.m.Skills.add(this.new("scripts/skills/effects/knackered_effect"));
+        this.m.Skills.add(this.new("scripts/skills/effects/quirks_knackered_effect"));
       };
     }
   });
 };
 
+local addPerkSlowDown = function() {
+  gt.Const.Quirks.SlowDownInitiativeForTurnOrderModifier <- -1000;
+  gt.Const.Quirks.SlowDownActionPointsCost <- 0;
+  gt.Const.Quirks.SlowDownFatigueCost <- 0;
+  this.Const.Strings.PerkName.QuirksSlowDown <- "Slow Down";
+  gt.Quirks.getSlowDownSkillDescription <- function() {
+    return "Lower turn order initiative this turn to act last after waiting.";
+  };
+  gt.Quirks.getSlowDownEffectDescription <- function() {
+    return "This character will act last after waiting.";
+  };
+  gt.Quirks.getSlowDownPerkDescription <- function(actionPointsCost, fatigueCost) {
+    return "Unlocks the ability to lower turn order initiative this turn to act last after waiting." +
+      " If two characters use this skill, the one with lower initiative will act second. " +
+      " The cost is [color=" + this.Const.UI.Color.NegativeValue + "]" + actionPointsCost + "%[/color] action points and " +
+      "[color=" + this.Const.UI.Color.NegativeValue + "]" + fatigueCost + "[/color] fatigue.";;
+  };
+  gt.Const.Strings.PerkDescription.QuirksSlowDown <- gt.Quirks.getSlowDownPerkDescription(
+    gt.Const.Quirks.SlowDownActionPointsCost, gt.Const.Quirks.SlowDownFatigueCost);
+
+  local slowDownPerkConsts = {
+    ID = "perk.quirks.slow_down",
+    Script = "scripts/skills/perks/perk_quirks_slow_down",
+    Name = this.Const.Strings.PerkName.QuirksSlowDown,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksSlowDown,
+    Icon = "ui/perks/perk_quirks_slow_down.png",
+    IconDisabled = "ui/perks/perk_quirks_slow_down_sw.png"
+  };
+  ::quirks.setPerk(slowDownPerkConsts, 0);
+}
+
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
+  setupRootTableStructure();
+
   addOnAfterSkillUsed();
   #addExpectedDamageCalculationFlag();
   addMaxPerkPointsToPlayer();
@@ -647,6 +685,7 @@ local addEffectKnackered = function() {
   addPerkPunchingBag();
   addPerkRefundActionPoints();
   addPerkRefundFatigue();
+  addPerkSlowDown();
   addPerkSlack();
   addPerkSurprise();
   addPerkTeacher();

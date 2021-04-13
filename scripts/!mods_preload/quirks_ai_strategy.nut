@@ -18,7 +18,7 @@ if (!("quirks" in gt)) {
       foreach(faction in allFactions) {
         foreach(entity in faction) {
           if (!entity.isAlliedWith(this.m.Faction)) {
-            local bank_skill = entity.getSkills().getSkillByID("actives.bank");
+            local bank_skill = entity.getSkills().getSkillByID("actives.quirks.bank");
             if (bank_skill != null) {
               return false;
             }
