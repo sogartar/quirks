@@ -1,10 +1,9 @@
 this.quirks_slow_down_effect <- this.inherit("scripts/skills/skill", {
   m = {
-    InitiativeForTurnOrderModifier = this.Const.Quirks.SlowDownInitiativeForTurnOrderModifier
+    InitiativeForTurnOrderModifier = 0
   }
 
-  function create()
-  {
+  function create() {
     this.m.ID = "effects.quirks.slow_down";
     this.m.Name = this.Const.Strings.PerkName.QuirksSlowDown;
     this.m.Description = this.getroottable().Quirks.getSlowDownEffectDescription();
@@ -14,6 +13,7 @@ this.quirks_slow_down_effect <- this.inherit("scripts/skills/skill", {
     this.m.Type = this.Const.SkillType.StatusEffect;
     this.m.IsActive = false;
     this.m.IsRemovedAfterBattle = true;
+    this.m.InitiativeForTurnOrderModifier = this.Const.Quirks.SlowDownInitiativeForTurnOrderModifier;
   }
 
   function findEntityTurnOrderIdx(id) {

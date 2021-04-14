@@ -666,6 +666,45 @@ local addPerkSlowDown = function() {
   ::quirks.setPerk(slowDownPerkConsts, 0);
 }
 
+local addPerkPlunge = function() {
+  gt.Const.Quirks.PlungeActionPointsCost <- 0;
+  gt.Const.Quirks.PlungeFatigueCost <- 0;
+  gt.Const.Quirks.PlungeDamageMultPerStack <- 1.1;
+  gt.Const.Quirks.PlungeKnockBackChancePerStack <- 0.2;
+  this.Const.Strings.PerkName.QuirksPlunge <- "Plunge";
+  gt.Quirks.getPlungeSkillDescription <- function(dmageMultPerStack, knockBackChancePerStack) {
+    return "With Each tile of distance traveled since activating Plunge, the next melee attack will do [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      this.Math.round((dmageMultPerStack - 1) * 100) + "%[/color] more damage." +
+      " Moving up/down an elevation level will also remove/add a plunge stack." +
+      " Hitting your target will also have a chance to knock it back and you to follow it." +
+      " The chance is [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      this.Math.round(knockBackChancePerStack * 100) + "%[/color] per stack." +
+      " If the target is knocked back your character will plunge one tile of distance in the direction of the target." +
+      " When Plunge is active movement fatigue cost is doubled." +
+      " Waiting without attacking will remove the Plunge effect.";
+  };
+  gt.Quirks.getPlungeEffectDescription <- function(dmageMultPerStack, knockBackChancePerStack) {
+    return "This character is plunging. " +
+      gt.Quirks.getPlungeSkillDescription(dmageMultPerStack, knockBackChancePerStack);
+  };
+  gt.Quirks.getPlungePerkDescription <- function(dmageMultPerStack, knockBackChancePerStack) {
+    return "Unlocks the Plunge skill. " +
+      gt.Quirks.getPlungeSkillDescription(dmageMultPerStack, knockBackChancePerStack);
+  };
+  gt.Const.Strings.PerkDescription.QuirksPlunge <- gt.Quirks.getPlungePerkDescription(
+    gt.Const.Quirks.PlungeDamageMultPerStack, gt.Const.Quirks.PlungeKnockBackChancePerStack);
+
+  local plungePerkConsts = {
+    ID = "perk.quirks.plunge",
+    Script = "scripts/skills/perks/perk_quirks_plunge",
+    Name = this.Const.Strings.PerkName.QuirksPlunge,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksPlunge,
+    Icon = "ui/perks/perk_quirks_plunge.png",
+    IconDisabled = "ui/perks/perk_quirks_plunge_sw.png"
+  };
+  ::quirks.setPerk(plungePerkConsts, 6);
+}
+
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
   setupRootTableStructure();
 
@@ -681,6 +720,7 @@ local addPerkSlowDown = function() {
   addPerkHyperactive();
   addPerkImpenetrable();
   addPerkLastStand();
+  addPerkPlunge();
   addPerkPrecision();
   addPerkPunchingBag();
   addPerkRefundActionPoints();

@@ -32,6 +32,10 @@ Each stack increases resolve by 3 per enemy around you to a maximum of 36. Unloc
 This is a good perk on nimble tanks that are likely to be surrounded and take hitpoints damage early in the battle.
 It helps to prevent your character from breaking and is good against Miasma as it will start stacking event if not hit.
 It is kind of a counter to Fearsome.
+* **Refund Fatigue** - On a miss refund 50% of the fatigue used.
+Rounding is randomized with probability to round down or up equal to the fraction.
+Unlocks at level 4.  
+This perk synergizes well with low hit chance and/or high fatigue attacks. It is good on low attack skill characters.
 * **Exertion** - Unlocks the ability to increase action points by 3 this turn.
 Fatigue cost is based on the current fatigue pool left, current initiative and resolve.
 The cost starts from 33 fatigue and is reduced to a minimum of  15 by subtracting
@@ -49,10 +53,6 @@ Should be good on maces where it is necessary to stun a dangerous target.
 You could use it with a one-handed mace in the same turn even when 1 tile away.
 Even though its effect is halved each turn, it can be stacked multiple times.
 This makes it good with Puncture where it can be stacked 2 times to almost guarantee a hit on the next attack.
-* **Refund Fatigue** - On a miss refund 50% of the fatigue used.
-Rounding is randomized with probability to round down or up equal to the fraction.
-Unlocks at level 6.  
-This perk synergizes well with low hit chance and/or high fatigue attacks. It is good on low attack skill characters.
 * **Surprise** - With each time, being missed, steal 10 initiative form the attacker for 2 rounds.
 Unlocks at level 6.  
 This perk is good on characters with Dodge, Overwhelm and high defense.

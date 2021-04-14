@@ -11,4 +11,6 @@
   <sprite id="quirks_knackered_effect" ic="FF624556" img="ui\effects\quirks_knackered_effect.png" />
   <sprite id="perk_quirks_slow_down" ic="FF624551" img="ui\perks\perk_quirks_slow_down.png" />
   <sprite id="active_quirks_slow_down" ic="FF624552" img="ui\actives\active_quirks_slow_down.png" />
+  <sprite id="perk_quirks_plunge" ic="FF624551" img="ui\perks\perk_quirks_plunge.png" />
+  <sprite id="active_quirks_plunge" ic="FF624552" img="ui\actives\active_quirks_plunge.png" />
 </brush>
