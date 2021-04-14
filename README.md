@@ -10,12 +10,12 @@ Upon being missed the counter is reset. Unlocks at level 2.
 This is the equivalent of Fast Adaptation, but for defense.
 It is useful on low defense characters and good to protect against bad RNG strings.
 * **Punching Bag** - Each time being hit decrease future incoming damage by 15% from attacks.
-At the start of each turn this bonus is reduced by 50%. Unlocks at level 3.  
+At the start of each turn this bonus is reduced by 50%. Unlocks at level 2.  
 This weird perk fits well into tank builds without defense :|.
 It synergizes very well with Indomitable and Battle Forged. It is good against chip damage.
 The more you get hit the better it is. It will not do as well in explosive fights against high damage two-handers.
 Although, not as good as a proper tank, you can even tank the Black Monolith with it for a good amount of turns.
-* **Slack** - Each turn recover an additional 1.5 fatigue per unspent action point in the previous turn.
+* **Slack** - Each turn recover an additional 1.66 fatigue per unspent action point in the previous turn.
 Rounding is randomized with probability to round down or up equal to the fraction part. Unlocks at level 3.  
 This can be picked on low fatigue characters, where Recover brings little to the table.
 In such cases it is even possible to pick Berserk also.
@@ -32,10 +32,17 @@ Each stack increases resolve by 3 per enemy around you to a maximum of 36. Unloc
 This is a good perk on nimble tanks that are likely to be surrounded and take hitpoints damage early in the battle.
 It helps to prevent your character from breaking and is good against Miasma as it will start stacking event if not hit.
 It is kind of a counter to Fearsome.
-* **Refund Fatigue** - On a miss refund 50% of the fatigue used.
+* **Refund Fatigue** - On a miss refund 66% of the fatigue used.
 Rounding is randomized with probability to round down or up equal to the fraction.
 Unlocks at level 4.  
 This perk synergizes well with low hit chance and/or high fatigue attacks. It is good on low attack skill characters.
+* **Surprise** - With each time, being missed, steal 12 initiative form the attacker for 2 rounds.
+Unlocks at level 4.  
+This perk is good on characters with Dodge, Overwhelm and high defense.
+You could do an initative build without that much initative.
+You could do a nimble tank, that if attacked many times,
+is able to stop shieldwalling and still have high defense.
+This can free up fatigue to do Indomitable instead.
 * **Exertion** - Unlocks the ability to increase action points by 3 this turn.
 Fatigue cost is based on the current fatigue pool left, current initiative and resolve.
 The cost starts from 33 fatigue and is reduced to a minimum of  15 by subtracting
@@ -47,20 +54,13 @@ Not well suited for Battle Forged builds.
 On rare occasions this skill may be be a bit overpowered on super tanks with very high fatigue.
 Where the old Recover, Adrenaline, Shieldwall, Indomitable cycle is possible but you squeeze Exertion before/after Recover.
 * **Precision** - Unlocks the ability to increase next attack's hit chance with 25%.
-If unused, each turn this bonus is decreased with 12.5%. Costs 15 fatigue and 3 action points.
+If unused, each turn this bonus is decreased with 12.5%. Costs 12 fatigue and 3 action points.
 The bonus is halved for area of effect attacks. Unlocks at level 6.  
 Should be good on maces where it is necessary to stun a dangerous target.
 You could use it with a one-handed mace in the same turn even when 1 tile away.
 Even though its effect is halved each turn, it can be stacked multiple times.
 This makes it good with Puncture where it can be stacked 2 times to almost guarantee a hit on the next attack.
-* **Surprise** - With each time, being missed, steal 10 initiative form the attacker for 2 rounds.
-Unlocks at level 6.  
-This perk is good on characters with Dodge, Overwhelm and high defense.
-You could do an initative build without that much initative.
-You could do a nimble tank, that if attacked many times,
-is able to stop shieldwalling and still have high defense.
-This can free up fatigue to do Indomitable instead.
-* **Teacher** - Each kill by this character grants addition 40% XP for the kill to everybody in the battle who is a lower level.
+* **Teacher** - Each kill by this character grants addition 50% XP for the kill to everybody in the battle who is a lower level.
 Unlocks at level 6.  
 It is mid-game and your martyr against all odds has somehow survived to level 6.
 Or maybe a promising up-start low-rolled.
@@ -101,19 +101,36 @@ I found the perk a bit underwhelming, but there is beauty in its symmetry, so I 
 Should be best used with high armor penetration weapons where you are hopping to one-shot targets
 or to at least cripple then even through heavy armor. It is well coupled with Refund Fatigue/AP.
 Note that Fast Adaptation would only stack 5% instead of 10%. It sucks at finishing off opponents.
+* **Plunge** - Unlocks the Plunge skill.
+With Each tile of distance since activating Plunge,
+the next melee attack will do 13% more damage.
+Moving up/down an elevation level will also remove/add a plunge stack.
+Hitting your target will also have a chance to knock it back and you to follow it.
+The chance is 20% per stack.
+If the target is knocked back your character will plunge one tile of distance in the direction of the target.
+When Plunge is active movement fatigue cost is increased with the default cost.
+Waiting without attacking will remove the Plunge effect.
+Unlocks at level 8.  
+This perk is good with AOE weapons to milk the damage multiplier.
+Plunging from an elevated position increases damage more.
+Action points increasing perks would allow to move more before attacking.
+There is some danger to it as your character may get surrounded by multiple enemies.
+Should work well with Underdog and with multiple characters plunging together.
 * **Veteran** - Increase maximum perk points by 2, but lose 9 hitpoints and 9 maximum fatigue.
 Unlocks at level 8.  
 This park is there for the build that just needs one more perk, but comes at a cost and 1 more level of grinding :).
 
 ## Reworked Perks
 
-* **Colossus** - Nerfed to 16% increase in hitpoints.  
+* **Colossus** - Nerfed to 15% increase in hitpoints.  
 This perk seemed too strong and a part of 95% of builds.
 Even an auto-pick on backliners because of its synergy with Nimble.
-Although, Adrenaline is a viable first pick due to the explosive nature of early fights and having lower initiative than opponents,
+Although, Adrenaline is a viable first pick due to the explosive nature of early fights
+and having lower initiative than opponents,
 Colossus usually finds its way into a build almost always.  
-To compensate this nerf the starting hitpoints has been increased by 5.
-Nimble tanks would suffer from this change and have lower total hitpoints when base hitpoints are above 64.
+To compensate this nerf the starting hitpoints has been increased by 6.
+This makes the first few fights easier.
+Nimble tanks would suffer from this change and have lower total hitpoints when base hitpoints are above 69.
 The reduction should be around 3 hitpoints when total hitpints is around 120.
 * **Bullseye** - Buffed to 40% block chance.  
 Seemed too weak and was never picked. I don't know if it is even good at 40%. But at least some enemies would benefit :).

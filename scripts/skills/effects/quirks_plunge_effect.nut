@@ -6,7 +6,8 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
     IsSpent = false,
     Skill = null,
     TargetEntity = null,
-    TargetEntityTile = null
+    TargetEntityTile = null,
+    HasPlungedAfterTarget = false
   }
 
   function create() {
@@ -23,11 +24,20 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
 
   function getDescription() {
     return this.getroottable().Quirks.getPlungeEffectDescription(
-      this.m.DamageMultPerStack, this.m.KnockBackChancePerStack);
+      this.m.DamageMultPerStack, this.m.KnockBackChancePerStack) +
+      "\nNext melee attack will do [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      this.Math.round((this.getDamageMult() - 1) * 100) + "%[/color] more damage." +
+      " It also has a [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      this.Math.round(this.getKnockBackChance() * 100) +
+      "%[/color] chance to knock the target back and to plunge after it.";
   }
 
   function onAdded() {
     this.m.StartTile = this.getContainer().getActor().getTile();
+  }
+
+  function onRemoved() {
+    this.restoreMovementCost();
   }
 
   function onWaitTurn() {
@@ -81,13 +91,16 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
     return 1 - ::libreuse.binomialCdf(stack, 0, this.m.KnockBackChancePerStack);
   }
 
+  function getDamageMult() {
+    return this.Math.pow(this.m.DamageMultPerStack, this.getStacks());
+  }
+
   function onAnySkillUsed(_skill, _targetEntity, _properties) {
     if (_skill != null && _skill.isAttack() && !_skill.isRanged()) {
-      _properties.DamageTotalMult *= this.Math.pow(this.m.DamageMultPerStack, this.getStacks());
+      _properties.DamageTotalMult *= this.getDamageMult();
       this.m.IsSpent = true;
       this.m.Skill = _skill;
       this.m.TargetEntity = _targetEntity;
-      #this.logInfo("_targetEntity = " + ::libreuse.toStr(_targetEntity, 1));
       this.m.TargetEntityTile = _targetEntity.getTile();
     }
   }
@@ -122,32 +135,38 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
     this.changeMovementFatigueCostWithPathfinder();
   }
 
+  function restoreMovementCost() {
+    local skills = this.getContainer();
+    local actor = this.getContainer().getActor();
+    if (skills.getSkillByID("perk.pathfinder") == null) {
+      actor.m.FatigueCosts = clone this.Const.DefaultMovementFatigueCost;
+      actor.m.LevelFatigueCost = this.Const.Movement.LevelDifferenceFatigueCost;
+    } else {
+      actor.m.LevelActionPointCost = 0;
+      actor.m.FatigueCosts = clone this.Const.PathfinderMovementFatigueCost;
+    }
+  }
+
   function onTurnEnd() {
     this.removeSelf();
   }
 
   function onAfterAnySkillUsed(_skill, _targetTile) {
-    this.logInfo("plunge.onAfterAnySkillUsed");
     if (this.m.IsSpent) {
-      this.logInfo("removing.");
       this.getContainer().getActor().setDirty(true);
       this.getContainer().remove(this);
     }
   }
 
   function onPlunge(_entity, _tag) {
-    this.logInfo("Plunge callback called.");
     local actorTile = _tag.User.getTile();
     local plungeToTile = actorTile.hasNextTile(_tag.Direction) ? actorTile.getNextTile(_tag.Direction) : null;
-    #this.logInfo(::libreuse.toStr(this.getstackinfos(1), 2));
     if (plungeToTile != null && plungeToTile.IsEmpty && plungeToTile.Level - actorTile.Level <= 1) {
-      this.logInfo("Teleporting.");
       this.Tactical.getNavigator().teleport(_tag.User, plungeToTile, null, null, false);
     }
   }
 
   function onTargetHit(_skill, _targetEntity, _bodyPart, _damageInflictedHitpoints, _damageInflictedArmor) {
-    this.logInfo("plunge.onTargetHit");
     if (_skill != this.m.Skill ||
       _targetEntity.getCurrentProperties().IsImmuneToKnockBackAndGrab ||
       _targetEntity.getCurrentProperties().IsRooted) {
@@ -155,7 +174,6 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
     }
 
     local knockBackChance = this.getKnockBackChance();
-    this.logInfo("knockBackChance = " + knockBackChance);
     if (knockBackChance * 1000 <= this.Math.rand(1, 1000)) {
       return;
     }
@@ -168,22 +186,23 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
         _targetEntity.setCurrentMovementType(this.Const.Tactical.MovementType.Involuntary);
         local callback = null;
         local tag = null;
-        if (_targetEntity == this.m.TargetEntity) {
-          this.logInfo("Scheduling plunge.");
+        if (!this.m.HasPlungedAfterTarget && _targetEntity == this.m.TargetEntity) {
           tag = {
             User = actor,
             Direction = actorTile.getDirectionTo(this.m.TargetEntityTile)
           };
           callback = this.onPlunge.bindenv(this);
+          this.m.HasPlungedAfterTarget = true;
         }
         this.Tactical.getNavigator().teleport(_targetEntity, knockBackTile, callback, tag, true);
       }
     } else {
-      if (_targetEntity == this.m.TargetEntity) {
+      if (!this.m.HasPlungedAfterTarget && _targetEntity == this.m.TargetEntity) {
         local tag = {
           User = actor,
           Direction = actorTile.getDirectionTo(this.m.TargetEntityTile)
         };
+        this.m.HasPlungedAfterTarget = true;
         this.onPlunge(null, tag);
       }
     }

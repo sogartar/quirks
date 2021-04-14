@@ -56,7 +56,7 @@ local addPerkBank = function() {
 };
 
 local addPerkPrecision = function() {
-  gt.Const.Quirks.PrecisionFatigueCost <- 15;
+  gt.Const.Quirks.PrecisionFatigueCost <- 12;
   gt.Const.Quirks.PrecisionApCost <- 3;
   gt.Const.Strings.PerkName.QuirksPrecision <- "Precision";
   gt.Const.Quirks.PrecisionHitChanceBonus <- 25;
@@ -151,10 +151,10 @@ local addPerkAcurate = function() {
 };
 
 local addPerkRefundFatigue = function() {
-  gt.Const.Quirks.RefundFatigueMult <- 0.5;
+  gt.Const.Quirks.RefundFatigueMult <- 0.66;
   gt.Const.Strings.PerkName.QuirksRefundFatigue <- "Refund Fatigue";
   gt.Const.Strings.PerkDescription.QuirksRefundFatigue <- "On a miss refund [color=" + this.Const.UI.Color.PositiveValue + "]" +
-    this.Math.floor(gt.Const.Quirks.RefundFatigueMult * 100) + "%[/color] of the fatigue used. " +
+    this.Math.round(gt.Const.Quirks.RefundFatigueMult * 100) + "%[/color] of the fatigue used. " +
     " Rounding is randomized with probability to round down or up equal to the fraction.";
 
   local refundFatiguePerkConsts = {
@@ -286,7 +286,7 @@ local addPerkDoubleOrNothing = function() {
 };
 
 local addPerkTeacher = function() {
-  gt.Const.Quirks.TeacherXpMult <- 1.4;
+  gt.Const.Quirks.TeacherXpMult <- 1.5;
   gt.Const.Strings.PerkName.QuirksTeacher <- "Teacher";
   gt.Quirks.getTeacherDescription <- function(xpMult) {
     return "Each kill by this character grants addition [color=" + this.Const.UI.Color.PositiveValue + "]" +
@@ -305,7 +305,7 @@ local addPerkTeacher = function() {
 };
 
 local addPerkDefensiveAdaptation = function() {
-  gt.Const.Quirks.DefensiveAdaptationBonusPerStack <- 12;
+  gt.Const.Quirks.DefensiveAdaptationBonusPerStack <- 13;
   gt.Const.Strings.PerkName.QuirksDefensiveAdaptation <- "Defensive Adaptation";
   gt.Quirks.getDefensiveAdaptationDescription <- function(bonusPerStack) {
     return "With each hit taken increase melee and ranged defense by [color=" + this.Const.UI.Color.PositiveValue + "]" +
@@ -405,12 +405,12 @@ local addPerkPunchingBag = function() {
     Icon = "ui/perks/perk_quirks_punching_bag.png",
     IconDisabled = "ui/perks/perk_quirks_punching_bag_sw.png"
   };
-  ::quirks.setPerk(punchingBagPerkConsts, 1);
+  ::quirks.setPerk(punchingBagPerkConsts, 0);
 };
 
 local addPerkSurprise = function() {
   gt.Const.Strings.SurprisedEffectName <- "Surprised";
-  gt.Const.Quirks.SurpriseOnMissedInitiativeStolen <- 10;
+  gt.Const.Quirks.SurpriseOnMissedInitiativeStolen <- 12;
   gt.Const.Strings.PerkName.QuirksSurprise <- "Surprise";
   gt.Quirks.getSurpriseDescription <- function(onMissedInitiativeStolen) {
     return "With each time, being missed, steal [color=" + this.Const.UI.Color.PositiveValue + "]" +
@@ -426,7 +426,7 @@ local addPerkSurprise = function() {
     Icon = "ui/perks/perk_quirks_surprise.png",
     IconDisabled = "ui/perks/perk_quirks_surprise_sw.png"
   };
-  ::quirks.setPerk(surprisePerkConsts, 4);
+  ::quirks.setPerk(surprisePerkConsts, 2);
 };
 
 local addPerkRefundActionPoints = function() {
@@ -453,7 +453,7 @@ local addPerkRefundActionPoints = function() {
 };
 
 local addPerkSlack = function() {
-  gt.Const.Quirks.SlackFatigueRecoveryPerUnspentActionPoint <- 1.5;
+  gt.Const.Quirks.SlackFatigueRecoveryPerUnspentActionPoint <- 1.66;
   this.Const.Strings.PerkName.QuirksSlack <- "Slack";
   gt.Quirks.getSlackDescription <- function(fatigueRecoveryPerUnspentActionPoint) {
     return "Each turn recover an additional [color=" + this.Const.UI.Color.PositiveValue + "]" +
@@ -595,7 +595,7 @@ local buffBaseHitpoints = function() {
 }
 
 local nerfColossus = function() {
-  gt.Const.Quirks.ColossusHitpointsMult <- 1.16;
+  gt.Const.Quirks.ColossusHitpointsMult <- 1.15;
   gt.Const.Strings.PerkDescription.Colossus <- "Bring it on! Hitpoints are increased by [color=" + this.Const.UI.Color.PositiveValue + "]" +
     this.Math.round((gt.Const.Quirks.ColossusHitpointsMult - 1) * 100) + "%[/color], which also reduces the chance to sustain debilitating injuries when being hit.";
 
@@ -669,18 +669,18 @@ local addPerkSlowDown = function() {
 local addPerkPlunge = function() {
   gt.Const.Quirks.PlungeActionPointsCost <- 0;
   gt.Const.Quirks.PlungeFatigueCost <- 0;
-  gt.Const.Quirks.PlungeDamageMultPerStack <- 1.1;
+  gt.Const.Quirks.PlungeDamageMultPerStack <- 1.13;
   gt.Const.Quirks.PlungeKnockBackChancePerStack <- 0.2;
   this.Const.Strings.PerkName.QuirksPlunge <- "Plunge";
   gt.Quirks.getPlungeSkillDescription <- function(dmageMultPerStack, knockBackChancePerStack) {
-    return "With Each tile of distance traveled since activating Plunge, the next melee attack will do [color=" + this.Const.UI.Color.PositiveValue + "]" +
+    return "With Each tile of distance since activating Plunge, the next melee attack will do [color=" + this.Const.UI.Color.PositiveValue + "]" +
       this.Math.round((dmageMultPerStack - 1) * 100) + "%[/color] more damage." +
       " Moving up/down an elevation level will also remove/add a plunge stack." +
       " Hitting your target will also have a chance to knock it back and you to follow it." +
       " The chance is [color=" + this.Const.UI.Color.PositiveValue + "]" +
       this.Math.round(knockBackChancePerStack * 100) + "%[/color] per stack." +
       " If the target is knocked back your character will plunge one tile of distance in the direction of the target." +
-      " When Plunge is active movement fatigue cost is doubled." +
+      " When Plunge is active movement fatigue cost is increased with the default cost." +
       " Waiting without attacking will remove the Plunge effect.";
   };
   gt.Quirks.getPlungeEffectDescription <- function(dmageMultPerStack, knockBackChancePerStack) {

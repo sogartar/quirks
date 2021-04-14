@@ -1,6 +1,6 @@
 this.quirks_buff_hitpoints <- this.inherit("scripts/skills/skill", {
   m = {
-    HitpointsModifier = 5,
+    HitpointsModifier = 6,
   },
   function create() {
     this.m.ID = "special.quirks.buff_hitpoints";
