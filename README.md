@@ -1,6 +1,6 @@
 # Quirks
 
-Quirks is a mod for Battle Brothers that adds new perks and rebalances some existing once.
+Quirks is a mod for Battle Brothers that adds new perks and rebalances some existing ones.
 
 
 ## New Perks
