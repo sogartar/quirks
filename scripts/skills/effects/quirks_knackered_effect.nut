@@ -28,10 +28,15 @@ this.quirks_knackered_effect <- this.inherit("scripts/skills/skill", {
     }
   }
 
+  function usesFatigue() {
+    //FatigueEffectMult should be used, but for some reason it is 1 here for Zombies and Ancient Dead when it should be 0.
+    return this.getContainer().getActor().getCurrentProperties().Stamina != 0;
+  }
+
   function onUpdate(_properties) {
     local actor = this.getContainer().getActor();
     local staminaLeft = actor.getFatigueMax() - actor.getFatigue();
-    local isKnackered = staminaLeft <= 0;
+    local isKnackered = this.usesFatigue() && staminaLeft <= 0;
     this.m.IsHidden = !isKnackered;
     if (isKnackered) {
       _properties.MeleeDefense += this.m.DefenseModifier;
