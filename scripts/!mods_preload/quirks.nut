@@ -599,7 +599,7 @@ local nerfColossus = function() {
   gt.Const.Strings.PerkDescription.Colossus <- "Bring it on! Hitpoints are increased by [color=" + this.Const.UI.Color.PositiveValue + "]" +
     this.Math.round((gt.Const.Quirks.ColossusHitpointsMult - 1) * 100) + "%[/color], which also reduces the chance to sustain debilitating injuries when being hit.";
 
-  ::mods_hookExactClass("skills/perks/perk_quirks_colossus", function(c) {
+  ::mods_hookExactClass("skills/perks/perk_colossus", function(c) {
     c.onAdded = function() {
       local actor = this.getContainer().getActor();
 
