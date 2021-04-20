@@ -520,7 +520,7 @@ local buffBullseye = function() {
     this.Const.UI.Color.NegativeValue + "]" + this.Math.round(this.Const.Combat.RangedAttackBlockedChance * 100) +
     "%[/color] to [color=" + this.Const.UI.Color.NegativeValue + "]" + this.Math.round(total * 100) + "%[/color] for ranged weapons.";
   
-  ::mods_hookExactClass("skills/perks/perk_quirks_bullseye", function(c) {
+  ::mods_hookExactClass("skills/perks/perk_bullseye", function(c) {
     c.m.RangedAttackBlockedChanceMult <- this.Const.Quirks.BullseyeRangedAttackBlockedChanceMult;
     c.onUpdate = function(_properties) {
       _properties.RangedAttackBlockedChanceMult *= this.m.RangedAttackBlockedChanceMult;
@@ -539,7 +539,7 @@ local nerfThrowingMastery = function() {
     "\n\nDamage is increased by [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((gt.Const.Quirks.ThrowingMasteryDamageMultAtDistance2 - 1) * 100) + "%[/color] when attacking at 2 tiles of distance." +
     "\n\nDamage is increased by [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((gt.Const.Quirks.ThrowingMasteryDamageMultAtDistance3 - 1) * 100) + "%[/color] when attacking at 3 tiles of distance.",
 
-  ::mods_hookExactClass("skills/perks/perk_quirks_mastery_throwing", function(c) {
+  ::mods_hookExactClass("skills/perks/perk_mastery_throwing", function(c) {
     c.onAnySkillUsed = function(_skill, _targetEntity, _properties) {
       if (_targetEntity == null)
       {
