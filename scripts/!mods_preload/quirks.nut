@@ -501,122 +501,6 @@ local addPerkImpenetrable = function() {
   ::quirks.setPerk(impenetrablePerkConsts, 5);
 };
 
-local findPerkConsts = function(perkId, perks=gt.Const.Perks.Perks) {
-  foreach (perksRow in perks) {
-    foreach (perk in perksRow) {
-      if (perk.ID == perkId) {
-        return perk;
-      }
-    }
-  }
-
-  return null;
-}
-
-local buffBullseye = function() {
-  gt.Const.Quirks.BullseyeRangedAttackBlockedChanceMult <- 0.533;
-  local total = this.Const.Combat.RangedAttackBlockedChance * gt.Const.Quirks.BullseyeRangedAttackBlockedChanceMult;
-  gt.Const.Strings.PerkDescription.QuirksBullseye <- "Nailed it! The penalty to hitchance when shooting at a target you have no clear line of fire to is reduced from [color=" +
-    this.Const.UI.Color.NegativeValue + "]" + this.Math.round(this.Const.Combat.RangedAttackBlockedChance * 100) +
-    "%[/color] to [color=" + this.Const.UI.Color.NegativeValue + "]" + this.Math.round(total * 100) + "%[/color] for ranged weapons.";
-  
-  ::mods_hookExactClass("skills/perks/perk_bullseye", function(c) {
-    c.m.RangedAttackBlockedChanceMult <- this.Const.Quirks.BullseyeRangedAttackBlockedChanceMult;
-    c.onUpdate = function(_properties) {
-      _properties.RangedAttackBlockedChanceMult *= this.m.RangedAttackBlockedChanceMult;
-    };
-  });
-
-  local perkConsts = findPerkConsts("perk.bullseye");
-  perkConsts.Tooltip = gt.Const.Strings.PerkDescription.QuirksBullseye;
-}
-
-local nerfThrowingMastery = function() {
-  gt.Const.Quirks.ThrowingMasteryDamageMultAtDistance2 <- 1.217;
-  gt.Const.Quirks.ThrowingMasteryDamageMultAtDistance3 <- 1.116;
-  gt.Const.Strings.PerkDescription.SpecThrowing <- "Master throwing weapons to wound or kill the enemy before they even get close. " +
-    "Skills build up [color=" + this.Const.UI.Color.NegativeValue + "]25%[/color] less Fatigue." +
-    "\n\nDamage is increased by [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((gt.Const.Quirks.ThrowingMasteryDamageMultAtDistance2 - 1) * 100) + "%[/color] when attacking at 2 tiles of distance." +
-    "\n\nDamage is increased by [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((gt.Const.Quirks.ThrowingMasteryDamageMultAtDistance3 - 1) * 100) + "%[/color] when attacking at 3 tiles of distance.",
-
-  ::mods_hookExactClass("skills/perks/perk_mastery_throwing", function(c) {
-    c.onAnySkillUsed = function(_skill, _targetEntity, _properties) {
-      if (_targetEntity == null)
-      {
-        return;
-      }
-
-      if (_skill.isRanged() && (_skill.getID() == "actives.throw_axe" || _skill.getID() == "actives.throw_balls" || _skill.getID() == "actives.throw_javelin" || _skill.getID() == "actives.throw_spear" || _skill.getID() == "actives.sling_stone"))
-      {
-        local d = this.getContainer().getActor().getTile().getDistanceTo(_targetEntity.getTile());
-
-        if (d <= 2)
-        {
-          _properties.DamageTotalMult *= this.Const.Quirks.ThrowingMasteryDamageMultAtDistance2;
-        }
-        else if (d <= 3)
-        {
-          _properties.DamageTotalMult *= gt.Const.Quirks.ThrowingMasteryDamageMultAtDistance3;
-        }
-      }
-    };
-  });
-
-  local perkConsts = findPerkConsts("perk.mastery.throwing");
-  perkConsts.Tooltip = gt.Const.Strings.PerkDescription.SpecThrowing;
-};
-
-local buffThrowingWithoutMastery = function() {
-  ::mods_hookDescendants("entity/tactical/actor", function(c) {
-    local actorClass = ::mods_getClassForOverride(c, "actor");
-    if (!("onInitOriginalBuffThrowingWithoutMastery" in actorClass)) {
-      actorClass.onInitOriginalBuffThrowingWithoutMastery <- actorClass.onInit;
-      actorClass.onInit = function() {
-        this.onInitOriginalBuffThrowingWithoutMastery();
-        this.m.Skills.add(this.new("scripts/skills/special/quirks_buff_throwing"));
-      };
-    }
-  });
-}
-
-local buffHitpointsLeveling = function() {
-  gt.Const.AttributesLevelUp[gt.Const.Attributes.Hitpoints].Min += 1;
-  gt.Const.AttributesLevelUp[gt.Const.Attributes.Hitpoints].Max += 1;
-};
-
-local buffBaseHitpoints = function() {
-  ::mods_hookExactClass("entity/tactical/player", function(c) {
-    c.onInitOriginalQuirksBuffBaseHitpoints <- c.onInit;
-    c.onInit = function() {
-      this.onInitOriginalQuirksBuffBaseHitpoints();
-      this.m.Skills.add(this.new("scripts/skills/special/quirks_buff_hitpoints"));
-    };
-  });
-}
-
-local nerfColossus = function() {
-  gt.Const.Quirks.ColossusHitpointsMult <- 1.15;
-  gt.Const.Strings.PerkDescription.Colossus <- "Bring it on! Hitpoints are increased by [color=" + this.Const.UI.Color.PositiveValue + "]" +
-    this.Math.round((gt.Const.Quirks.ColossusHitpointsMult - 1) * 100) + "%[/color], which also reduces the chance to sustain debilitating injuries when being hit.";
-
-  ::mods_hookExactClass("skills/perks/perk_colossus", function(c) {
-    c.onAdded = function() {
-      local actor = this.getContainer().getActor();
-
-      if (actor.getHitpoints() == actor.getHitpointsMax()) {
-        actor.setHitpoints(this.Math.floor(actor.getHitpoints() * this.Const.Quirks.ColossusHitpointsMult));
-      }
-    };
-
-    c.onUpdate = function(_properties) {
-      _properties.HitpointsMult *= this.Const.Quirks.ColossusHitpointsMult;
-    }
-  });
-
-  local perkConsts = findPerkConsts("perk.colossus");
-  perkConsts.Tooltip = gt.Const.Strings.PerkDescription.Colossus;
-};
-
 local addEffectKnackered = function() {
   gt.Const.Quirks.KnackeredDefenseModifier <- -10;
   gt.Quirks.getKnackeredDescription <- function(defenseModifier) {
@@ -709,7 +593,6 @@ local addPerkPlunge = function() {
   setupRootTableStructure();
 
   addOnAfterSkillUsed();
-  #addExpectedDamageCalculationFlag();
   addMaxPerkPointsToPlayer();
 
   addPerkAcurate();
@@ -730,15 +613,6 @@ local addPerkPlunge = function() {
   addPerkSurprise();
   addPerkTeacher();
   addPerkVeteran();
-
-  buffBullseye();
-
-  buffThrowingWithoutMastery();
-  nerfThrowingMastery();
-
-  nerfColossus();
-  buffBaseHitpoints();
-  #buffHitpointsLeveling();
 
   addEffectKnackered();
 });

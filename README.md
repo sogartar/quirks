@@ -120,28 +120,6 @@ Should work well with Underdog and with multiple characters plunging together.
 Unlocks at level 8.  
 This park is there for the build that just needs one more perk, but comes at a cost and 1 more level of grinding :).
 
-## Reworked Perks
-
-* **Colossus** - Nerfed to 15% increase in hitpoints.  
-This perk seemed too strong and a part of 95% of builds.
-Even an auto-pick on backliners because of its synergy with Nimble.
-Although, Adrenaline is a viable first pick due to the explosive nature of early fights
-and having lower initiative than opponents,
-Colossus usually finds its way into a build almost always.  
-To compensate this nerf the starting hitpoints has been increased by 6.
-This makes the first few fights easier.
-Nimble tanks would suffer from this change and have lower total hitpoints when base hitpoints are above 69.
-The reduction should be around 3 hitpoints when total hitpints is around 120.
-* **Bullseye** - Buffed to 40% block chance.  
-Seemed too weak and was never picked. I don't know if it is even good at 40%. But at least some enemies would benefit :).
-* **Throwing Mastery** - Nerfed to do 22% more damage at distance of 2 and 12% at distance of 3.
-Now without mastery there is a 15% damage bonus at distance of 2 and 7.5% damage bonus at distance of 3.
-The total damage increase with mastery with this mod is again 40% and 20% at 2 and 3 tiles distance respectively.  
-I tried several times to do a skirmisher build, but it sucked.
-Due to this throwing damage without mastery from 2 and 3 tiles away is buffed.
-Now Goblin Skirmishers, Barbarian Reavers, etc. are stronger. As Reavers needed any buffs :).
-Overall with the Bullseye buff leveling ranged defense is more important.
-
 ## New Effects
 
 * **Knackered** - When a character reaches their maximum fatigue their melee and ranged defense is reduced by 10.
