@@ -48,7 +48,7 @@ this.perk_quirks_last_stand <- this.inherit("scripts/skills/skill", {
       }
     }
 
-    return this.Math.min(this.m.ResolveBonusMax, surroundCount * this.m.ResolveBonusPerNeighbourEnemy * this.m.Stacks);
+    return this.Math.minf(this.m.ResolveBonusMax, surroundCount * this.m.ResolveBonusPerNeighbourEnemy * this.m.Stacks);
   }
 
   function onDamageReceived(_attacker, _damageHitpoints, _damageArmor) {

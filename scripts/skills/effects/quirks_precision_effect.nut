@@ -43,7 +43,7 @@ this.quirks_precision_effect <- this.inherit("scripts/skills/skill", {
   }
   
   function onTurnStart() {
-    this.m.HitChanceBonus = this.Math.max(0, this.m.HitChanceBonus - this.m.HitChanceBonusDecreasePerTurn);
+    this.m.HitChanceBonus = this.Math.maxf(0, this.m.HitChanceBonus - this.m.HitChanceBonusDecreasePerTurn);
     if (this.m.HitChanceBonus == 0) {
       this.removeSelf();
     }
