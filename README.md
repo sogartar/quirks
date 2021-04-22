@@ -22,11 +22,10 @@ In such cases it is even possible to pick Berserk also.
 It is quite good on spear and sword specialists, as it allows to always attack 2 times per turn.
 It also allows to holding a spearwall for many turns. It is good on tanks as you can shieldwall each turn.
 The new Knackered effect does nerf fatigue neutral builds though.
-* **Accurate** - Increases hit chance by 4.5. Unlocks at level 4.  
+* **Accurate** - Increases hit chance by 4. Unlocks at level 4.  
 Probably an auto-pick on hybrids. This fits well into skirmisher builds.
 It is designed for them. It may be even picked on melee-only or ranged-only characters.
 Although crossbow-polearm hybrids were good anyways, they would also benefit from it.  
-Due to rounding you get the half point only when confident and/or Lone Wolf.
 * **Last Stand** - Upon taking damage to hitpoints add a stack of Last Stand until the end of the battle.
 Each stack increases resolve by 3 per enemy around you to a maximum of 36. Unlocks at level 4.  
 This is a good perk on nimble tanks that are likely to be surrounded and take hitpoints damage early in the battle.

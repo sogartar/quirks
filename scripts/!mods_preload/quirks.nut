@@ -135,7 +135,7 @@ local addPerkHyperactive = function() {
 };
 
 local addPerkAcurate = function() {
-  gt.Const.Quirks.AcurateHitChanceBonus <- 4.5;
+  gt.Const.Quirks.AcurateHitChanceBonus <- 4;
   gt.Const.Strings.PerkName.QuirksAcurate <- "Acurate";
   gt.Const.Strings.PerkDescription.QuirksAcurate <- "Increases hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.Quirks.AcurateHitChanceBonus + "[/color].";
 
