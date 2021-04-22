@@ -151,7 +151,7 @@ local addPerkAcurate = function() {
 };
 
 local addPerkRefundFatigue = function() {
-  gt.Const.Quirks.RefundFatigueMult <- 0.66;
+  gt.Const.Quirks.RefundFatigueMult <- 0.5;
   gt.Const.Strings.PerkName.QuirksRefundFatigue <- "Refund Fatigue";
   gt.Const.Strings.PerkDescription.QuirksRefundFatigue <- "On a miss refund [color=" + this.Const.UI.Color.PositiveValue + "]" +
     this.Math.round(gt.Const.Quirks.RefundFatigueMult * 100) + "%[/color] of the fatigue used. " +

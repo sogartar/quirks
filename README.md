@@ -29,9 +29,10 @@ Although crossbow-polearm hybrids were good anyways, they would also benefit fro
 * **Last Stand** - Upon taking damage to hitpoints add a stack of Last Stand until the end of the battle.
 Each stack increases resolve by 3 per enemy around you to a maximum of 36. Unlocks at level 4.  
 This is a good perk on nimble tanks that are likely to be surrounded and take hitpoints damage early in the battle.
-It helps to prevent your character from breaking and is good against Miasma as it will start stacking event if not hit.
-It is kind of a counter to Fearsome.
-* **Refund Fatigue** - On a miss refund 66% of the fatigue used.
+It helps to prevent your character from breaking.
+It is good against Miasma as it will start stacking event before losing armor from regular attacks.
+This perk is kind of a counter to Fearsome. It could be combined with Fersome on Nimble builds.
+* **Refund Fatigue** - On a miss refund 50% of the fatigue used.
 Rounding is randomized with probability to round down or up equal to the fraction.
 Unlocks at level 4.  
 This perk synergizes well with low hit chance and/or high fatigue attacks. It is good on low attack skill characters.
