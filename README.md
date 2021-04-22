@@ -116,7 +116,7 @@ Plunging from an elevated position increases damage more.
 Action points increasing perks would allow to move more before attacking.
 There is some danger to it as your character may get surrounded by multiple enemies.
 Should work well with Underdog and with multiple characters plunging together.
-* **Veteran** - Increase maximum perk points by 2, but lose 9 hitpoints and 9 maximum fatigue.
+* **Veteran** - Increase maximum perk points by 2, but lose 7 hitpoints and 7 maximum fatigue.
 Unlocks at level 8.  
 This park is there for the build that just needs one more perk, but comes at a cost and 1 more level of grinding :).
 
