@@ -305,7 +305,7 @@ local addPerkTeacher = function() {
 };
 
 local addPerkDefensiveAdaptation = function() {
-  gt.Const.Quirks.DefensiveAdaptationBonusPerStack <- 13;
+  gt.Const.Quirks.DefensiveAdaptationBonusPerStack <- 14;
   gt.Const.Strings.PerkName.QuirksDefensiveAdaptation <- "Defensive Adaptation";
   gt.Quirks.getDefensiveAdaptationDescription <- function(bonusPerStack) {
     return "With each hit taken increase melee and ranged defense by [color=" + this.Const.UI.Color.PositiveValue + "]" +

@@ -5,7 +5,7 @@ Quirks is a mod for Battle Brothers that adds new perks and rebalances some exis
 
 ## New Perks
 
-* **Defensive Adaptation** - With each hit taken increase melee and ranged defense by 13.
+* **Defensive Adaptation** - With each hit taken increase melee and ranged defense by 14.
 Upon being missed the counter is reset. Unlocks at level 2.  
 This is the equivalent of Fast Adaptation, but for defense.
 It is useful on low defense characters and good to protect against bad RNG strings.
