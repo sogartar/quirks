@@ -151,7 +151,7 @@ local addPerkAcurate = function() {
 };
 
 local addPerkRefundFatigue = function() {
-  gt.Const.Quirks.RefundFatigueMult <- 0.5;
+  gt.Const.Quirks.RefundFatigueMult <- 0.6;
   gt.Const.Strings.PerkName.QuirksRefundFatigue <- "Refund Fatigue";
   gt.Const.Strings.PerkDescription.QuirksRefundFatigue <- "On a miss refund [color=" + this.Const.UI.Color.PositiveValue + "]" +
     this.Math.round(gt.Const.Quirks.RefundFatigueMult * 100) + "%[/color] of the fatigue used. " +
@@ -305,7 +305,7 @@ local addPerkTeacher = function() {
 };
 
 local addPerkDefensiveAdaptation = function() {
-  gt.Const.Quirks.DefensiveAdaptationBonusPerStack <- 14;
+  gt.Const.Quirks.DefensiveAdaptationBonusPerStack <- 15;
   gt.Const.Strings.PerkName.QuirksDefensiveAdaptation <- "Defensive Adaptation";
   gt.Quirks.getDefensiveAdaptationDescription <- function(bonusPerStack) {
     return "With each hit taken increase melee and ranged defense by [color=" + this.Const.UI.Color.PositiveValue + "]" +
@@ -388,7 +388,7 @@ local addPerkLastStand = function() {
 
 local addPerkPunchingBag = function() {
   gt.Const.Quirks.PunchingBagOnHitDamageMult <- 0.85;
-  gt.Const.Quirks.PunchingBagOnTurnStartBonusMult <- 0.5;
+  gt.Const.Quirks.PunchingBagOnTurnStartBonusMult <- 0.6;
   gt.Const.Strings.PerkName.QuirksPunchingBag <- "Punching Bag";
   gt.Quirks.getPunchingBagDescription <- function(onHitDamageMult, onTurnStartBonusMult) {
     return "Each time being hit decrease future incoming damage by [color=" + this.Const.UI.Color.PositiveValue + "]" +
@@ -410,7 +410,7 @@ local addPerkPunchingBag = function() {
 
 local addPerkSurprise = function() {
   gt.Const.Strings.SurprisedEffectName <- "Surprised";
-  gt.Const.Quirks.SurpriseOnMissedInitiativeStolen <- 12;
+  gt.Const.Quirks.SurpriseOnMissedInitiativeStolen <- 13;
   gt.Const.Strings.PerkName.QuirksSurprise <- "Surprise";
   gt.Quirks.getSurpriseDescription <- function(onMissedInitiativeStolen) {
     return "With each time, being missed, steal [color=" + this.Const.UI.Color.PositiveValue + "]" +
@@ -553,7 +553,7 @@ local addPerkSlowDown = function() {
 local addPerkPlunge = function() {
   gt.Const.Quirks.PlungeActionPointsCost <- 0;
   gt.Const.Quirks.PlungeFatigueCost <- 0;
-  gt.Const.Quirks.PlungeDamageMultPerStack <- 1.13;
+  gt.Const.Quirks.PlungeDamageMultPerStack <- 1.15;
   gt.Const.Quirks.PlungeKnockBackChancePerStack <- 0.2;
   this.Const.Strings.PerkName.QuirksPlunge <- "Plunge";
   gt.Quirks.getPlungeSkillDescription <- function(dmageMultPerStack, knockBackChancePerStack) {

@@ -5,12 +5,12 @@ Quirks is a mod for Battle Brothers that adds new perks and rebalances some exis
 
 ## New Perks
 
-* **Defensive Adaptation** - With each hit taken increase melee and ranged defense by 14.
+* **Defensive Adaptation** - With each hit taken increase melee and ranged defense by 15.
 Upon being missed the counter is reset. Unlocks at level 2.  
 This is the equivalent of Fast Adaptation, but for defense.
 It is useful on low defense characters and good to protect against bad RNG strings.
 * **Punching Bag** - Each time being hit decrease future incoming damage by 15% from attacks.
-At the start of each turn this bonus is reduced by 50%. Unlocks at level 2.  
+At the start of each turn this bonus is reduced by 40%. Unlocks at level 2.  
 This weird perk fits well into tank builds without defense :|.
 It synergizes very well with Indomitable and Battle Forged. It is good against chip damage.
 The more you get hit the better it is. It will not do as well in explosive fights against high damage two-handers.
@@ -32,11 +32,11 @@ This is a good perk on nimble tanks that are likely to be surrounded and take hi
 It helps to prevent your character from breaking.
 It is good against Miasma as it will start stacking event before losing armor from regular attacks.
 This perk is kind of a counter to Fearsome. It could be combined with Fersome on Nimble builds.
-* **Refund Fatigue** - On a miss refund 50% of the fatigue used.
+* **Refund Fatigue** - On a miss refund 60% of the fatigue used.
 Rounding is randomized with probability to round down or up equal to the fraction.
 Unlocks at level 4.  
 This perk synergizes well with low hit chance and/or high fatigue attacks. It is good on low attack skill characters.
-* **Surprise** - With each time, being missed, steal 12 initiative form the attacker for 2 rounds.
+* **Surprise** - With each time, being missed, steal 13 initiative form the attacker for 2 rounds.
 Unlocks at level 4.  
 This perk is good on characters with Dodge, Overwhelm and high defense.
 You could do an initative build without that much initative.
@@ -103,7 +103,7 @@ or to at least cripple then even through heavy armor. It is well coupled with Re
 Note that Fast Adaptation would only stack 5% instead of 10%. It sucks at finishing off opponents.
 * **Plunge** - Unlocks the Plunge skill.
 With Each tile of distance since activating Plunge,
-the next melee attack will do 13% more damage.
+the next melee attack will do 15% more damage.
 Moving up/down an elevation level will also remove/add a plunge stack.
 Hitting your target will also have a chance to knock it back and you to follow it.
 The chance is 20% per stack.

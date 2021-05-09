@@ -26,7 +26,7 @@ this.perk_quirks_teacher <- this.inherit("scripts/skills/skill", {
     foreach (bro in brothers) {
       if (bro.getLevel() < teacherLevel && bro != teacher) {
         bro.addXP(xpGroup);
-        this.m.LifetimeXpTaught += xpGroup;
+        this.m.LifetimeXpTaught += this.Math.round(xpGroup / this.Const.Combat.GlobalXPMult);
       }
     }
   }
