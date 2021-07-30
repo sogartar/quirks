@@ -56,7 +56,7 @@ local addPerkBank = function() {
 };
 
 local addPerkPrecision = function() {
-  gt.Const.Quirks.PrecisionFatigueCost <- 12;
+  gt.Const.Quirks.PrecisionFatigueCost <- 11;
   gt.Const.Quirks.PrecisionApCost <- 3;
   gt.Const.Strings.PerkName.QuirksPrecision <- "Precision";
   gt.Const.Quirks.PrecisionHitChanceBonus <- 25;
@@ -305,7 +305,7 @@ local addPerkTeacher = function() {
 };
 
 local addPerkDefensiveAdaptation = function() {
-  gt.Const.Quirks.DefensiveAdaptationBonusPerStack <- 15;
+  gt.Const.Quirks.DefensiveAdaptationBonusPerStack <- 16;
   gt.Const.Strings.PerkName.QuirksDefensiveAdaptation <- "Defensive Adaptation";
   gt.Quirks.getDefensiveAdaptationDescription <- function(bonusPerStack) {
     return "With each hit taken increase melee and ranged defense by [color=" + this.Const.UI.Color.PositiveValue + "]" +
@@ -373,8 +373,8 @@ local addPerkVeteran = function() {
 };
 
 local addPerkLastStand = function() {
-  gt.Const.Quirks.LastStandResolveBonusPerNeighbourEnemy <- 3;
-  gt.Const.Quirks.LastStandResolveBonusMax <- 36;
+  gt.Const.Quirks.LastStandResolveBonusPerNeighbourEnemy <- 5;
+  gt.Const.Quirks.LastStandResolveBonusMax <- 40;
   gt.Const.Strings.PerkName.QuirksLastStand <- "Last Stand";
   gt.Quirks.getLastStandDescription <- function(resolveBonusPerNeighbourEnemy, resolveBonusMax) {
     return "Upon taking damage to hitpoints add a stack of Last Stand until the end of the battle. " +
@@ -398,7 +398,7 @@ local addPerkLastStand = function() {
 
 local addPerkPunchingBag = function() {
   gt.Const.Quirks.PunchingBagOnHitDamageMult <- 0.85;
-  gt.Const.Quirks.PunchingBagOnTurnStartBonusMult <- 0.6;
+  gt.Const.Quirks.PunchingBagOnTurnStartBonusMult <- 0.6666;
   gt.Const.Strings.PerkName.QuirksPunchingBag <- "Punching Bag";
   gt.Quirks.getPunchingBagDescription <- function(onHitDamageMult, onTurnStartBonusMult) {
     return "Each time being hit decrease future incoming damage by [color=" + this.Const.UI.Color.PositiveValue + "]" +
@@ -420,7 +420,7 @@ local addPerkPunchingBag = function() {
 
 local addPerkSurprise = function() {
   gt.Const.Strings.SurprisedEffectName <- "Surprised";
-  gt.Const.Quirks.SurpriseOnMissedInitiativeStolen <- 13;
+  gt.Const.Quirks.SurpriseOnMissedInitiativeStolen <- 15;
   gt.Const.Strings.PerkName.QuirksSurprise <- "Surprise";
   gt.Quirks.getSurpriseDescription <- function(onMissedInitiativeStolen) {
     return "With each time, being missed, steal [color=" + this.Const.UI.Color.PositiveValue + "]" +

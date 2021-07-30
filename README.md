@@ -5,12 +5,12 @@ Quirks is a mod for Battle Brothers that adds new perks and rebalances some exis
 
 ## New Perks
 
-* **Defensive Adaptation** - With each hit taken increase melee and ranged defense by 15.
+* **Defensive Adaptation** - With each hit taken increase melee and ranged defense by 16.
 Upon being missed the counter is reset. Unlocks at level 2.  
 This is the equivalent of Fast Adaptation, but for defense.
 It is useful on low defense characters and good to protect against bad RNG strings.
 * **Punching Bag** - Each time being hit decrease future incoming damage by 15% from attacks.
-At the start of each turn this bonus is reduced by 40%. Unlocks at level 2.  
+At the start of each turn this bonus is reduced by 33.3%. Unlocks at level 2.  
 This weird perk fits well into tank builds without defense :|.
 It synergizes very well with Indomitable and Battle Forged. It is good against chip damage.
 The more you get hit the better it is. It will not do as well in explosive fights against high damage two-handers.
@@ -27,7 +27,7 @@ Probably an auto-pick on hybrids. This fits well into skirmisher builds.
 It is designed for them. It may be even picked on melee-only or ranged-only characters.
 Although crossbow-polearm hybrids were good anyways, they would also benefit from it.  
 * **Last Stand** - Upon taking damage to hitpoints add a stack of Last Stand until the end of the battle.
-Each stack increases resolve by 3 per enemy around you to a maximum of 36. Unlocks at level 4.  
+Each stack increases resolve by 4 per enemy around you to a maximum of 40. Unlocks at level 4.  
 This is a good perk on nimble tanks that are likely to be surrounded and take hitpoints damage early in the battle.
 It helps to prevent your character from breaking.
 It is good against Miasma as it will start stacking event before losing armor from regular attacks.
@@ -36,7 +36,7 @@ This perk is kind of a counter to Fearsome. It could be combined with Fersome on
 Rounding is randomized with probability to round down or up equal to the fraction.
 Unlocks at level 4.  
 This perk synergizes well with low hit chance and/or high fatigue attacks. It is good on low attack skill characters.
-* **Surprise** - With each time, being missed, steal 13 initiative form the attacker for 2 rounds.
+* **Surprise** - With each time, being missed, steal 15 initiative form the attacker for 2 rounds.
 Unlocks at level 4.  
 This perk is good on characters with Dodge, Overwhelm and high defense.
 You could do an initative build without that much initative.
@@ -54,7 +54,7 @@ Not well suited for Battle Forged builds.
 On rare occasions this skill may be be a bit overpowered on super tanks with very high fatigue.
 Where the old Recover, Adrenaline, Shieldwall, Indomitable cycle is possible but you squeeze Exertion before/after Recover.
 * **Precision** - Unlocks the ability to increase next attack's hit chance with 25%.
-If unused, each turn this bonus is decreased with 12.5%. Costs 12 fatigue and 3 action points.
+If unused, each turn this bonus is decreased with 12.5%. Costs 11 fatigue and 3 action points.
 The bonus is halved for area of effect attacks. Unlocks at level 6.  
 Should be good on maces where it is necessary to stun a dangerous target.
 You could use it with a one-handed mace in the same turn even when 1 tile away.
