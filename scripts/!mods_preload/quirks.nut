@@ -326,16 +326,26 @@ local addPerkDefensiveAdaptation = function() {
 local addMaxPerkPointsToPlayer = function() {
   ::mods_hookExactClass("entity/tactical/player", function(c) {
     c.m.MaxPerkPoints <- gt.Const.XP.MaxLevelWithPerkpoints - 1;
-    local updateLevelOriginal = c.updateLevel;
+    c.m.StudentRefundPerkPointAtLevel <- gt.Const.XP.MaxLevelWithPerkpoints;
+    local updateLevelOriginalQuirks = c.updateLevel;
     c.updateLevel = function() {
-      updateLevelOriginal();
-      local hasStudent = this.getSkills().getSkillByID("perk.quirks.student") != null;
-      local spentAndUnspentPerkPoints = this.m.PerkPoints + this.m.PerkPointsSpent;
-      local perkPointsToAdd = this.Math.min(this.m.MaxPerkPoints + (hasStudent ? 1 : 0), this.getLevel() - 1) - spentAndUnspentPerkPoints;
-      this.m.PerkPoints += perkPointsToAdd;
+      updateLevelOriginalQuirks();
+      local hasStudent = this.getSkills().getSkillByID("perk.student") != null;
+      local perkPoints = this.Math.min(this.m.MaxPerkPoints, this.getLevel() - 1);
+      if (hasStudent && this.getLevel() >= this.m.StudentRefundPerkPointAtLevel) {
+        perkPoints += 1;
+      }
+      this.m.PerkPoints = perkPoints - this.m.PerkPointsSpent;
     };
   });
-}
+
+  ::mods_hookNewObject("entity/tactical/player", function(o) {
+    if (this.World.Assets.getOrigin().getID() == "scenario.manhunters" && o.getBackground().getID() == "background.slave") {
+      o.m.MaxPerkPoints = 6;
+      o.m.StudentRefundPerkPointAtLevel = 7;
+    }
+  });
+};
 
 local addPerkVeteran = function() {
   gt.Const.Quirks.VeteranHitpointsCost <- 7;
