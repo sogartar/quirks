@@ -83,6 +83,9 @@ The skill can be used until the end of the turn.
 The cost is 50% of the attack's fatigue + 2 per action point.
 Unlocks at level 7.  
 This perk fills the same niche as the Refund Fatigue perk, but also requires some fatigue to be useful.
+* **Supple** - Gain a chance to have any attacker require two successful attack rolls in order to hit.
+The chance starts from 150 and is reduced by 100% of maximum hitpoints and 150% of penalty to maximum fatigue.  
+Unlocks at level 7.  
 * **Bank** - Unlocks the ability to bank action points to be used later.
 When used, banks 1 action point.
 Breaking the bank (cashing in) makes the action points available next turn.
@@ -100,7 +103,7 @@ Unlocks at level 8.
 I found the perk a bit underwhelming, but there is beauty in its symmetry, so I am leaving it in.
 Should be best used with high armor penetration weapons where you are hopping to one-shot targets
 or to at least cripple then even through heavy armor. It is well coupled with Refund Fatigue/AP.
-Note that Fast Adaptation would only stack 5% instead of 10%. It sucks at finishing off opponents.
+Note that Fast Adaptation would only stack half its bonus. It sucks at finishing off opponents.
 * **Plunge** - Unlocks the Plunge skill.
 With Each tile of distance since activating Plunge,
 the next melee attack will do 15% more damage.

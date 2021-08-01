@@ -599,6 +599,34 @@ local addPerkPlunge = function() {
   ::quirks.setPerk(plungePerkConsts, 6);
 }
 
+local addPerkSupple = function() {
+  gt.Const.Quirks.SuppleRerollChanceBase <- 150;
+  gt.Const.Quirks.SuppleRerollChanceHitpointsMaxMult <- -1;
+  gt.Const.Quirks.SuppleRerollChanceFatigueMaxPenaltyMult <- -1.5;
+  this.Const.Strings.PerkName.QuirksSupple <- "Supple";
+  gt.Quirks.getSuppleDescription <- function(rerollChanceBase, rerollChanceHitpointsMaxMult, rerollChanceFatigueMaxPenaltyMult) {
+    return "Gain a chance to have any attacker require two successful attack rolls in order to hit." +
+      " The chance starts from [color=" + this.Const.UI.Color.PositiveValue + "]" + rerollChanceBase +
+      "[/color] and is reduced by [color=" + this.Const.UI.Color.NegativeValue + "]" +
+      this.Math.round(-rerollChanceHitpointsMaxMult * 100) +
+      "%[/color] of maximum hitpoints and [color=" + this.Const.UI.Color.NegativeValue + "]" +
+      this.Math.round(-rerollChanceFatigueMaxPenaltyMult * 100) + "%[/color] of penalty to maximum fatigue.";
+  };
+  gt.Const.Strings.PerkDescription.QuirksSupple <-
+    gt.Quirks.getSuppleDescription(gt.Const.Quirks.SuppleRerollChanceBase,
+    gt.Const.Quirks.SuppleRerollChanceHitpointsMaxMult, gt.Const.Quirks.SuppleRerollChanceFatigueMaxPenaltyMult);
+
+  local supplePerkConsts = {
+    ID = "perk.quirks.supple",
+    Script = "scripts/skills/perks/perk_quirks_supple",
+    Name = this.Const.Strings.PerkName.QuirksSupple,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksSupple,
+    Icon = "ui/perks/perk_quirks_supple.png",
+    IconDisabled = "ui/perks/perk_quirks_supple_sw.png"
+  };
+  ::quirks.setPerk(supplePerkConsts, 5);
+};
+
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
   setupRootTableStructure();
 
@@ -620,6 +648,7 @@ local addPerkPlunge = function() {
   addPerkRefundFatigue();
   #addPerkSlowDown();
   addPerkSlack();
+  addPerkSupple();
   addPerkSurprise();
   addPerkTeacher();
   addPerkVeteran();
