@@ -34,13 +34,14 @@ this.perk_quirks_supple <- this.inherit("scripts/skills/skill", {
     local itemsFatigue = this.Math.max(0, actor.getBaseProperties().Stamina - _properties.Stamina);
     local hitpointsMax = this.Math.floor(_properties.Hitpoints *
       (_properties.HitpointsMult >= 0 ? _properties.HitpointsMult : 1.0 / _properties.HitpointsMult));
-    return this.Math.round(this.m.RerollChanceBase +
+    return this.Math.min(100, this.Math.max(0, this.Math.round(this.m.RerollChanceBase +
       this.m.RerollChanceHitpointsMaxMult * hitpointsMax +
-      this.m.RerollChanceFatigueMaxPenaltyMult * itemsFatigue);
+      this.m.RerollChanceFatigueMaxPenaltyMult * itemsFatigue)));
   }
 
   function onAfterUpdate(_properties) {
     this.m.CurrentRerollChance = this.getRerollChance(_properties);
     _properties.RerollDefenseChance += this.m.CurrentRerollChance;
+    _properties.TargetAttractionMult *= (1 - this.m.CurrentRerollChance / 200.0);
   }
 });

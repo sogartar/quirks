@@ -600,7 +600,7 @@ local addPerkPlunge = function() {
 }
 
 local addPerkSupple = function() {
-  gt.Const.Quirks.SuppleRerollChanceBase <- 150;
+  gt.Const.Quirks.SuppleRerollChanceBase <- 135;
   gt.Const.Quirks.SuppleRerollChanceHitpointsMaxMult <- -1;
   gt.Const.Quirks.SuppleRerollChanceFatigueMaxPenaltyMult <- -1.5;
   this.Const.Strings.PerkName.QuirksSupple <- "Supple";

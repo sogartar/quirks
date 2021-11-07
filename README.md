@@ -84,7 +84,7 @@ The cost is 50% of the attack's fatigue + 2 per action point.
 Unlocks at level 7.  
 This perk fills the same niche as the Refund Fatigue perk, but also requires some fatigue to be useful.
 * **Supple** - Gain a chance to have any attacker require two successful attack rolls in order to hit.
-The chance starts from 150 and is reduced by 100% of maximum hitpoints and 150% of penalty to maximum fatigue.  
+The chance starts from 135 and is reduced by 100% of maximum hitpoints and 150% of penalty to maximum fatigue.  
 Unlocks at level 7.  
 * **Bank** - Unlocks the ability to bank action points to be used later.
 When used, banks 1 action point.
@@ -136,6 +136,6 @@ The current version is not very well tested and balanced. Feedback from the comm
  
 ## Dependencies
 
-* [Battle Brothers](http://battlebrothersgame.com/) (=1.4.0.48)
+* [Battle Brothers](http://battlebrothersgame.com/) (>=1.4.0.48)
 * [modhooks](https://www.nexusmods.com/battlebrothers/mods/42) (>=20)
 * [libreuse](https://github.com/sogartar/libreuse) (>=0.1)
