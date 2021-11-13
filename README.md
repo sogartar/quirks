@@ -102,6 +102,7 @@ I found the perk a bit underwhelming, but there is beauty in its symmetry, so I 
 Should be best used with high armor penetration weapons where you are hopping to one-shot targets
 or to at least cripple then even through heavy armor. It is well coupled with Refund Fatigue/AP.
 Note that Fast Adaptation would only stack half its bonus. It sucks at finishing off opponents.
+* **Glass Cannon** - Permanently increase damage delt by 25%, but increase damage taken by 50%.
 * **Plunge** - Unlocks the Plunge skill.
 With Each tile of distance since activating Plunge,
 the next melee attack will do 15% more damage.

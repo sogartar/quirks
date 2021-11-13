@@ -620,6 +620,32 @@ local addPerkSupple = function() {
   ::quirks.setPerk(supplePerkConsts, 5);
 };
 
+local addPerkGlassCannon = function() {
+  gt.Const.Quirks.GlassCannonDamageTotalMult <- 1.25;
+  gt.Const.Quirks.GlassCannonDamageReceivedTotalMult <- 1.5;
+  this.Const.Strings.PerkName.QuirksGlassCannon <- "Glass Cannon";
+  gt.Quirks.getGlassCannonDescription <- function(damageTotalMult, damageReceivedTotalMult) {
+    return "Permanently increase damage delt by [color=" +
+      this.Const.UI.Color.PositiveValue + "]" + this.Math.round((damageTotalMult - 1) * 100) +
+      "%[/color], but increase damage taken by [color=" + this.Const.UI.Color.NegativeValue + "]" +
+      this.Math.round((damageReceivedTotalMult - 1) * 100) + "%[/color].";
+  };
+  gt.Const.Strings.PerkDescription.QuirksGlassCannon <-
+    gt.Quirks.getGlassCannonDescription(
+      gt.Const.Quirks.GlassCannonDamageTotalMult,
+      gt.Const.Quirks.GlassCannonDamageReceivedTotalMult);
+
+  local glassCannonPerkConsts = {
+    ID = "perk.quirks.glass_cannon",
+    Script = "scripts/skills/perks/perk_quirks_glass_cannon",
+    Name = this.Const.Strings.PerkName.QuirksGlassCannon,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksGlassCannon,
+    Icon = "ui/perks/perk_quirks_glass_cannon.png",
+    IconDisabled = "ui/perks/perk_quirks_glass_cannon_sw.png"
+  };
+  ::quirks.setPerk(glassCannonPerkConsts, 6);
+};
+
 ::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
   setupRootTableStructure();
 
@@ -631,6 +657,7 @@ local addPerkSupple = function() {
   addPerkDefensiveAdaptation();
   addPerkDoubleOrNothing();
   addPerkExertion();
+  addPerkGlassCannon();
   addPerkHyperactive();
   addPerkImpenetrable();
   addPerkLastStand();
