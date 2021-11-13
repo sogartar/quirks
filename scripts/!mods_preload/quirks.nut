@@ -530,24 +530,17 @@ local addEffectKnackered = function() {
 };
 
 local addPerkSlowDown = function() {
-  gt.Const.Quirks.SlowDownInitiativeForTurnOrderModifier <- -1000;
-  gt.Const.Quirks.SlowDownActionPointsCost <- 0;
-  gt.Const.Quirks.SlowDownFatigueCost <- 0;
+  gt.Const.Quirks.SlowDownActionPointsMovementConstPerStack <- 2;
+  gt.Const.Quirks.SlowDownMaxTargetsSlowedPerRound <- 2;
   this.Const.Strings.PerkName.QuirksSlowDown <- "Slow Down";
-  gt.Quirks.getSlowDownSkillDescription <- function() {
-    return "Lower turn order initiative this turn to act last after waiting.";
-  };
-  gt.Quirks.getSlowDownEffectDescription <- function() {
-    return "This character will act last after waiting.";
-  };
-  gt.Quirks.getSlowDownPerkDescription <- function(actionPointsCost, fatigueCost) {
-    return "Unlocks the ability to lower turn order initiative this turn to act last after waiting." +
-      " If two characters use this skill, the one with lower initiative will act second. " +
-      " The cost is [color=" + this.Const.UI.Color.NegativeValue + "]" + actionPointsCost + "%[/color] action points and " +
-      "[color=" + this.Const.UI.Color.NegativeValue + "]" + fatigueCost + "[/color] fatigue.";;
+  gt.Quirks.getSlowDownPerkDescription <- function(actionPointsMovementConstPerStack, maxTargetsSlowedPerRound) {
+    return "For each target hit (up to " + maxTargetsSlowedPerRound +
+      " targets) increase target's movement action point cost per tile by [color=" +
+      this.Const.UI.Color.PositiveValue + "]" + actionPointsMovementConstPerStack +
+      "[/color] this round.";
   };
   gt.Const.Strings.PerkDescription.QuirksSlowDown <- gt.Quirks.getSlowDownPerkDescription(
-    gt.Const.Quirks.SlowDownActionPointsCost, gt.Const.Quirks.SlowDownFatigueCost);
+    gt.Const.Quirks.SlowDownActionPointsMovementConstPerStack, gt.Const.Quirks.SlowDownMaxTargetsSlowedPerRound);
 
   local slowDownPerkConsts = {
     ID = "perk.quirks.slow_down",
@@ -557,7 +550,7 @@ local addPerkSlowDown = function() {
     Icon = "ui/perks/perk_quirks_slow_down.png",
     IconDisabled = "ui/perks/perk_quirks_slow_down_sw.png"
   };
-  ::quirks.setPerk(slowDownPerkConsts, 0);
+  ::quirks.setPerk(slowDownPerkConsts, 1);
 }
 
 local addPerkPlunge = function() {
@@ -646,8 +639,8 @@ local addPerkSupple = function() {
   addPerkPunchingBag();
   addPerkRefundActionPoints();
   addPerkRefundFatigue();
-  #addPerkSlowDown();
   addPerkSlack();
+  addPerkSlowDown();
   addPerkSupple();
   addPerkSurprise();
   addPerkTeacher();
