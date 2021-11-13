@@ -11,6 +11,7 @@ this.perk_quirks_supple <- this.inherit("scripts/skills/skill", {
     this.m.Name = this.Const.Strings.PerkName.QuirksSupple;
     this.m.Description = this.Const.Strings.PerkDescription.QuirksSupple;
     this.m.Icon = "ui/perks/perk_quirks_supple.png";
+    this.m.IconMini = "perk_quirks_supple_mini";
     this.m.Type = this.Const.SkillType.Perk | this.Const.SkillType.StatusEffect;
     this.m.Order = this.Const.SkillOrder.Perk | this.Const.SkillType.StatusEffect;
     this.m.IsActive = false;

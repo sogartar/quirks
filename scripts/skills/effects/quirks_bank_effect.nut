@@ -3,15 +3,15 @@ this.quirks_bank_effect <- this.inherit("scripts/skills/skill", {
     ActionPoints = 0
   }
 
-  function create()
-  {
+  function create() {
     this.m.ID = "effects.quirks.bank";
     this.m.Name = this.Const.Strings.PerkName.QuirksBank;
     this.m.Icon = "ui/perks/perk_quirks_bank.png";
-    this.m.IconMini = "";
+    this.m.IconMini = "perk_quirks_bank_mini";
     this.m.Overlay = "perk_quirks_bank";
     this.m.Type = this.Const.SkillType.StatusEffect;
     this.m.IsActive = false;
+    this.m.IsHidden = false;
     this.m.IsRemovedAfterBattle = true;
   }
 

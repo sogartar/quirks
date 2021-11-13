@@ -7,6 +7,7 @@ this.perk_quirks_defensive_adaptation <- this.inherit("scripts/skills/skill", {
     this.m.ID = "perk.quirks.defensive_adaptation";
     this.m.Name = this.Const.Strings.PerkName.QuirksDefensiveAdaptation;
     this.m.Icon = "ui/perks/perk_quirks_defensive_adaptation.png";
+    this.m.IconMini = "perk_quirks_defensive_adaptation_mini";
     this.m.Type = this.Const.SkillType.Perk | this.Const.SkillType.StatusEffect;
     this.m.Order = this.Const.SkillOrder.Perk | this.Const.SkillType.StatusEffect;
     this.m.IsActive = false;

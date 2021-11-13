@@ -8,7 +8,7 @@ this.quirks_surprised_effect <- this.inherit("scripts/skills/skill", {
     this.m.ID = "effects.quirks.surprised";
     this.m.Name = this.Const.Strings.SurprisedEffectName;
     this.m.Icon = "ui/effects/quirks_surprised_effect.png";
-    this.m.IconMini = "";
+    this.m.IconMini = "quirks_surprised_effect_mini";
     this.m.Overlay = "quirks_surprised_effect";
     this.m.Type = this.Const.SkillType.StatusEffect;
     this.m.IsActive = false;

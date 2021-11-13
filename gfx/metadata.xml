@@ -14,4 +14,20 @@
   <sprite id="perk_quirks_plunge" ic="FF624551" img="ui\perks\perk_quirks_plunge.png" />
   <sprite id="active_quirks_plunge" ic="FF624552" img="ui\actives\active_quirks_plunge.png" />
   <sprite id="perk_quirks_glass_cannon_mini" ic="FF624551" img="ui\perks\perk_quirks_glass_cannon_mini.png" />
+  <sprite id="perk_quirks_punching_bag_mini" ic="FF624551" img="ui\perks\perk_quirks_punching_bag_mini.png" />
+  <sprite id="perk_quirks_impenetrable_mini" ic="FF624551" img="ui\perks\perk_quirks_impenetrable_mini.png" />
+  <sprite id="perk_quirks_teacher_mini" ic="FF624551" img="ui\perks\perk_quirks_teacher_mini.png" />
+  <sprite id="perk_quirks_hyperactive_mini" ic="FF624551" img="ui\perks\perk_quirks_hyperactive_mini.png" />
+  <sprite id="perk_quirks_supple_mini" ic="FF624551" img="ui\perks\perk_quirks_supple_mini.png" />
+  <sprite id="perk_quirks_double_or_nothing_mini" ic="FF624551" img="ui\perks\perk_quirks_double_or_nothing_mini.png" />
+  <sprite id="perk_quirks_slack_mini" ic="FF624551" img="ui\perks\perk_quirks_slack_mini.png" />
+  <sprite id="perk_quirks_defensive_adaptation_mini" ic="FF624551" img="ui\perks\perk_quirks_defensive_adaptation_mini.png" />
+  <sprite id="perk_quirks_bank_mini" ic="FF624551" img="ui\perks\perk_quirks_bank_mini.png" />
+  <sprite id="perk_quirks_last_stand_mini" ic="FF624551" img="ui\perks\perk_quirks_last_stand_mini.png" />
+  <sprite id="perk_quirks_refund_fatigue_mini" ic="FF624551" img="ui\perks\perk_quirks_refund_fatigue_mini.png" />
+  <sprite id="quirks_slowed_down_effect_mini" ic="FF624551" img="ui\effects\quirks_slowed_down_effect_mini.png" />
+  <sprite id="quirks_precision_effect_mini" ic="FF624551" img="ui\effects\quirks_precision_effect_mini.png" />
+  <sprite id="quirks_surprise_effect_mini" ic="FF624551" img="ui\effects\quirks_surprise_effect_mini.png" />
+  <sprite id="quirks_surprised_effect_mini" ic="FF624551" img="ui\effects\quirks_surprised_effect_mini.png" />
+  <sprite id="quirks_knackered_effect_mini" ic="FF624551" img="ui\effects\quirks_knackered_effect_mini.png" />
 </brush>

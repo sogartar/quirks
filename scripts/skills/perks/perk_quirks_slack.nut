@@ -7,6 +7,7 @@ this.perk_quirks_slack <- this.inherit("scripts/skills/skill", {
     this.m.ID = "perk.quirks.slack";
     this.m.Name = this.Const.Strings.PerkName.QuirksSlack;
     this.m.Icon = "ui/perks/perk_quirks_slack.png";
+    this.m.IconMini = "perk_quirks_slack_mini";
     this.m.Type = this.Const.SkillType.Perk;
     this.m.Order = this.Const.SkillOrder.Perk;
     this.m.IsActive = false;

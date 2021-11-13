@@ -5,6 +5,7 @@ this.perk_quirks_double_or_nothing <- this.inherit("scripts/skills/skill", {
     this.m.Name = this.Const.Strings.PerkName.QuirksDoubleOrNothing;
     this.m.Description = this.Const.Strings.PerkDescription.QuirksDoubleOrNothing;
     this.m.Icon = "ui/perks/perk_quirks_double_or_nothing.png";
+    this.m.IconMini = "perk_quirks_double_or_nothing_mini";
     this.m.Type = this.Const.SkillType.Perk | this.Const.SkillType.StatusEffect;
     this.m.Order = this.Const.SkillOrder.Perk | this.Const.SkillType.StatusEffect;
     this.m.IsActive = false;

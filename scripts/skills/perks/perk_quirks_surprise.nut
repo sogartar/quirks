@@ -8,6 +8,7 @@ this.perk_quirks_surprise <- this.inherit("scripts/skills/skill", {
     this.m.ID = "perk.quirks.surprise";
     this.m.Name = this.Const.Strings.PerkName.QuirksSurprise;
     this.m.Icon = "ui/perks/perk_quirks_surprise.png";
+    this.m.IconMini = "quirks_surprise_effect_mini";
     this.m.Type = this.Const.SkillType.Perk | this.Const.SkillType.StatusEffect;
     this.m.Order = this.Const.SkillOrder.Perk;
     this.m.IsActive = false;

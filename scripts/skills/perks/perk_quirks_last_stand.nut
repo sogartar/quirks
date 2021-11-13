@@ -9,6 +9,7 @@ this.perk_quirks_last_stand <- this.inherit("scripts/skills/skill", {
     this.m.ID = "perk.quirks.last_stand";
     this.m.Name = this.Const.Strings.PerkName.QuirksLastStand;
     this.m.Icon = "ui/perks/perk_quirks_last_stand.png";
+    this.m.IconMini = "perk_quirks_last_stand_mini";
     this.m.Type = this.Const.SkillType.Perk | this.Const.SkillType.StatusEffect;
     this.m.Order = this.Const.SkillOrder.Perk;
     this.m.IsActive = false;

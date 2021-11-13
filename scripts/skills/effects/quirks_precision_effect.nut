@@ -8,7 +8,7 @@ this.quirks_precision_effect <- this.inherit("scripts/skills/skill", {
     this.m.ID = "effects.quirks.precision";
     this.m.Name = this.Const.Strings.PerkName.QuirksPrecision;
     this.m.Icon = "ui/perks/perk_quirks_precision.png";
-    this.m.IconMini = "";
+    this.m.IconMini = "quirks_precision_effect_mini";
     this.m.Overlay = "perk_precision";
     this.m.Type = this.Const.SkillType.StatusEffect;
     this.m.IsActive = false;

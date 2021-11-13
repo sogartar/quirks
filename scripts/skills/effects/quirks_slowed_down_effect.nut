@@ -8,7 +8,7 @@ this.quirks_slowed_down_effect <- this.inherit("scripts/skills/skill", {
     this.m.ID = "effects.quirks.slowed_down";
     this.m.Name = this.Const.Strings.PerkName.QuirksSlowDown;
     this.m.Icon = "ui/perks/perk_quirks_slow_down.png";
-    this.m.IconMini = "";
+    this.m.IconMini = "quirks_slowed_down_effect_mini";
     this.m.Overlay = "perk_quirks_slow_down";
     this.m.Type = this.Const.SkillType.StatusEffect;
     this.m.IsActive = false;

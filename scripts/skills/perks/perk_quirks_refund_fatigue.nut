@@ -10,6 +10,7 @@ this.perk_quirks_refund_fatigue <- this.inherit("scripts/skills/skill", {
     this.m.Name = this.Const.Strings.PerkName.QuirksRefundFatigue;
     this.m.Description = this.Const.Strings.PerkDescription.QuirksRefundFatigue;
     this.m.Icon = "ui/perks/perk_quirks_refund_fatigue.png";
+    this.m.IconMini = "perk_quirks_refund_fatigue_mini";
     this.m.Type = this.Const.SkillType.Perk | this.Const.SkillType.StatusEffect;
     this.m.Order = this.Const.SkillOrder.Perk;
     this.m.IsActive = false;

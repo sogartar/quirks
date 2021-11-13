@@ -10,6 +10,7 @@ this.perk_quirks_hyperactive <- this.inherit("scripts/skills/skill", {
     this.m.ID = "perk.quirks.hyperactive";
     this.m.Name = this.Const.Strings.PerkName.QuirksHyperactive;
     this.m.Icon = "ui/perks/perk_quirks_hyperactive.png";
+    this.m.IconMini = "perk_quirks_hyperactive_mini";
     this.m.Type = this.Const.SkillType.Perk | this.Const.SkillType.StatusEffect;
     this.m.Order = this.Const.SkillOrder.Perk | this.Const.SkillType.StatusEffect;
     this.m.IsActive = false;
