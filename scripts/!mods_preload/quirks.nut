@@ -534,10 +534,11 @@ local addPerkSlowDown = function() {
   gt.Const.Quirks.SlowDownMaxTargetsSlowedPerRound <- 2;
   this.Const.Strings.PerkName.QuirksSlowDown <- "Slow Down";
   gt.Quirks.getSlowDownPerkDescription <- function(actionPointsMovementConstPerStack, maxTargetsSlowedPerRound) {
-    return "For each target hit (up to " + maxTargetsSlowedPerRound +
-      " targets) increase target's movement action point cost per tile by [color=" +
+    return "Each target hit (up to " + maxTargetsSlowedPerRound +
+      " targets) increase the target's movement action point cost per tile by [color=" +
       this.Const.UI.Color.PositiveValue + "]" + actionPointsMovementConstPerStack +
-      "[/color] this round.";
+      "[/color] this round. Does not stack per target.\n" +
+      "If the target can't move at least 1 tile does not apply the effect.";
   };
   gt.Const.Strings.PerkDescription.QuirksSlowDown <- gt.Quirks.getSlowDownPerkDescription(
     gt.Const.Quirks.SlowDownActionPointsMovementConstPerStack, gt.Const.Quirks.SlowDownMaxTargetsSlowedPerRound);

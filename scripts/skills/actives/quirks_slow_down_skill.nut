@@ -2,6 +2,7 @@ this.quirks_slow_down_skill <- this.inherit("scripts/skills/skill", {
   m = {
     MaxTargetsSlowedPerRound = 0,
     TargetsSlowedThisRound = 0,
+    ActionPointsMovementConstPerStack = 0,
     IsActivated = true
   },
   function create()
@@ -24,6 +25,7 @@ this.quirks_slow_down_skill <- this.inherit("scripts/skills/skill", {
     this.m.ActionPointCost = 0;
     this.m.FatigueCost = 0;
     this.m.MaxTargetsSlowedPerRound = this.Const.Quirks.SlowDownMaxTargetsSlowedPerRound;
+    this.m.ActionPointsMovementConstPerStack = this.Const.Quirks.SlowDownActionPointsMovementConstPerStack;
   }
 
   function getDescription() {
@@ -65,7 +67,11 @@ this.quirks_slow_down_skill <- this.inherit("scripts/skills/skill", {
       return;
     }
 
-    if (this.m.IsActivated && this.m.TargetsSlowedThisRound < this.m.MaxTargetsSlowedPerRound) {
+    if (this.m.IsActivated && this.m.TargetsSlowedThisRound < this.m.MaxTargetsSlowedPerRound
+      && _targetEntity.getSkills().getSkillByID("effects.quirks.slowed_down") == null &&
+      _targetEntity.getActionPoints() >=
+      this.m.ActionPointsMovementConstPerStack +
+      _targetEntity.getActionPointCosts()[this.Const.Tactical.TerrainType.PavedGround]) {
       _targetEntity.getSkills().add(this.new("scripts/skills/effects/quirks_slowed_down_effect"));
       ++this.m.TargetsSlowedThisRound;
     }

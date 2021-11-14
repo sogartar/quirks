@@ -24,8 +24,9 @@ In such cases it is even possible to pick Berserk also.
 It is quite good on spear and sword specialists, as it allows to always attack 2 times per turn.
 It also allows to holding a spearwall for many turns. It is good on tanks as you can shieldwall each turn.
 The new Knackered effect does nerf fatigue neutral builds though.
-* **Slow Down** - For each target hit (up to 2 targets) increase target's
-movement action point cost per tile by 2 this round.
+* **Slow Down** - Each target hit (up to 2 targets) increase the target's
+movement action point cost per tile by 2 this round. Does not stack per target.
+If the target can't move at least 1 tile does not apply the effect.
 ### Level 4
 * **Accurate** - Increases hit chance by 4.  
 Probably an auto-pick on hybrids. This fits well into skirmisher builds.
