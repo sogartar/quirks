@@ -374,7 +374,7 @@ local addPerkVeteran = function() {
 
 local addPerkLastStand = function() {
   gt.Const.Quirks.LastStandResolveBonusPerNeighbourEnemy <- 5;
-  gt.Const.Quirks.LastStandResolveBonusMax <- 40;
+  gt.Const.Quirks.LastStandResolveBonusMax <- 50;
   gt.Const.Strings.PerkName.QuirksLastStand <- "Last Stand";
   gt.Quirks.getLastStandDescription <- function(resolveBonusPerNeighbourEnemy, resolveBonusMax) {
     return "Upon taking damage to hitpoints add a stack of Last Stand until the end of the battle. " +
