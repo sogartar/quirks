@@ -96,7 +96,8 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
   }
 
   function onAnySkillUsed(_skill, _targetEntity, _properties) {
-    if (_skill != null && _skill.isAttack() && !_skill.isRanged()) {
+    if (_skill != null && _skill.isAttack() && !_skill.isRanged() &&
+      _targetEntity != null) {
       _properties.DamageTotalMult *= this.getDamageMult();
       this.m.IsSpent = true;
       this.m.Skill = _skill;
