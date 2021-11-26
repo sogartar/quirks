@@ -20,6 +20,8 @@
   <sprite id="perk_quirks_hyperactive_mini" ic="FF624551" img="ui\perks\perk_quirks_hyperactive_mini.png" />
   <sprite id="perk_quirks_supple_mini" ic="FF624551" img="ui\perks\perk_quirks_supple_mini.png" />
   <sprite id="perk_quirks_double_or_nothing_mini" ic="FF624551" img="ui\perks\perk_quirks_double_or_nothing_mini.png" />
+  <sprite id="perk_quirks_double_or_nothing" ic="FF624551" img="ui\perks\perk_quirks_double_or_nothing.png" />
+  <sprite id="active_quirks_double_or_nothing" ic="FF624551" img="ui\actives\active_quirks_double_or_nothing.png" />
   <sprite id="perk_quirks_slack_mini" ic="FF624551" img="ui\perks\perk_quirks_slack_mini.png" />
   <sprite id="perk_quirks_defensive_adaptation_mini" ic="FF624551" img="ui\perks\perk_quirks_defensive_adaptation_mini.png" />
   <sprite id="perk_quirks_bank_mini" ic="FF624551" img="ui\perks\perk_quirks_bank_mini.png" />

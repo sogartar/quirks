@@ -271,6 +271,9 @@ local addExpectedDamageCalculationFlag = function() {
 local addPerkDoubleOrNothing = function() {
   gt.Const.Strings.PerkName.QuirksDoubleOrNothing <- "Double Or Nothing";
   gt.Const.Strings.PerkDescription.QuirksDoubleOrNothing <-
+    "Unlocks the skill to double damage dealt but halves hit chance when attacking." +
+    " The hit chance reduction is applied before clipping in the range [5, 95].";
+  gt.Const.Quirks.DoubleOrNothingDescription <-
     "Doubles damage dealt but halves hit chance when attacking." +
     " The hit chance reduction is applied before clipping in the range [5, 95].";
 

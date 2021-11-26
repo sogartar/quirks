@@ -97,12 +97,13 @@ This perk is maybe game-breaking due to its exponential nature, but this mod is 
 If you like to turtle fights you can pick this and wait to clean house in one turn.
 Note that this perk changes the behavior of the AI, causing them to be aggressive and to stop you from charging the bank.
 It kind of breaks fort battles, as the AI is forced to sally out.
-* **Double Or Nothing** - Doubles damage dealt but halves hit chance when attacking.
+* **Double Or Nothing** -Unlocks the skill to double damage dealt but halves hit chance when attacking.
 The hit chance reduction is applied before clipping in the range [5, 95].  
 I found the perk a bit underwhelming, but there is beauty in its symmetry, so I am leaving it in.
 Should be best used with high armor penetration weapons where you are hopping to one-shot targets
 or to at least cripple then even through heavy armor. It is well coupled with Refund Fatigue/AP.
 Note that Fast Adaptation would only stack half its bonus. It sucks at finishing off opponents.
+But it can be deactivated in such cases.
 * **Glass Cannon** - Permanently increase damage delt by 25%, but increase damage taken by 50%.
 * **Plunge** - Unlocks the Plunge skill.
 With Each tile of distance since activating Plunge,

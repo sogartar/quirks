@@ -6,15 +6,18 @@ this.perk_quirks_double_or_nothing <- this.inherit("scripts/skills/skill", {
     this.m.Description = this.Const.Strings.PerkDescription.QuirksDoubleOrNothing;
     this.m.Icon = "ui/perks/perk_quirks_double_or_nothing.png";
     this.m.IconMini = "perk_quirks_double_or_nothing_mini";
-    this.m.Type = this.Const.SkillType.Perk | this.Const.SkillType.StatusEffect;
-    this.m.Order = this.Const.SkillOrder.Perk | this.Const.SkillType.StatusEffect;
     this.m.IsActive = false;
-    this.m.IsHidden = false;
+    this.m.IsHidden = true;
   }
 
-  function onUpdate(_properties) {
-    _properties.TargetAttractionMult *= 1.1;
-    _properties.DamageTotalMult *= 2;
-    _properties.TotalAttackToHitMult *= 0.5;
+  function onAdded() {
+    if (!this.m.Container.hasSkill("actives.quirks.double_or_nothing")) {
+      this.m.Container.add(this.new("scripts/skills/actives/quirks_double_or_nothing_skill"));
+    }
+  }
+
+  function onRemoved() {
+    this.m.Container.removeByID("actives.quirks.double_or_nothing");
+    this.m.Container.removeByID("actives.effects.double_or_nothing");
   }
 });
