@@ -466,7 +466,7 @@ local addPerkRefundActionPoints = function() {
 };
 
 local addPerkSlack = function() {
-  gt.Const.Quirks.SlackFatigueRecoveryPerUnspentActionPoint <- 1.66;
+  gt.Const.Quirks.SlackFatigueRecoveryPerUnspentActionPoint <- 1.75;
   this.Const.Strings.PerkName.QuirksSlack <- "Slack";
   gt.Quirks.getSlackDescription <- function(fatigueRecoveryPerUnspentActionPoint) {
     return "Each turn recover an additional [color=" + this.Const.UI.Color.PositiveValue + "]" +
