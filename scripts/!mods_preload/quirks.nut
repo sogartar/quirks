@@ -487,8 +487,8 @@ local addPerkSlack = function() {
 };
 
 local addPerkImpenetrable = function() {
-  gt.Const.Quirks.ImpenetrableBestTotalArmorMax <- 400;
-  gt.Const.Quirks.ImpenetrableTotalArmorMaxStdDev <- 100;
+  gt.Const.Quirks.ImpenetrableBestTotalArmorMax <- 440;
+  gt.Const.Quirks.ImpenetrableTotalArmorMaxStdDev <- 70;
   gt.Const.Quirks.ImpenetrableBestDamageReceivedDirectMult <- 0.33;
   gt.Const.Quirks.ImpenetrableMinDamageReceivedDirectMult <- 0.85;
   this.Const.Strings.PerkName.QuirksImpenetrable <- "Impenetrable"
