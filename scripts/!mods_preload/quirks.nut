@@ -359,7 +359,8 @@ local addPerkVeteran = function() {
     return "Increase maximum perk points by [color=" + this.Const.UI.Color.PositiveValue + "]" +
     perkPointsBonus + "[/color], but lose [color=" + this.Const.UI.Color.NegativeValue + "]" +
     hitpointsCost + "[/color] hitpoints and [color=" + this.Const.UI.Color.NegativeValue + "]" +
-    staminaCost + "[/color] maximum fatigue.";
+    staminaCost + "[/color] maximum fatigue.\n" +
+    "You would have to wait until level 13 to benefit.";
   };
   gt.Const.Strings.PerkDescription.QuirksVeteran <- gt.Quirks.getVeteranDescription(
     gt.Const.Quirks.VeteranHitpointsCost, gt.Const.Quirks.VeteranStaminaCost, gt.Const.Quirks.VeteranPerkPointsBonus);
@@ -426,7 +427,7 @@ local addPerkSurprise = function() {
   gt.Const.Quirks.SurpriseOnMissedInitiativeStolen <- 15;
   gt.Const.Strings.PerkName.QuirksSurprise <- "Surprise";
   gt.Quirks.getSurpriseDescription <- function(onMissedInitiativeStolen) {
-    return "With each time, being missed, steal [color=" + this.Const.UI.Color.PositiveValue + "]" +
+    return "With each time being missed, steal [color=" + this.Const.UI.Color.PositiveValue + "]" +
       onMissedInitiativeStolen + "[/color] initiative form the attacker for 2 rounds.";
   };
   gt.Const.Strings.PerkDescription.QuirksSurprise <- gt.Quirks.getSurpriseDescription(gt.Const.Quirks.SurpriseOnMissedInitiativeStolen);
