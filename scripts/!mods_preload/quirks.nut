@@ -443,8 +443,8 @@ local addPerkSurprise = function() {
 };
 
 local addPerkRefundActionPoints = function() {
-  gt.Const.Quirks.RefundActionPointsAttackFatigueCostMult <- 0.5;
-  gt.Const.Quirks.RefundActionPointsFatigueCostPerActionPoint <- 2.0;
+  gt.Const.Quirks.RefundActionPointsAttackFatigueCostMult <- 0.4;
+  gt.Const.Quirks.RefundActionPointsFatigueCostPerActionPoint <- 1.25;
   this.Const.Strings.PerkName.QuirksRefundActionPoints <- "Refund Action Points"
   gt.Quirks.getRefundActionPointsDescription <- function(attackFatigueCostMult, fatigueCostPerActionPoint) {
     return "Unlocks the ability to refund all action points on a missed attack. The skill can be used until the end of the turn. " +
