@@ -11,7 +11,7 @@ Upon being missed the counter is reset.
 This is the equivalent of Fast Adaptation, but for defense.
 It is useful on low defense characters and good to protect against bad RNG strings.
 * **Punching Bag** - Each time being hit decrease future incoming damage by 15% from attacks.
-At the start of each turn this bonus is reduced by 33.3%.  
+At the start of each turn this bonus is reduced by 25%.  
 This weird perk fits well into tank builds without defense :|.
 It synergizes very well with Indomitable and Battle Forged. It is good against chip damage.
 The more you get hit the better it is. It will not do as well in explosive fights against high damage two-handers.

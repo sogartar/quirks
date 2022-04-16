@@ -401,7 +401,7 @@ local addPerkLastStand = function() {
 
 local addPerkPunchingBag = function() {
   gt.Const.Quirks.PunchingBagOnHitDamageMult <- 0.85;
-  gt.Const.Quirks.PunchingBagOnTurnStartBonusMult <- 0.6666;
+  gt.Const.Quirks.PunchingBagOnTurnStartBonusMult <- 0.75;
   gt.Const.Strings.PerkName.QuirksPunchingBag <- "Punching Bag";
   gt.Quirks.getPunchingBagDescription <- function(onHitDamageMult, onTurnStartBonusMult) {
     return "Each time being hit decrease future incoming damage by [color=" + this.Const.UI.Color.PositiveValue + "]" +
