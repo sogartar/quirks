@@ -169,6 +169,16 @@ local addPerkRefundFatigue = function() {
 };
 
 local addOnAfterSkillUsed = function() {
+  local onAfterSkillUsedExternal = function(_skill_container, _caller, _targetTile) {
+    foreach(skill in _skill_container.m.Skills) {
+      skill.onAfterAnySkillUsed(_caller, _targetTile);
+    }
+  }
+
+  local onAfterSkillUsedInSkillContainer = function(_caller, _targetTile) {
+    onAfterSkillUsedExternal(this, _caller, _targetTile);
+  };
+
   ::mods_hookClass("skills/skill", function(c) {
     local skillClass = ::libreuse.getParentClass(c, "skill");
     if (skillClass == null) {
@@ -209,7 +219,13 @@ local addOnAfterSkillUsed = function() {
         };
         this.Time.scheduleEvent(this.TimeUnit.Virtual, 1,
           function(callbackData) {
-            callbackData.container.onAfterSkillUsed(callbackData.caller, callbackData.targetTile);
+            if ("onAfterSkillUsed" in callbackData.container) {
+              callbackData.container.onAfterSkillUsed(callbackData.caller, callbackData.targetTile);
+            } else {
+              this.logWarning("onAfterSkillUsed not defined in skill_container. " +
+              "Hook to define it was probably not called. Falling back to call external definition.");
+              onAfterSkillUsedExternal(callbackData.container, callbackData.caller, callbackData.targetTile);
+            }
           },
           callbackData);
       }
@@ -217,15 +233,7 @@ local addOnAfterSkillUsed = function() {
   });
 
   ::mods_hookClass("skills/skill_container", function(c) {
-    local containerClass = ::libreuse.getParentClass(c, "skill_container");
-    if (containerClass == null) {
-      containerClass = c;
-    }
-    containerClass.onAfterSkillUsed <- function(_caller, _targetTile) {
-      foreach(skill in this.m.Skills) {
-        skill.onAfterAnySkillUsed(_caller, _targetTile);
-      }
-    };
+    c.onAfterSkillUsed <- onAfterSkillUsedInSkillContainer;
   });
 }
 
