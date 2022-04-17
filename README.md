@@ -58,7 +58,7 @@ Not well suited for Battle Forged builds.
 On rare occasions this skill may be be a bit overpowered on super tanks with very high fatigue.
 Where the old Recover, Adrenaline, Shieldwall, Indomitable cycle is possible but you squeeze Exertion before/after Recover.
 * **Precision** - Unlocks the ability to increase next attack's hit chance with 25%.
-If unused, each turn this bonus is decreased with 12.5%. Costs 11 fatigue and 3 action points.
+If unused, each turn this bonus is decreased with 12.5%. Costs 10 fatigue and 3 action points.
 The bonus is halved for area of effect attacks.  
 Should be good on maces where it is necessary to stun a dangerous target.
 You could use it with a one-handed mace in the same turn even when 1 tile away.

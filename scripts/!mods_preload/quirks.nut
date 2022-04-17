@@ -56,7 +56,7 @@ local addPerkBank = function() {
 };
 
 local addPerkPrecision = function() {
-  gt.Const.Quirks.PrecisionFatigueCost <- 11;
+  gt.Const.Quirks.PrecisionFatigueCost <- 10;
   gt.Const.Quirks.PrecisionApCost <- 3;
   gt.Const.Strings.PerkName.QuirksPrecision <- "Precision";
   gt.Const.Quirks.PrecisionHitChanceBonus <- 25;
