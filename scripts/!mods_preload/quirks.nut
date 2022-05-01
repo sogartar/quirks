@@ -134,20 +134,20 @@ local addPerkHyperactive = function() {
   ::quirks.setPerk(hyperactivePerkConsts, 5);
 };
 
-local addPerkAcurate = function() {
-  gt.Const.Quirks.AcurateHitChanceBonus <- 4;
-  gt.Const.Strings.PerkName.QuirksAcurate <- "Acurate";
-  gt.Const.Strings.PerkDescription.QuirksAcurate <- "Increases hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.Quirks.AcurateHitChanceBonus + "[/color].";
+local addPerkAccurate = function() {
+  gt.Const.Quirks.AccurateHitChanceBonus <- 4;
+  gt.Const.Strings.PerkName.QuirksAccurate <- "Accurate";
+  gt.Const.Strings.PerkDescription.QuirksAccurate <- "Increases hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.Quirks.AccurateHitChanceBonus + "[/color].";
 
-  local acuratePerkConsts = {
+  local accuratePerkConsts = {
     ID = "perk.quirks.acurate",
-    Script = "scripts/skills/perks/perk_quirks_acurate",
-    Name = this.Const.Strings.PerkName.QuirksAcurate,
-    Tooltip = this.Const.Strings.PerkDescription.QuirksAcurate,
-    Icon = "ui/perks/perk_quirks_acurate.png",
-    IconDisabled = "ui/perks/perk_quirks_acurate_sw.png"
+    Script = "scripts/skills/perks/perk_quirks_accurate",
+    Name = this.Const.Strings.PerkName.QuirksAccurate,
+    Tooltip = this.Const.Strings.PerkDescription.QuirksAccurate,
+    Icon = "ui/perks/perk_quirks_accurate.png",
+    IconDisabled = "ui/perks/perk_quirks_accurate_sw.png"
   };
-  ::quirks.setPerk(acuratePerkConsts, 2);
+  ::quirks.setPerk(accuratePerkConsts, 2);
 };
 
 local addPerkRefundFatigue = function() {
@@ -279,7 +279,7 @@ local addExpectedDamageCalculationFlag = function() {
 local addPerkDoubleOrNothing = function() {
   gt.Const.Strings.PerkName.QuirksDoubleOrNothing <- "Double Or Nothing";
   gt.Const.Strings.PerkDescription.QuirksDoubleOrNothing <-
-    "Unlocks the skill to double damage dealt but halves hit chance when attacking." +
+    "Unlocks the skill to do double damage but halves hit chance when attacking." +
     " The hit chance reduction is applied before clipping in the range [5, 95].";
   gt.Const.Quirks.DoubleOrNothingDescription <-
     "Doubles damage dealt but halves hit chance when attacking." +
@@ -665,7 +665,7 @@ local addPerkGlassCannon = function() {
   addOnAfterSkillUsed();
   addMaxPerkPointsToPlayer();
 
-  addPerkAcurate();
+  addPerkAccurate();
   addPerkBank();
   addPerkDefensiveAdaptation();
   addPerkDoubleOrNothing();
