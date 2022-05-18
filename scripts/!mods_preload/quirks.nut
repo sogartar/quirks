@@ -81,23 +81,30 @@ local addPerkPrecision = function() {
 };
 
 local addPerkExertion = function() {
-  gt.Const.Quirks.ExertionMinFatigueCost <- 15;
-  gt.Const.Quirks.ExertionFatigueCostBase <- 33;
-  gt.Const.Quirks.ExertionFatiguePoolCostMult <- 0.1;
-  gt.Const.Quirks.ExertionResolveCostMult <- 0.1;
-  gt.Const.Quirks.ExertionCurrentInitiativeCostMult <- 0.1;
-  gt.Const.Quirks.ExertionApBonus <- 3;
-  gt.Const.Quirks.ExertionFatigueCostMultOnSameTurn <- 2;
+  gt.Const.Quirks.ExertionDamageMult <- 1.25;
+  gt.Const.Quirks.ExertionFatigueCostBaseMult <- 3.75;
+  gt.Const.Quirks.ExertionFatiguePoolCostMult <- 0.02;
+  gt.Const.Quirks.ExertionResolveCostMult <- 0.02;
+  gt.Const.Quirks.ExertionMinFatigueCostMult <- 1.35;
   gt.Const.Strings.PerkName.QuirksExertion <- "Exertion";
-  gt.Const.Strings.PerkDescription.QuirksExertion <- "Unlocks the \'" + gt.Const.Strings.PerkName.QuirksExertion +
-    "\' ability to increase action points by " + gt.Const.Quirks.ExertionApBonus + " this turn. Fatigue cost is based on the current fatigue pool left, current initiative and resolve. " +
-    "The cost starts from [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.Quirks.ExertionFatigueCostBase +
-    "[/color] fatigue and is reduced to a minimum of  [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.Quirks.ExertionMinFatigueCost +
-    "[/color] by subtracting [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.Quirks.ExertionFatiguePoolCostMult * 100) +
-    "%[/color] of current fatigue left, [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.Quirks.ExertionResolveCostMult * 100) +
-    "%[/color] of resolve and [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(gt.Const.Quirks.ExertionCurrentInitiativeCostMult * 100) +
-    "%[/color] of current initiative. The fatigue cost is increased by [color=" +
-    this.Const.UI.Color.NegativeValue + "]" + this.Math.round(gt.Const.Quirks.ExertionFatigueCostMultOnSameTurn * 100) + "%[/color] after each use in the same turn.";
+  gt.Quirks.getPerkExertionDescription <- function(
+    minFatigueCostMult, fatigueCostBaseMult, fatiguePoolCostMult, resolveCostMult, damageMult) {
+      return "Unlocks the \'" + gt.Const.Strings.PerkName.QuirksExertion +
+        "\' ability to increase damage by [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round((damageMult - 1) * 100) + "%[/color]." +
+        "\nWhen enabled fatigue cost of the attack is increased based on the current stamina left and resolve. " +
+        "The cost starts at [color=" + this.Const.UI.Color.NegativeValue + "]+" + this.Math.round((fatigueCostBaseMult - 1) * 100) +
+        "%[/color] more fatigue and is reduced to a minimum of  [color=" + this.Const.UI.Color.NegativeValue + "]+" + this.Math.round((minFatigueCostMult - 1) * 100) +
+        "%[/color] by subtracting [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(fatiguePoolCostMult * 100) +
+        "%[/color] of stamina left and [color=" + this.Const.UI.Color.PositiveValue + "]" + this.Math.round(resolveCostMult * 100) +
+        "%[/color] of resolve.\n" +
+        "Does not work with crossbows, handgones and during spearwall.";
+  };
+  gt.Const.Strings.PerkDescription.QuirksExertion <- gt.Quirks.getPerkExertionDescription(
+    gt.Const.Quirks.ExertionMinFatigueCostMult,
+    gt.Const.Quirks.ExertionFatigueCostBaseMult,
+    gt.Const.Quirks.ExertionFatiguePoolCostMult,
+    gt.Const.Quirks.ExertionResolveCostMult,
+    gt.Const.Quirks.ExertionDamageMult);
 
   local exertionPerkConsts = {
     ID = "perk.quirks.exertion",

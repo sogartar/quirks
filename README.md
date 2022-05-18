@@ -48,15 +48,11 @@ You could do a nimble tank, that if attacked many times,
 is able to stop shieldwalling and still have high defense.
 This can free up fatigue to do Indomitable instead.
 ### Level 6
-* **Exertion** - Unlocks the ability to increase action points by 3 this turn.
-Fatigue cost is based on the current fatigue pool left, current initiative and resolve.
-The cost starts from 33 fatigue and is reduced to a minimum of  15 by subtracting
-10% of current fatigue left, 10% of resolve and 10% of current initiative.
-The fatigue cost is increased by 200% after each use in the same turn.  
-This perk fits well characters with large fatigue pools, initiative and/or resolve.
-Not well suited for Battle Forged builds.  
-On rare occasions this skill may be be a bit overpowered on super tanks with very high fatigue.
-Where the old Recover, Adrenaline, Shieldwall, Indomitable cycle is possible but you squeeze Exertion before/after Recover.
+* **Exertion** - Unlocks the ability to increase damage by 25%.
+When enabled fatigue cost of the attack is increased based on the current stamina left and resolve.
+The cost starts at 275% more fatigue and is reduced to a minimum of 35%
+by subtracting 50% of stamina left and 50% of resolve.  
+Does not work with crossbows, handgones and during spearwall.
 * **Precision** - Unlocks the ability to increase next attack's hit chance with 25%.
 If unused, each turn this bonus is decreased with 12.5%. Costs 10 fatigue and 3 action points.
 The bonus is halved for area of effect attacks.  
