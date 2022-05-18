@@ -5,6 +5,8 @@
   <sprite id="quirks_cashed_in_effect" ic="FF624554" img="ui\effects\quirks_cashed_in_effect.png" />
   <sprite id="perk_quirks_precision" ic="FF624555" img="ui\perks\perk_quirks_precision.png" />
   <sprite id="active_quirks_precision" ic="FF624556" img="ui\actives\active_quirks_precision.png" />
+  <sprite id="perk_quirks_exertion" ic="FF624556" img="ui\perks\perk_quirks_exertion.png" />
+  <sprite id="perk_quirks_exertion_mini" ic="FF624556" img="ui\perks\perk_quirks_exertion_mini.png" />
   <sprite id="active_quirks_exertion" ic="FF624556" img="ui\actives\active_quirks_exertion.png" />
   <sprite id="quirks_surprised_effect" ic="FF624556" img="ui\effects\quirks_surprised_effect.png" />
   <sprite id="active_quirks_refund_action_points" ic="FF624556" img="ui\actives\active_quirks_refund_action_points.png" />
