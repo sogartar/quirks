@@ -369,8 +369,8 @@ local addMaxPerkPointsToPlayer = function() {
 };
 
 local addPerkVeteran = function() {
-  gt.Const.Quirks.VeteranHitpointsCost <- 7;
-  gt.Const.Quirks.VeteranStaminaCost <- 7;
+  gt.Const.Quirks.VeteranHitpointsCost <- 5;
+  gt.Const.Quirks.VeteranStaminaCost <- 5;
   gt.Const.Quirks.VeteranPerkPointsBonus <- 2;
   gt.Const.Strings.PerkName.QuirksVeteran <- "Veteran";
   gt.Quirks.getVeteranDescription <- function(hitpointsCost, staminaCost, perkPointsBonus) {
