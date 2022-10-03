@@ -645,7 +645,7 @@ local addPerkSupple = function() {
 
 local addPerkGlassCannon = function() {
   gt.Const.Quirks.GlassCannonDamageTotalMult <- 1.25;
-  gt.Const.Quirks.GlassCannonDamageReceivedTotalMult <- 1.5;
+  gt.Const.Quirks.GlassCannonDamageReceivedTotalMult <- 1.4;
   this.Const.Strings.PerkName.QuirksGlassCannon <- "Glass Cannon";
   gt.Quirks.getGlassCannonDescription <- function(damageTotalMult, damageReceivedTotalMult) {
     return "Permanently increase damage delt by [color=" +
