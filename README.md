@@ -65,12 +65,9 @@ It is mid-game and your martyr against all odds has somehow survived to level 6.
 Or maybe a promising up-start low-rolled.
 This perk can help speed up leveling your freshly hired low-level all-star lineup.
 ### Level 7
-* **Hyperactive** - Permanently increases action points by 3 and
-reduces fatigue recovery rate by 1.25 per action point spent on skills and attacks in the previous turn.
-Rounding to the whole number is randomized with probability of rounding away from zero equal to the fraction part.  
-Suitable on high-fatigue nimble damage dealers. Same as Exertion, it is good in explosive fights,
-where killing the enemy fast is crucial. It is viable even on fatigue neutral builds,
-allowing you to move more while still able to hit. In this case the Athletic trait is very good on rough terrain.
+* **Hyperactive** - Recover used action points on skills and attacks with probability of 40%.
+Reduces fatigue recovery rate by 1.25 per action point spent on skills and attacks in the previous turn.
+Rounding to the whole number is randomized with probability of rounding away from zero equal to the fraction part.
 * **Impenetrable** - Reduces armor penetration damage based on total max body and helmet armor
 with best results at 400 armor when damage is reduced by 66%.
 If total max armor is more than that the effect is gradually weakened to a minimum of 15%.  
