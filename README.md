@@ -17,7 +17,7 @@ It synergizes very well with Indomitable and Battle Forged. It is good against c
 The more you get hit the better it is. It will not do as well in explosive fights against high damage two-handers.
 Although, not as good as a proper tank, you can even tank the Black Monolith with it for a good amount of turns.
 ### Level 3
-* **Slack** - Each turn recover an additional 1.66 fatigue per unspent action point in the previous turn.
+* **Slack** - Each turn recover an additional 1.75 fatigue per unspent action point in the previous turn.
 Rounding is randomized with probability to round down or up equal to the fraction part.  
 This can be picked on low fatigue characters, where Recover brings little to the table.
 In such cases it is even possible to pick Berserk also.
@@ -77,7 +77,7 @@ The skill can be used until the end of the turn.
 The cost is 40% of the attack's fatigue + 1.25 per action point.  
 This perk fills the same niche as the Refund Fatigue perk, but also requires some fatigue to be useful.
 * **Supple** - Gain a chance to have any attacker require two successful attack rolls in order to hit.
-The chance starts from 135 and is reduced by 100% of maximum hitpoints and 150% of penalty to maximum fatigue.    
+The chance starts from 135 and is reduced by 100% of maximum hitpoints and 150% of penalty to maximum fatigue.  
 ### Level 8
 * **Bank** - Unlocks the ability to bank action points to be used later.
 When used, banks 1 action point.
