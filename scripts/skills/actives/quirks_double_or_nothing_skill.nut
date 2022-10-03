@@ -40,5 +40,6 @@ this.quirks_double_or_nothing_skill <- this.inherit("scripts/skills/skill", {
     } else {
       this.getContainer().add(this.new("scripts/skills/effects/quirks_double_or_nothing_effect"));
     }
+    return true;
   }
 });

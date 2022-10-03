@@ -180,6 +180,9 @@ local addPerkRefundFatigue = function() {
 
 local addOnAfterSkillUsed = function() {
   local onAfterSkillUsedExternal = function(_skill_container, _caller, _targetTile) {
+    if (!("m" in _skill_container)) {
+      return;
+    }
     foreach(skill in _skill_container.m.Skills) {
       skill.onAfterAnySkillUsed(_caller, _targetTile);
     }
