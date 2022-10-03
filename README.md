@@ -96,7 +96,7 @@ Should be best used with high armor penetration weapons where you are hopping to
 or to at least cripple then even through heavy armor. It is well coupled with Refund Fatigue/AP.
 Note that Fast Adaptation would only stack half its bonus. It sucks at finishing off opponents.
 But it can be deactivated in such cases.
-* **Glass Cannon** - Permanently increase damage delt by 25%, but increase damage taken by 50%.
+* **Glass Cannon** - Permanently increase damage delt by 25%, but increase damage taken by 35%.
 * **Plunge** - Unlocks the Plunge skill.
 With Each tile of distance since activating Plunge,
 the next melee attack will do 15% more damage.
