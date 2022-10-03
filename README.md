@@ -41,7 +41,7 @@ This perk is kind of a counter to Fearsome. It could be combined with Fersome on
 * **Refund Fatigue** - On a miss refund 60% of the fatigue used.
 Rounding is randomized with probability to round down or up equal to the fraction.  
 This perk synergizes well with low hit chance and/or high fatigue attacks. It is good on low attack skill characters.
-* **Surprise** - With each time being missed, steal 15 initiative form the attacker for 2 rounds.  
+* **Surprise** - With each time being missed, steal 13 initiative form the attacker for 2 rounds.  
 This perk is good on characters with Dodge, Overwhelm and high defense.
 You could do an initative build without that much initative.
 You could do a nimble tank, that if attacked many times,
