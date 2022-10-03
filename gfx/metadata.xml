@@ -20,6 +20,7 @@
   <sprite id="perk_quirks_impenetrable_mini" ic="FF624551" img="ui\perks\perk_quirks_impenetrable_mini.png" />
   <sprite id="perk_quirks_teacher_mini" ic="FF624551" img="ui\perks\perk_quirks_teacher_mini.png" />
   <sprite id="perk_quirks_hyperactive_mini" ic="FF624551" img="ui\perks\perk_quirks_hyperactive_mini.png" />
+  <sprite id="perk_quirks_hyperactive" ic="FF624551" img="ui\perks\perk_quirks_hyperactive.png" />
   <sprite id="perk_quirks_supple_mini" ic="FF624551" img="ui\perks\perk_quirks_supple_mini.png" />
   <sprite id="perk_quirks_double_or_nothing_mini" ic="FF624551" img="ui\perks\perk_quirks_double_or_nothing_mini.png" />
   <sprite id="perk_quirks_double_or_nothing" ic="FF624551" img="ui\perks\perk_quirks_double_or_nothing.png" />

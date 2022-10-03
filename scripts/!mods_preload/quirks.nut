@@ -123,17 +123,23 @@ local addPerkExertion = function() {
 };
 
 local addPerkHyperactive = function() {
-  gt.Const.Quirks.HyperactiveApBonus <- 3;
-  gt.Const.Quirks.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint <- -1.25;
+  gt.Const.Quirks.HyperactiveRefundApProbabilityPromile <- 400;
+  gt.Const.Quirks.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint <- -1.0;
   gt.Const.Strings.PerkName.QuirksHyperactive <- "Hyperactive";
-  gt.Quirks.getHyperactiveDescription <- function(apBonus, fatigueRecoveryRateModifierPerSpentActionPoint) {
-    return "Permanently increases action points by [color=" + this.Const.UI.Color.PositiveValue + "]" + apBonus +
-      "[/color] and reduces fatigue recovery rate by [color=" + this.Const.UI.Color.NegativeValue + "]" +
-      (-fatigueRecoveryRateModifierPerSpentActionPoint) + "[/color] per action point spent on skills and attacks in the previous turn." +
-      "\nRounding to the whole number is randomized with probability of rounding away from zero equal to the fraction part.";
+  gt.Quirks.getHyperactiveDescription <- function(refundApProbabilityPromile, fatigueRecoveryRateModifierPerSpentActionPoint) {
+    local res = "Recover used action points on skills and attacks with probability of [color=" + this.Const.UI.Color.PositiveValue + "]" +
+      this.Math.round(refundApProbabilityPromile * 0.1) +
+      "%[/color]. Reduces fatigue recovery rate by [color=" + this.Const.UI.Color.NegativeValue + "]" +
+      (-fatigueRecoveryRateModifierPerSpentActionPoint) +
+      "[/color] per action point spent on skills and attacks in the previous turn.";
+      if (Math.round(fatigueRecoveryRateModifierPerSpentActionPoint) != fatigueRecoveryRateModifierPerSpentActionPoint) {
+        res += "\nRounding to the whole number is randomized with probability of rounding away from zero equal to the fraction part.";
+      }
+      return res;
   };
   gt.Const.Strings.PerkDescription.QuirksHyperactive <- gt.Quirks.getHyperactiveDescription(
-    gt.Const.Quirks.HyperactiveApBonus, gt.Const.Quirks.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint);
+    gt.Const.Quirks.HyperactiveRefundApProbabilityPromile,
+    gt.Const.Quirks.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint);
 
   local hyperactivePerkConsts = {
     ID = "perk.quirks.hyperactive",
