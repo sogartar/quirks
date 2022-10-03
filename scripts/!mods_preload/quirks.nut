@@ -442,7 +442,7 @@ local addPerkPunchingBag = function() {
 
 local addPerkSurprise = function() {
   gt.Const.Strings.SurprisedEffectName <- "Surprised";
-  gt.Const.Quirks.SurpriseOnMissedInitiativeStolen <- 15;
+  gt.Const.Quirks.SurpriseOnMissedInitiativeStolen <- 13;
   gt.Const.Strings.PerkName.QuirksSurprise <- "Surprise";
   gt.Quirks.getSurpriseDescription <- function(onMissedInitiativeStolen) {
     return "With each time being missed, steal [color=" + this.Const.UI.Color.PositiveValue + "]" +
