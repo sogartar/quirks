@@ -358,7 +358,7 @@ local addPerkDefensiveAdaptation = function() {
 local addMaxPerkPointsToPlayer = function() {
   ::mods_hookExactClass("entity/tactical/player", function(c) {
     c.m.MaxPerkPoints <- gt.Const.XP.MaxLevelWithPerkpoints - 1;
-    c.m.StudentRefundPerkPointAtLevel <- gt.Const.XP.MaxLevelWithPerkpoints;
+    c.m.StudentRefundPerkPointAtLevel <- 11;
     local updateLevelOriginalQuirks = c.updateLevel;
     c.updateLevel = function() {
       updateLevelOriginalQuirks();
