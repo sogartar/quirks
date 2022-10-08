@@ -99,7 +99,7 @@ But it can be deactivated in such cases.
 * **Glass Cannon** - Permanently increase damage delt by 25%, but increase damage taken by 35%.
 * **Plunge** - Unlocks the Plunge skill.
 With Each tile of distance since activating Plunge,
-the next melee attack will do 15% more damage.
+the next melee attack will do 20% more damage.
 Moving up/down an elevation level will also remove/add a plunge stack.
 Hitting your target will also have a chance to knock it back and you to follow it.
 The chance is 20% per stack.
@@ -108,7 +108,6 @@ When Plunge is active movement fatigue cost is increased with the default cost.
 Waiting without attacking will remove the Plunge effect.  
 This perk is good with AOE weapons to milk the damage multiplier.
 Plunging from an elevated position increases damage more.
-Action points increasing perks would allow to move more before attacking.
 There is some danger to it as your character may get surrounded by multiple enemies.
 Should work well with Underdog and with multiple characters plunging together.
 * **Veteran** - Increase maximum perk points by 2, but lose 5 hitpoints and 5 maximum fatigue.

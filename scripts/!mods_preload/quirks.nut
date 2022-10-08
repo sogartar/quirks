@@ -590,8 +590,8 @@ local addPerkSlowDown = function() {
 local addPerkPlunge = function() {
   gt.Const.Quirks.PlungeActionPointsCost <- 0;
   gt.Const.Quirks.PlungeFatigueCost <- 0;
-  gt.Const.Quirks.PlungeDamageMultPerStack <- 1.15;
-  gt.Const.Quirks.PlungeKnockBackChancePerStack <- 0.2;
+  gt.Const.Quirks.PlungeDamageMultPerStack <- 1.2;
+  gt.Const.Quirks.PlungeKnockBackChancePerStack <- 0.20;
   this.Const.Strings.PerkName.QuirksPlunge <- "Plunge";
   gt.Quirks.getPlungeSkillDescription <- function(dmageMultPerStack, knockBackChancePerStack) {
     return "With Each tile of distance since activating Plunge, the next melee attack will do [color=" + this.Const.UI.Color.PositiveValue + "]" +

@@ -26,9 +26,9 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
     return this.getroottable().Quirks.getPlungeEffectDescription(
       this.m.DamageMultPerStack, this.m.KnockBackChancePerStack) +
       "\nNext melee attack will do [color=" + this.Const.UI.Color.PositiveValue + "]" +
-      this.Math.round((this.getDamageMult() - 1) * 100) + "%[/color] more damage." +
+      this.Math.round((this.getDamageMult(null) - 1) * 100) + "%[/color] more damage." +
       " It also has a [color=" + this.Const.UI.Color.PositiveValue + "]" +
-      this.Math.round(this.getKnockBackChance() * 100) +
+      this.Math.round(this.getKnockBackChance(null) * 100) +
       "%[/color] chance to knock the target back and to plunge after it.";
   }
 
@@ -78,27 +78,30 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
     return null;
   }
 
-  function getStacks() {
+  function getStacks(_skill) {
     local tile = this.getContainer().getActor().getTile();
     local distance = tile.getDistanceTo(this.m.StartTile);
+    if (_skill != null && _skill.getID() == "actives.lunge") {
+      distance -= 1;
+    }
     local levelDiff = this.m.StartTile.Level - tile.Level;
     local stacks = this.Math.max(0, distance + levelDiff);
     return stacks;
   }
 
-  function getKnockBackChance() {
-    local stack = this.getStacks();
+  function getKnockBackChance(_skill) {
+    local stack = this.getStacks(_skill);
     return 1 - ::libreuse.binomialCdf(stack, 0, this.m.KnockBackChancePerStack);
   }
 
-  function getDamageMult() {
-    return this.Math.pow(this.m.DamageMultPerStack, this.getStacks());
+  function getDamageMult(_skill) {
+    return this.Math.pow(this.m.DamageMultPerStack, this.getStacks(_skill));
   }
 
   function onAnySkillUsed(_skill, _targetEntity, _properties) {
     if (_skill != null && _skill.isAttack() && !_skill.isRanged() &&
       _targetEntity != null) {
-      _properties.DamageTotalMult *= this.getDamageMult();
+      _properties.DamageTotalMult *= this.getDamageMult(_skill);
       this.m.IsSpent = true;
       this.m.Skill = _skill;
       this.m.TargetEntity = _targetEntity;
@@ -174,7 +177,7 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
       return;
     }
 
-    local knockBackChance = this.getKnockBackChance();
+    local knockBackChance = this.getKnockBackChance(_skill);
     if (knockBackChance * 1000 <= this.Math.rand(1, 1000)) {
       return;
     }
@@ -182,7 +185,8 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
     local actor = this.getContainer().getActor();
     local actorTile = actor.getTile();
     if (_targetEntity.isAlive()) {
-      local knockBackTile = this.findTileToKnockBackTo(this.getContainer().getActor().getTile(), _targetEntity.getTile());
+      local knockBackTile = this.findTileToKnockBackTo(
+        this.getContainer().getActor().getTile(), _targetEntity.getTile());
       if (knockBackTile != null) {
         _targetEntity.setCurrentMovementType(this.Const.Tactical.MovementType.Involuntary);
         local callback = null;
