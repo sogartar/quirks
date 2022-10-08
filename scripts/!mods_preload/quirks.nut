@@ -1,4 +1,4 @@
-::mods_registerMod("quirks", 0.7.0, "quirks");
+::mods_registerMod("quirks", 0.7.1, "quirks");
 
 local gt = this.getroottable();
 
