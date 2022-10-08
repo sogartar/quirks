@@ -74,7 +74,7 @@ Good on low-tier heavy armor against high armor penetration weapons like hammers
 It is also viable with named Nimble gear.
 * **Refund Action Points** - Unlocks the ability to refund all action points on a missed attack.
 The skill can be used until the end of the turn.
-The cost is 40% of the attack's fatigue + 1.25 per action point.  
+The cost is 33% of the attack's fatigue + 1 per action point.  
 This perk fills the same niche as the Refund Fatigue perk, but also requires some fatigue to be useful.
 * **Supple** - Gain a chance to have any attacker require two successful attack rolls in order to hit.
 The chance starts from 135 and is reduced by 100% of maximum hitpoints and 150% of penalty to maximum fatigue.  
