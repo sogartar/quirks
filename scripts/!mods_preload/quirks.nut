@@ -406,7 +406,7 @@ local addPerkVeteran = function() {
 };
 
 local addPerkLastStand = function() {
-  gt.Const.Quirks.LastStandResolveBonusPerNeighbourEnemy <- 5;
+  gt.Const.Quirks.LastStandResolveBonusPerNeighbourEnemy <- 7;
   gt.Const.Quirks.LastStandResolveBonusMax <- 50;
   gt.Const.Strings.PerkName.QuirksLastStand <- "Last Stand";
   gt.Quirks.getLastStandDescription <- function(resolveBonusPerNeighbourEnemy, resolveBonusMax) {

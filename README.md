@@ -33,7 +33,7 @@ Probably an auto-pick on hybrids. This fits well into skirmisher builds.
 It is designed for them. It may be even picked on melee-only or ranged-only characters.
 Although crossbow-polearm hybrids were good anyways, they would also benefit from it.  
 * **Last Stand** - Upon taking damage to hitpoints add a stack of Last Stand until the end of the battle.
-Each stack increases resolve by 4 per enemy around you to a maximum of 40.  
+Each stack increases resolve by 7 per enemy around you to a maximum of 50.  
 This is a good perk on nimble tanks that are likely to be surrounded and take hitpoints damage early in the battle.
 It helps to prevent your character from breaking.
 It is good against Miasma as it will start stacking event before losing armor from regular attacks.
