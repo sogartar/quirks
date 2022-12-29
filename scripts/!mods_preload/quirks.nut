@@ -82,7 +82,7 @@ local addPerkPrecision = function() {
 
 local addPerkExertion = function() {
   gt.Const.Quirks.ExertionDamageMult <- 1.25;
-  gt.Const.Quirks.ExertionFatigueCostBaseMult <- 1.8;
+  gt.Const.Quirks.ExertionFatigueCostBaseMult <- 1.90;
   gt.Const.Quirks.ExertionFatiguePoolCostMult <- 0.005;
   gt.Const.Quirks.ExertionResolveCostMult <- 0.005;
   gt.Const.Quirks.ExertionMinFatigueCostMult <- 1.35;

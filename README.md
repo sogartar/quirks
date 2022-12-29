@@ -50,7 +50,7 @@ This can free up fatigue to do Indomitable instead.
 ### Level 6
 * **Exertion** - Unlocks the ability to increase damage by 25%.
 When enabled fatigue cost of the attack is increased based on the current stamina left and resolve.
-The cost starts at 80% more fatigue and is reduced to a minimum of 35%
+The cost starts at 90% more fatigue and is reduced to a minimum of 35%
 by subtracting 50% of stamina left and 50% of resolve.  
 Does not work with crossbows, handgones and during spearwall.
 * **Precision** - Unlocks the ability to increase next attack's hit chance with 25%.
