@@ -1,4 +1,4 @@
-::mods_registerMod("quirks", 0.7.1, "quirks");
+::mods_registerMod("quirks", 000702, "quirks");
 
 local gt = this.getroottable();
 
@@ -11,7 +11,22 @@ local setupRootTableStructure = function() {
   gt.Const.Quirks <- {};
 };
 
-::quirks.setPerk <- function(perk, row, col = null) {
+local initLegendsMod = function() {
+  local legendsMod = ::mods_getRegisteredMod("mod_legends");
+  gt.Quirks.hasLegendsMod <- legendsMod != null;
+};
+
+local addPerkToLegendsMod = function(perk, perkTreeNames, row) {
+  local perkIndex = gt.Const.Perks.PerkDefObjects.len();
+  gt.Const.Perks.PerkDefObjects.push(perk);
+  gt.Const.Perks.PerkDefs[perk.Const] <- perkIndex;
+  gt.Const.Perks.LookupMap[perk.ID] = perk;
+  foreach(treeName in perkTreeNames) {
+    gt.Const.Perks[treeName].Tree[row].push(perkIndex);
+  }
+};
+
+::quirks.setPerk <- function(perk, legendsModPerkTreeNames, row, col = null) {
   gt.Const.Perks.Perks.resize(this.Math.max(row + 1, gt.Const.Perks.Perks.len()), []);
   if (col == null) {
     col = gt.Const.Perks.Perks[row].len();
@@ -21,6 +36,10 @@ local setupRootTableStructure = function() {
   gt.Const.Perks.LookupMap[perk.ID] <- perk;
   perk.Row <- row;
   perk.Unlocks <- row;
+  
+  if (gt.Quirks.hasLegendsMod) {
+    addPerkToLegendsMod(perk, legendsModPerkTreeNames, row);
+  }
 };
 
 local addPerkBank = function() {
@@ -48,9 +67,11 @@ local addPerkBank = function() {
     Name = this.Const.Strings.PerkName.QuirksBank,
     Tooltip = this.Const.Strings.PerkDescription.QuirksBank,
     Icon = "ui/perks/perk_quirks_bank.png",
-    IconDisabled = "ui/perks/perk_quirks_bank_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_bank_sw.png",
+    Const = "QuirksBank"
   };
-  ::quirks.setPerk(bankPerkConsts, 6);
+  local perkTrees = ["BarterClassTree", "OrganisedTree"];
+  ::quirks.setPerk(bankPerkConsts, perkTrees, 6);
 
   ::quirks.stopAiDefendingOnEnemyBank();
 };
@@ -75,9 +96,17 @@ local addPerkPrecision = function() {
     Name = this.Const.Strings.PerkName.QuirksPrecision,
     Tooltip = this.Const.Strings.PerkDescription.QuirksPrecision,
     Icon = "ui/perks/perk_quirks_precision.png",
-    IconDisabled = "ui/perks/perk_quirks_precision_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_precision_sw.png",
+    Const = "QuirksPrecision"
   };
-  ::quirks.setPerk(precisionPerkConsts, 4);
+  local perkTrees = [
+    "GoblinTree",
+    "DeviousTree",
+    "IntelligentTree",
+    "DaggerTree",
+    "MaceTree"
+  ];
+  ::quirks.setPerk(precisionPerkConsts, perkTrees, 4);
 };
 
 local addPerkExertion = function() {
@@ -117,9 +146,15 @@ local addPerkExertion = function() {
     Name = this.Const.Strings.PerkName.QuirksExertion,
     Tooltip = this.Const.Strings.PerkDescription.QuirksExertion,
     Icon = "ui/perks/perk_quirks_exertion.png",
-    IconDisabled = "ui/perks/perk_quirks_exertion_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_exertion_sw.png",
+    Const = "QuirksExertion"
   };
-  ::quirks.setPerk(exertionPerkConsts, 4);
+  local perkTrees = [
+    "LargeTree",
+    "InspirationalTree",
+    "SturdyTree"
+  ];
+  ::quirks.setPerk(exertionPerkConsts, perkTrees, 4);
 };
 
 local addPerkHyperactive = function() {
@@ -147,9 +182,15 @@ local addPerkHyperactive = function() {
     Name = this.Const.Strings.PerkName.QuirksHyperactive,
     Tooltip = this.Const.Strings.PerkDescription.QuirksHyperactive,
     Icon = "ui/perks/perk_quirks_hyperactive.png",
-    IconDisabled = "ui/perks/perk_quirks_hyperactive_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_hyperactive_sw.png",
+    Const = "QuirksHyperactive"
   };
-  ::quirks.setPerk(hyperactivePerkConsts, 5);
+  local perkTrees = [
+    "AgileTree",
+    "FastTree",
+    "DaggerTree"
+  ];
+  ::quirks.setPerk(hyperactivePerkConsts, perkTrees, 5);
 };
 
 local addPerkAccurate = function() {
@@ -163,9 +204,16 @@ local addPerkAccurate = function() {
     Name = this.Const.Strings.PerkName.QuirksAccurate,
     Tooltip = this.Const.Strings.PerkDescription.QuirksAccurate,
     Icon = "ui/perks/perk_quirks_accurate.png",
-    IconDisabled = "ui/perks/perk_quirks_accurate_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_accurate_sw.png",
+    Const = "QuirksAccurate"
   };
-  ::quirks.setPerk(accuratePerkConsts, 2);
+  local perkTrees = [
+    "TrainedTree",
+    "PolearmTree",
+    "BowTree",
+    "ThrowingTree"
+  ];
+  ::quirks.setPerk(accuratePerkConsts, perkTrees, 2);
 };
 
 local addPerkRefundFatigue = function() {
@@ -181,9 +229,16 @@ local addPerkRefundFatigue = function() {
     Name = this.Const.Strings.PerkName.QuirksRefundFatigue,
     Tooltip = this.Const.Strings.PerkDescription.QuirksRefundFatigue,
     Icon = "ui/perks/perk_quirks_refund_fatigue.png",
-    IconDisabled = "ui/perks/perk_quirks_refund_fatigue_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_refund_fatigue_sw.png",
+    Const = "QuirksRefundFatigue"
   };
-  ::quirks.setPerk(refundFatiguePerkConsts, 2);
+  local perkTrees = [
+    "CalmTree",
+    "DaggerTree",
+    "HammerTree",
+    "MaceTree"
+  ];
+  ::quirks.setPerk(refundFatiguePerkConsts, perkTrees, 2);
 };
 
 local addOnAfterSkillUsed = function() {
@@ -312,9 +367,15 @@ local addPerkDoubleOrNothing = function() {
     Name = this.Const.Strings.PerkName.QuirksDoubleOrNothing,
     Tooltip = this.Const.Strings.PerkDescription.QuirksDoubleOrNothing,
     Icon = "ui/perks/perk_quirks_double_or_nothing.png",
-    IconDisabled = "ui/perks/perk_quirks_double_or_nothing_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_double_or_nothing_sw.png",
+    Const = "QuirksDoubleOrNothing"
   };
-  ::quirks.setPerk(doubleOrNothingPerkConsts, 6);
+  local perkTrees = [
+    "ViciousTree",
+    "HammerTree",
+    "AxeTree"
+  ];
+  ::quirks.setPerk(doubleOrNothingPerkConsts, perkTrees, 6);
 };
 
 local addPerkTeacher = function() {
@@ -331,9 +392,14 @@ local addPerkTeacher = function() {
     Name = this.Const.Strings.PerkName.QuirksTeacher,
     Tooltip = this.Const.Strings.PerkDescription.QuirksTeacher,
     Icon = "ui/perks/perk_quirks_teacher.png",
-    IconDisabled = "ui/perks/perk_quirks_teacher_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_teacher_sw.png",
+    Const = "QuirksTeacher"
   };
-  ::quirks.setPerk(teacherPerkConsts, 4);
+  local perkTrees = [
+    "InspirationalTree",
+    "IntelligentTree"
+  ];
+  ::quirks.setPerk(teacherPerkConsts, perkTrees, 4);
 };
 
 local addPerkDefensiveAdaptation = function() {
@@ -350,9 +416,14 @@ local addPerkDefensiveAdaptation = function() {
     Name = this.Const.Strings.PerkName.QuirksDefensiveAdaptation,
     Tooltip = this.Const.Strings.PerkDescription.QuirksDefensiveAdaptation,
     Icon = "ui/perks/perk_quirks_defensive_adaptation.png",
-    IconDisabled = "ui/perks/perk_quirks_defensive_adaptation_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_defensive_adaptation_sw.png",
+    Const = "QuirksDefensiveAdaptation"
   };
-  ::quirks.setPerk(defensiveAdaptationPerkConsts, 0);
+  local perkTrees = [
+    "HeavyArmorTree",
+    "FastTree"
+  ];
+  ::quirks.setPerk(defensiveAdaptationPerkConsts, perkTrees, 0);
 };
 
 local addMaxPerkPointsToPlayer = function() {
@@ -400,9 +471,13 @@ local addPerkVeteran = function() {
     Name = this.Const.Strings.PerkName.QuirksVeteran,
     Tooltip = this.Const.Strings.PerkDescription.QuirksVeteran,
     Icon = "ui/perks/perk_quirks_veteran.png",
-    IconDisabled = "ui/perks/perk_quirks_veteran_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_veteran_sw.png",
+    Const = "QuirksVeteran"
   };
-  ::quirks.setPerk(veteranPerkConsts, 6);
+  local perkTrees = [
+    "TrainedTree",
+  ];
+  ::quirks.setPerk(veteranPerkConsts, perkTrees, 6);
 };
 
 local addPerkLastStand = function() {
@@ -424,9 +499,15 @@ local addPerkLastStand = function() {
     Name = this.Const.Strings.PerkName.QuirksLastStand,
     Tooltip = this.Const.Strings.PerkDescription.QuirksLastStand,
     Icon = "ui/perks/perk_quirks_last_stand.png",
-    IconDisabled = "ui/perks/perk_quirks_last_stand_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_last_stand_sw.png",
+    Const = "QuirksLastStand"
   };
-  ::quirks.setPerk(lastStandPerkConsts, 2);
+  local perkTrees = [
+    "LightArmorTree",
+    "MartyrTree",
+    "CalmTree"
+  ];
+  ::quirks.setPerk(lastStandPerkConsts, perkTrees, 2);
 };
 
 local addPerkPunchingBag = function() {
@@ -446,9 +527,15 @@ local addPerkPunchingBag = function() {
     Name = this.Const.Strings.PerkName.QuirksPunchingBag,
     Tooltip = this.Const.Strings.PerkDescription.QuirksPunchingBag,
     Icon = "ui/perks/perk_quirks_punching_bag.png",
-    IconDisabled = "ui/perks/perk_quirks_punching_bag_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_punching_bag_sw.png",
+    Const = "QuirksPunchingBag"
   };
-  ::quirks.setPerk(punchingBagPerkConsts, 0);
+  local perkTrees = [
+    "HeavyArmorTree",
+    "IndestructibleTree",
+    "SturdyTree"
+  ];
+  ::quirks.setPerk(punchingBagPerkConsts, perkTrees, 0);
 };
 
 local addPerkSurprise = function() {
@@ -467,9 +554,15 @@ local addPerkSurprise = function() {
     Name = this.Const.Strings.PerkName.QuirksSurprise,
     Tooltip = this.Const.Strings.PerkDescription.QuirksSurprise,
     Icon = "ui/perks/perk_quirks_surprise.png",
-    IconDisabled = "ui/perks/perk_quirks_surprise_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_surprise_sw.png",
+    Const = "QuirksSurprise"
   };
-  ::quirks.setPerk(surprisePerkConsts, 2);
+  local perkTrees = [
+    "LightArmorTree",
+    "DeviousTree",
+    "FastTree"
+  ];
+  ::quirks.setPerk(surprisePerkConsts, perkTrees, 2);
 };
 
 local addPerkRefundActionPoints = function() {
@@ -490,9 +583,14 @@ local addPerkRefundActionPoints = function() {
     Name = this.Const.Strings.PerkName.QuirksRefundActionPoints,
     Tooltip = this.Const.Strings.PerkDescription.QuirksRefundActionPoints,
     Icon = "ui/perks/perk_quirks_refund_action_points.png",
-    IconDisabled = "ui/perks/perk_quirks_refund_action_points_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_refund_action_points_sw.png",
+    Const = "QuirksRefundActionPoints"
   };
-  ::quirks.setPerk(refundActionPointsPerkConsts, 5);
+  local perkTrees = [
+    "DeviousTree",
+    "FastTree"
+  ];
+  ::quirks.setPerk(refundActionPointsPerkConsts, perkTrees, 5);
 };
 
 local addPerkSlack = function() {
@@ -511,9 +609,14 @@ local addPerkSlack = function() {
     Name = this.Const.Strings.PerkName.QuirksSlack,
     Tooltip = this.Const.Strings.PerkDescription.QuirksSlack,
     Icon = "ui/perks/perk_quirks_slack.png",
-    IconDisabled = "ui/perks/perk_quirks_slack_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_slack_sw.png",
+    Const = "QuirksSlack"
   };
-  ::quirks.setPerk(slackPerkConsts, 1);
+  local perkTrees = [
+    "ShieldTree",
+    "CalmTree"
+  ];
+  ::quirks.setPerk(slackPerkConsts, perkTrees, 1);
 };
 
 local addPerkImpenetrable = function() {
@@ -539,9 +642,14 @@ local addPerkImpenetrable = function() {
     Name = this.Const.Strings.PerkName.QuirksImpenetrable,
     Tooltip = this.Const.Strings.PerkDescription.QuirksImpenetrable,
     Icon = "ui/perks/perk_quirks_impenetrable.png",
-    IconDisabled = "ui/perks/perk_quirks_impenetrable_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_impenetrable_sw.png",
+    Const = "QuirksImpenetrable"
   };
-  ::quirks.setPerk(impenetrablePerkConsts, 5);
+  local perkTrees = [
+    "MediumArmorTree",
+    "IndestructibleTree"
+  ];
+  ::quirks.setPerk(impenetrablePerkConsts, perkTrees, 5);
 };
 
 local addEffectKnackered = function() {
@@ -582,9 +690,15 @@ local addPerkSlowDown = function() {
     Name = this.Const.Strings.PerkName.QuirksSlowDown,
     Tooltip = this.Const.Strings.PerkDescription.QuirksSlowDown,
     Icon = "ui/perks/perk_quirks_slow_down.png",
-    IconDisabled = "ui/perks/perk_quirks_slow_down_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_slow_down_sw.png",
+    Const = "QuirksSlowDown"
   };
-  ::quirks.setPerk(slowDownPerkConsts, 1);
+  local perkTrees = [
+    "AgileTree",
+    "DeviousTree",
+    "ThrowingTree"
+  ];
+  ::quirks.setPerk(slowDownPerkConsts, perkTrees, 1);
 }
 
 local addPerkPlunge = function() {
@@ -621,9 +735,13 @@ local addPerkPlunge = function() {
     Name = this.Const.Strings.PerkName.QuirksPlunge,
     Tooltip = this.Const.Strings.PerkDescription.QuirksPlunge,
     Icon = "ui/perks/perk_quirks_plunge.png",
-    IconDisabled = "ui/perks/perk_quirks_plunge_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_plunge_sw.png",
+    Const = "QuirksPlunge"
   };
-  ::quirks.setPerk(plungePerkConsts, 6);
+  local perkTrees = [
+    "ViciousTree"
+  ];
+  ::quirks.setPerk(plungePerkConsts, perkTrees, 6);
 }
 
 local addPerkSupple = function() {
@@ -649,9 +767,14 @@ local addPerkSupple = function() {
     Name = this.Const.Strings.PerkName.QuirksSupple,
     Tooltip = this.Const.Strings.PerkDescription.QuirksSupple,
     Icon = "ui/perks/perk_quirks_supple.png",
-    IconDisabled = "ui/perks/perk_quirks_supple_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_supple_sw.png",
+    Const = "QuirksSupple"
   };
-  ::quirks.setPerk(supplePerkConsts, 5);
+  local perkTrees = [
+    "LightArmorTree",
+    "FitTree"
+  ];
+  ::quirks.setPerk(supplePerkConsts, perkTrees, 5);
 };
 
 local addPerkGlassCannon = function() {
@@ -675,13 +798,20 @@ local addPerkGlassCannon = function() {
     Name = this.Const.Strings.PerkName.QuirksGlassCannon,
     Tooltip = this.Const.Strings.PerkDescription.QuirksGlassCannon,
     Icon = "ui/perks/perk_quirks_glass_cannon.png",
-    IconDisabled = "ui/perks/perk_quirks_glass_cannon_sw.png"
+    IconDisabled = "ui/perks/perk_quirks_glass_cannon_sw.png",
+    Const = "QuirksGlassCannon"
   };
-  ::quirks.setPerk(glassCannonPerkConsts, 6);
+  local perkTrees = [
+    "MartyrTree",
+    "ViciousTree"
+  ];
+  ::quirks.setPerk(glassCannonPerkConsts, perkTrees, 6);
 };
 
-::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1)", function() {
+::mods_queue(null, "mod_hooks(>=20),libreuse(>=0.1),>mod_legends", function() {
   setupRootTableStructure();
+
+  initLegendsMod();
 
   addOnAfterSkillUsed();
   addMaxPerkPointsToPlayer();
