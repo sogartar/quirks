@@ -36,9 +36,8 @@ this.perk_quirks_defensive_adaptation <- this.inherit("scripts/skills/skill", {
   }
 
   function onMissed(_attacker, _skill) {
-    this.m.Stacks = 0;
+    this.m.Stacks = this.Math.max(0, this.m.Stacks - 1);
   }
-  
 
   function onCombatFinished() {
     this.m.Stacks = 0;

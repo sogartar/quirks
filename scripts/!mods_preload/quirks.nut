@@ -339,11 +339,11 @@ local addPerkTeacher = function() {
 };
 
 local addPerkDefensiveAdaptation = function() {
-  gt.Const.Quirks.DefensiveAdaptationBonusPerStack <- 16;
+  gt.Const.Quirks.DefensiveAdaptationBonusPerStack <- 10;
   gt.Const.Strings.PerkName.QuirksDefensiveAdaptation <- "Defensive Adaptation";
   gt.Quirks.getDefensiveAdaptationDescription <- function(bonusPerStack) {
     return "With each hit taken increase melee and ranged defense by [color=" + this.Const.UI.Color.PositiveValue + "]" +
-    bonusPerStack + "[/color]. Upon being missed the counter is reset."; };
+    bonusPerStack + "[/color]. Upon being missed decrease the bonus by the same ammount to a minumum of 0."; };
   gt.Const.Strings.PerkDescription.QuirksDefensiveAdaptation <- gt.Quirks.getDefensiveAdaptationDescription(gt.Const.Quirks.DefensiveAdaptationBonusPerStack);
 
   local defensiveAdaptationPerkConsts = {
