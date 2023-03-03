@@ -65,7 +65,7 @@ local addPerkPrecision = function() {
   this.Const.Quirks.PrecisionHitChanceBonusDecreasePerTurn <- 12.5;
   gt.Const.Strings.PerkDescription.QuirksPrecision <- "Unlocks the \'" + gt.Const.Strings.PerkName.QuirksPrecision + "\' ability to increase next attack's hit chance with [color=" +
   this.Const.UI.Color.PositiveValue + "]" + gt.Const.Quirks.PrecisionHitChanceBonus + "%[/color]." +
-    "If unused, each turn this bonus is decreased with [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.Quirks.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]. Costs " + 
+    "If unused, each turn this bonus is decreased with [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.Quirks.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]. Costs " +
     this.Const.Quirks.PrecisionFatigueCost + " fatigue and " + gt.Const.Quirks.PrecisionApCost + " action points. The bonus is halfed for area of effect attacks.";
   gt.Const.Strings.PrecisionSkillDescription <- "Increase next attack's hit chance by [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.Quirks.PrecisionHitChanceBonus + "%[/color]. " +
     "If unused, each turn this bonus is decreased by [color=" + this.Const.UI.Color.NegativeValue + "]" + gt.Const.Quirks.PrecisionHitChanceBonusDecreasePerTurn + "%[/color]. " +
@@ -650,8 +650,8 @@ local addPerkPlunge = function() {
 }
 
 local addPerkSupple = function() {
-  gt.Const.Quirks.SuppleRerollChanceBase <- 135;
-  gt.Const.Quirks.SuppleRerollChanceHitpointsMaxMult <- -1;
+  gt.Const.Quirks.SuppleRerollChanceBase <- 135.0;
+  gt.Const.Quirks.SuppleRerollChanceHitpointsMaxMult <- -1.0;
   gt.Const.Quirks.SuppleRerollChanceFatigueMaxPenaltyMult <- -1.5;
   this.Const.Strings.PerkName.QuirksSupple <- "Supple";
   gt.Quirks.getSuppleDescription <- function(rerollChanceBase, rerollChanceHitpointsMaxMult, rerollChanceFatigueMaxPenaltyMult) {
