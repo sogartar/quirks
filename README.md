@@ -113,8 +113,8 @@ This park is there for the build that just needs one more perk, but comes at a c
 
 ## New Effects
 
-* **Knackered** - When a character reaches their maximum fatigue their melee and ranged defense is reduced by 10.
-When some fatigue is recovered the effect is removed.  
+* **Knackered** - When a character reaches their maximum fatigue their melee and ranged defense is reduced by 5.
+When some fatigue is recovered the effect is removed.\
 This mechanic makes fatigue-neutral builds and Lone Wolf mega tanks less viable.
 Many attackers would tire a tank lowering his defense.
 

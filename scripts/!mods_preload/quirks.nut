@@ -547,7 +547,7 @@ local addPerkImpenetrable = function() {
 };
 
 local addEffectKnackered = function() {
-  gt.Const.Quirks.KnackeredDefenseModifier <- -10;
+  gt.Const.Quirks.KnackeredDefenseModifier <- -5;
   gt.Quirks.getKnackeredDescription <- function(defenseModifier) {
     return "This character has reached the limit of his endurance. Melee and ranged defense is reduced by [color=" + this.Const.UI.Color.NegativeValue + "]" + (-defenseModifier) + "[/color].";
   };
