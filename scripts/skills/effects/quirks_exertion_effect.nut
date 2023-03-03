@@ -23,7 +23,9 @@ this.quirks_exertion_effect <- this.inherit("scripts/skills/skill", {
       + "%[/color]\n" +
       "Fatigue Cost [color=" + this.Const.UI.Color.NegativeValue + "]+" +
       this.Math.round((this.getFatigueCostMult() - 1) * 100)
-      + "%[/color]\n";
+      + "%[/color]\n" +
+      "Note that due to limitations of the game mechanics the fatigue cost multiplier applies for all skills, not just attacks! " +
+      "This is why the efect is remove after using a skill.";
   }
 
   function getFatigueCostMult() {
@@ -41,16 +43,13 @@ this.quirks_exertion_effect <- this.inherit("scripts/skills/skill", {
       container.getSkillByID("actives.shoot_stake") != null ||
       container.getSkillByID("actives.fire_handgonne") != null ||
       container.getSkillByID("effects.spearwall") != null) {
-      this.logInfo("exertion.onUpdate: not a valid weapon.");
       return;
     }
-    this.logInfo("exertion.onUpdate: applying effect.");
     _properties.FatigueEffectMult *= this.getFatigueCostMult();
     _properties.DamageTotalMult *= this.m.DamageMult;
   }
 
-  function onAfterAnySkillUsed(_skill, _targetTile) {
-    this.logInfo("quirks_exertion_effect.onAfterAnySkillUsed");
+  function onAfterAnySkillUsed(_skill, _actor, _targetTile) {
     if (_skill.getID() != "actives.quirks.exertion") {
       this.removeSelf();
     }

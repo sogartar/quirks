@@ -2,9 +2,10 @@ this.perk_quirks_refund_action_points <- this.inherit("scripts/skills/skill", {
   m = {
     AttackFatigueCostMult = this.Const.Quirks.RefundActionPointsAttackFatigueCostMult,
     FatigueCostPerActionPoint = this.Const.Quirks.RefundActionPointsFatigueCostPerActionPoint,
-    IsTargetHit = false,
-    IsTargetMissed = false,
-    LastSkillActionPonts = 0
+    FatigueCostInSameTurnMult = this.Const.Quirks.FatigueCostInSameTurnMult,
+    SkillCounterFatigueCostMap = {},
+    SkillCounterActionPointsCostMap = {},
+    EnabledSameTurnCount = 0
   }
 
   function create() {
@@ -17,48 +18,54 @@ this.perk_quirks_refund_action_points <- this.inherit("scripts/skills/skill", {
     this.m.IsHidden = false;
   }
 
-  function onAnySkillUsed(_skill, _targetEntity, _properties) {
-    this.m.LastSkillActionPonts = _skill.getActionPointCost();
-  }
-
   function onTargetHit(_caller, _targetEntity, _bodyPart, _damageInflictedHitpoints, _damageInflictedArmor) {
-    this.m.IsTargetHit = true;
+    this.m.SkillCounterFatigueCostMap[this.Const.SkillCounter] <- 0;
+    this.m.SkillCounterActionPointsCostMap[this.Const.SkillCounter] <- 0;
   }
 
   function onTargetMissed(_skill, _targetEntity) {
-    this.m.IsTargetMissed = true;
+    if (!(this.Const.SkillCounter in this.m.SkillCounterFatigueCostMap)) {
+      this.m.SkillCounterFatigueCostMap[this.Const.SkillCounter] <-
+        (_skill.isUsedForFree() ? 0 : _skill.getFatigueCost());
+      this.m.SkillCounterActionPointsCostMap[this.Const.SkillCounter] <-
+        (_skill.isUsedForFree() ? 0 : _skill.getActionPointCost());
+      local tag = {
+        Actor = this.getContainer().getActor(),
+        SkillCounter = this.Const.SkillCounter,
+        FatigueCostOnUse = _skill.getFatigueCost()
+      };
+      this.Time.scheduleEvent(this.TimeUnit.Virtual, 600, this.onTargedMissedCallback.bindenv(this), tag);
+    }
   }
 
-  function onAfterAnySkillUsed(_skill, _targetTile) {
-    if (_skill == null || !_skill.isAttack() || (!this.m.IsTargetHit && !this.m.IsTargetMissed)) {
-      return; #Not an attack skill
-    }
+	function onTargedMissedCallback(_tag) {
+		if ((_tag.SkillCounter in this.m.SkillCounterActionPointsCostMap) &&
+    this.m.SkillCounterActionPointsCostMap[_tag.SkillCounter] > 0 && _tag.Actor.isAlive() &&
+      this.Tactical.TurnSequenceBar.getActiveEntity().getID() == _tag.Actor.getID()) {
+			enableRefundActionPointsSkill(
+        this.m.SkillCounterFatigueCostMap[_tag.SkillCounter],
+        this.m.SkillCounterActionPointsCostMap[_tag.SkillCounter],
+        _tag.Actor);
+		}
+	}
 
-    if (_skill.isUsedForFree()) {
-      return;
-    }
-
-    if (!this.m.IsTargetHit) {
-      this.enableRefundActionPointsSkill(_skill);
-    }
-
-    reset();
-  }
-
-  function enableRefundActionPointsSkill(_skill) {
+  function enableRefundActionPointsSkill(fatigueCostOnUse, apCost, actor) {
     local active = this.new("scripts/skills/actives/quirks_refund_action_points_skill");
-    active.setFatigueCost(this.Math.round(_skill.getFatigueCost() * this.m.AttackFatigueCostMult + this.m.FatigueCostPerActionPoint * this.m.LastSkillActionPonts));
-    active.setActionPontsRefund(this.m.LastSkillActionPonts);
+    active.setID("actives.quirks.refund_action_points" + this.m.EnabledSameTurnCount);
+    active.setFatigueCost(this.Math.round(
+      this.Math.pow(this.m.FatigueCostInSameTurnMult, this.m.EnabledSameTurnCount) *
+      (fatigueCostOnUse * this.m.AttackFatigueCostMult + this.m.FatigueCostPerActionPoint * apCost)));
+    active.setActionPontsRefund(apCost);
     this.getContainer().add(active);
+    this.m.EnabledSameTurnCount += 1;
+    this.spawnIcon("perk_quirks_refund_action_points", actor.getTile());
+    actor.setDirty(true);
   }
 
-  function reset() {
-    this.m.IsTargetHit = false;
-    this.m.IsTargetMissed = false;
-  }
-
-  function onCombatStarted() {
-    this.reset();
+  function onTurnStart() {
+    this.m.SkillCounterFatigueCostMap = {};
+    this.m.SkillCounterActionPointsCostMap = {};
+    this.m.EnabledSameTurnCount = 0;
   }
 
   function onUpdated(_properties) {

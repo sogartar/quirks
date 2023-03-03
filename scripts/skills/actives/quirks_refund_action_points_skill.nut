@@ -24,6 +24,10 @@ this.quirks_refund_action_points_skill <- this.inherit("scripts/skills/skill", {
     this.m.MaxRange = 0;
   }
 
+  function setID(value) {
+    this.m.ID = value;
+  }
+
   function setActionPontsRefund(value) {
     this.m.ActionPontsRefund = value;
   }

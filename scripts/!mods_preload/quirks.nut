@@ -137,6 +137,7 @@ local addPerkHyperactive = function() {
       if (Math.round(fatigueRecoveryRateModifierPerSpentActionPoint) != fatigueRecoveryRateModifierPerSpentActionPoint) {
         res += "\nRounding to the whole number is randomized with probability of rounding away from zero equal to the fraction part.";
       }
+      res += "\nWill start the turn with at least 15 stamina if max fatigue allows it.";
       return res;
   };
   gt.Const.Strings.PerkDescription.QuirksHyperactive <- gt.Quirks.getHyperactiveDescription(
@@ -189,74 +190,89 @@ local addPerkRefundFatigue = function() {
 };
 
 local addOnAfterSkillUsed = function() {
-  local onAfterSkillUsedExternal = function(_skill_container, _caller, _targetTile) {
-    if (!("m" in _skill_container)) {
-      return;
-    }
-    foreach(skill in _skill_container.m.Skills) {
-      skill.onAfterAnySkillUsed(_caller, _targetTile);
-    }
-  }
-
-  local onAfterSkillUsedInSkillContainer = function(_caller, _targetTile) {
-    onAfterSkillUsedExternal(this, _caller, _targetTile);
-  };
-
   ::mods_hookClass("skills/skill", function(c) {
     local skillClass = ::libreuse.getParentClass(c, "skill");
     if (skillClass == null) {
       skillClass = c;
     }
     skillClass.onAfterSkillUsed <- function(_targetTile) {};
-    skillClass.onAfterAnySkillUsed <- function(_skill, _targetTile) {};
+    skillClass.onAfterAnySkillUsed <- function(_skill, _actor, _targetTile) {};
     skillClass.m.IsOnAfterSkillUsedScheduled <- false;
     skillClass.m.TargetTile <- null;
     skillClass.m.IsUsedForFree <- false;
     skillClass.isUsedForFree <- function() { return this.m.IsUsedForFree; };
 
+    # Copied for skill.use(...)
+    skillClass.quirksCanUse <- function(_targetTile, _forFree = false) {
+      if (!_forFree && !this.isAffordable() || !this.isUsable())
+      {
+        return false;
+      }
+
+      local user = this.m.Container.getActor();
+
+      if (!_forFree)
+      {
+        #this.logDebug(user.getName() + " uses skill " + this.getName());
+      }
+
+      if (this.isTargeted())
+      {
+        if (this.m.IsVisibleTileNeeded && !_targetTile.IsVisibleForEntity)
+        {
+          return false;
+        }
+
+        if (!this.onVerifyTarget(user.getTile(), _targetTile))
+        {
+          return false;
+        }
+
+        local d = user.getTile().getDistanceTo(_targetTile);
+        local levelDifference = user.getTile().Level - _targetTile.Level;
+
+        if (d < this.m.MinRange || !this.m.IsRanged && d > this.getMaxRange())
+        {
+          return false;
+        }
+
+        if (this.m.IsRanged && d > this.getMaxRange() + this.Math.min(this.m.MaxRangeBonus, this.Math.max(0, levelDifference)))
+        {
+          return false;
+        }
+      }
+      return true;
+    };
+
     local useOriginal = skillClass.use;
     skillClass.use = function(_targetTile, _forFree = false) {
-      this.m.IsOnAfterSkillUsedScheduled = false;
       this.m.TargetTile = _targetTile;
       this.m.IsUsedForFree = _forFree;
-      local container = this.getContainer();
+      // skill.use may remove this skill from the container,
+      // so we need to cache the actor in order to have
+      // access to it and the skill container after useOriginal.
+      local actor = this.getContainer().getActor();
+      local canUse = this.quirksCanUse(_targetTile, _forFree);
       local ret = useOriginal(_targetTile, _forFree);
-      if (!ret || !this.isAttack()) {
-        this.m.IsOnAfterSkillUsedScheduled = true;
+      if (canUse || ret) {
         this.onAfterSkillUsed(_targetTile);
-        container.onAfterSkillUsed(this, _targetTile);
+        actor.getSkills().onAfterSkillUsed(this, _targetTile);
       }
       return ret;
     };
-
-    local onScheduledTargetHitOriginal = skillClass.onScheduledTargetHit;
-    skillClass.onScheduledTargetHit = function(_info) {
-      onScheduledTargetHitOriginal(_info);
-      if (!this.m.IsOnAfterSkillUsedScheduled) {
-        this.m.IsOnAfterSkillUsedScheduled = true;
-        this.Time.scheduleEvent(this.TimeUnit.Virtual, 1, this.onAfterSkillUsed, this.m.TargetTile);
-        local callbackData = {
-          container = this.getContainer(),
-          caller = this,
-          targetTile = this.m.TargetTile
-        };
-        this.Time.scheduleEvent(this.TimeUnit.Virtual, 1,
-          function(callbackData) {
-            if ("onAfterSkillUsed" in callbackData.container) {
-              callbackData.container.onAfterSkillUsed(callbackData.caller, callbackData.targetTile);
-            } else {
-              this.logWarning("onAfterSkillUsed not defined in skill_container. " +
-              "Hook to define it was probably not called. Falling back to call external definition.");
-              onAfterSkillUsedExternal(callbackData.container, callbackData.caller, callbackData.targetTile);
-            }
-          },
-          callbackData);
-      }
-    };
   });
 
+  local onAfterSkillUsedInSkillContainer = function(_caller, _targetTile) {
+    onAfterSkillUsedExternal(this, _caller, _targetTile);
+  };
+
   ::mods_hookClass("skills/skill_container", function(c) {
-    c.onAfterSkillUsed <- onAfterSkillUsedInSkillContainer;
+    c.onAfterSkillUsed <- function(_caller, _targetTile) {
+      local actor = this.getActor();
+      foreach(skill in this.m.Skills) {
+        skill.onAfterAnySkillUsed(_caller, actor, _targetTile);
+      }
+    };
   });
 }
 
@@ -475,16 +491,21 @@ local addPerkSurprise = function() {
 };
 
 local addPerkRefundActionPoints = function() {
-  gt.Const.Quirks.RefundActionPointsAttackFatigueCostMult <- 0.3333;
-  gt.Const.Quirks.RefundActionPointsFatigueCostPerActionPoint <- 1.0;
+  gt.Const.Quirks.RefundActionPointsAttackFatigueCostMult <- 0.4;
+  gt.Const.Quirks.RefundActionPointsFatigueCostPerActionPoint <- 1.25;
+  gt.Const.Quirks.FatigueCostInSameTurnMult <- 1.4;
   this.Const.Strings.PerkName.QuirksRefundActionPoints <- "Refund Action Points"
-  gt.Quirks.getRefundActionPointsDescription <- function(attackFatigueCostMult, fatigueCostPerActionPoint) {
+  gt.Quirks.getRefundActionPointsDescription <- function(attackFatigueCostMult, fatigueCostPerActionPoint, fatigueCostInSameTurnMult) {
     return "Unlocks the ability to refund all action points on a missed attack. The skill can be used until the end of the turn. " +
       "The cost is [color=" + this.Const.UI.Color.NegativeValue + "]" + this.Math.round(attackFatigueCostMult * 100) + "%[/color] of the attack's fatigue + " +
-      "[color=" + this.Const.UI.Color.NegativeValue + "]" + fatigueCostPerActionPoint + "[/color] per action point.";
+      "[color=" + this.Const.UI.Color.NegativeValue + "]" + fatigueCostPerActionPoint + "[/color] per action point. " +
+      "The cost increases by [color=" + this.Const.UI.Color.NegativeValue + "]" + this.Math.round((fatigueCostInSameTurnMult - 1) * 100) +
+      "%[/color] with each use in the same turn. On new turn the cost multiplier is reset.";
   };
   gt.Const.Strings.PerkDescription.QuirksRefundActionPoints <- gt.Quirks.getRefundActionPointsDescription(
-    gt.Const.Quirks.RefundActionPointsAttackFatigueCostMult, gt.Const.Quirks.RefundActionPointsFatigueCostPerActionPoint);
+    gt.Const.Quirks.RefundActionPointsAttackFatigueCostMult,
+    gt.Const.Quirks.RefundActionPointsFatigueCostPerActionPoint,
+    gt.Const.Quirks.FatigueCostInSameTurnMult);
 
   local refundActionPointsPerkConsts = {
     ID = "perk.quirks.refund_action_points",

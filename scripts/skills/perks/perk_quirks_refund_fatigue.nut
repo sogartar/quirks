@@ -1,8 +1,7 @@
 this.perk_quirks_refund_fatigue <- this.inherit("scripts/skills/skill", {
   m = {
     RefundMult = this.Const.Quirks.RefundFatigueMult,
-    IsTargetHit = false
-    IsTargetMissed = false
+    SkillCounterFatigueCostMap = {}
   }
 
   function create() {
@@ -18,37 +17,32 @@ this.perk_quirks_refund_fatigue <- this.inherit("scripts/skills/skill", {
   }
 
   function onTargetHit(_caller, _targetEntity, _bodyPart, _damageInflictedHitpoints, _damageInflictedArmor) {
-    this.m.IsTargetHit = true;
+    this.m.SkillCounterFatigueCostMap[this.Const.SkillCounter] <- 0;
   }
 
   function onTargetMissed(_skill, _targetEntity) {
-    this.m.IsTargetMissed = true;
+    if (!(this.Const.SkillCounter in this.m.SkillCounterFatigueCostMap)) {
+      this.m.SkillCounterFatigueCostMap[this.Const.SkillCounter] <-
+        (_skill.isUsedForFree() ? 0 : _skill.getFatigueCost());
+      local tag = {
+        Actor = this.getContainer().getActor(),
+        SkillCounter = this.Const.SkillCounter,
+      };
+      this.Time.scheduleEvent(this.TimeUnit.Virtual, 400, this.onTargedMissedCallback.bindenv(this), tag);
+    }
   }
 
-  function onAfterAnySkillUsed(_skill, _targetTile) {
-    if (_skill == null || !_skill.isAttack() || (!this.m.IsTargetHit && !this.m.IsTargetMissed)) {
-      return; #Not an attack skill
-    }
+	function onTargedMissedCallback(_tag) {
+		if ((_tag.SkillCounter in this.m.SkillCounterFatigueCostMap) && _tag.Actor.isAlive() &&
+      this.Tactical.TurnSequenceBar.getActiveEntity().getID() == _tag.Actor.getID()) {
+      _tag.Actor.setFatigue(
+        this.Math.max(0, _tag.Actor.getFatigue()
+        - ::libreuse.roundRandomWeighted(this.m.SkillCounterFatigueCostMap[_tag.SkillCounter] * this.m.RefundMult)));
+      _tag.Actor.setDirty(true);
+		}
+	}
 
-    if (_skill.isUsedForFree()) {
-      return;
-    }
-
-    if (!this.m.IsTargetHit) {
-      local actor = _skill.getContainer().getActor();
-      local fat = _skill.getFatigueCost();
-      actor.setFatigue(this.Math.max(0, actor.getFatigue() - ::libreuse.roundRandomWeighted(fat * this.m.RefundMult)));
-    }
-
-    reset();
-  }
-
-  function reset() {
-    this.m.IsTargetHit = false;
-    this.m.IsTargetMissed = false;
-  }
-
-  function onCombatStarted() {
-    this.reset();
+  function onTurnStarted() {
+    this.m.SkillCounterFatigueCostMap = {};
   }
 });

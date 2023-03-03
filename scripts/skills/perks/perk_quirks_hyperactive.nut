@@ -3,7 +3,7 @@ this.perk_quirks_hyperactive <- this.inherit("scripts/skills/skill", {
     RefundApProbabilityPromile = this.Const.Quirks.HyperactiveRefundApProbabilityPromile,
     FatigueRecoveryRateModifierPerSpentActionPoint = this.Const.Quirks.HyperactiveFatigueRecoveryRateModifierPerSpentActionPoint,
     SpentActionPointsThisTurn = 0,
-    SpentActionPointsLastTurn = 0
+    SpentActionPointsLastTurn = 0,
   },
   function create() {
     this.m.ID = "perk.quirks.hyperactive";
@@ -27,25 +27,42 @@ this.perk_quirks_hyperactive <- this.inherit("scripts/skills/skill", {
       this.m.SpentActionPointsLastTurn * this.m.FatigueRecoveryRateModifierPerSpentActionPoint);
   }
 
-  function onAfterAnySkillUsed(_skill, _targetTile) {
-    if (_skill == null || _skill.isUsedForFree()) {
+  function getSkillApCost(skill, actor) {
+    if (actor.getCurrentProperties().IsSkillUseFree)
+    {
+      return 0;
+    }
+    else if (actor.getCurrentProperties().IsSkillUseHalfCost)
+    {
+      return this.Math.max(1, this.Math.floor(skill.m.ActionPointCost / 2));
+    }
+    else
+    {
+      return skill.m.ActionPointCost;
+    }
+  }
+
+  function onAfterAnySkillUsed(_skill, _actor, _targetTile) {
+    local ap = this.getSkillApCost(_skill, _actor);
+    if (ap == 0) {
       return;
     }
-
-    this.m.SpentActionPointsThisTurn += _skill.getActionPointCost();
-    this.logInfo("perk_quirks_hyperactive.onAfterAnySkillUsed this.m.SpentActionPointsThisTurn = " + this.m.SpentActionPointsThisTurn);
-
+    this.m.SpentActionPointsThisTurn += ap;
     if (this.Math.rand(1, 1000) <= this.m.RefundApProbabilityPromile) {
-      local actor = this.getContainer().getActor();
-      actor.setActionPoints(this.Math.min(actor.getActionPointsMax(),
-      actor.getActionPoints() + _skill.getActionPointCost()));
-      actor.setDirty(true);
-      this.spawnIcon("perk_quirks_hyperactive", actor.getTile());
+      _actor.setActionPoints(this.Math.min(_actor.getActionPointsMax(),
+      _actor.getActionPoints() + ap));
+      local spwanIconArg = {
+        actor = _actor
+      };
+      local spwanIcon = function(_arg) {
+        this.spawnIcon("perk_quirks_hyperactive", _arg.actor.getTile());
+      }
+      this.Time.scheduleEvent(this.TimeUnit.Virtual, 200, spwanIcon.bindenv(this), spwanIconArg);
+      _actor.setDirty(true);
     }
   }
 
   function onTurnEnd() {
-    this.logInfo("perk_quirks_hyperactive.onTurnEnd this.m.SpentActionPointsThisTurn = " + this.m.SpentActionPointsThisTurn);
     this.m.SpentActionPointsLastTurn = this.m.SpentActionPointsThisTurn;
     this.m.SpentActionPointsThisTurn = 0;
   }

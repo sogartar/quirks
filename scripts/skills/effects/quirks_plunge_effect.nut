@@ -102,7 +102,6 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
     if (_skill != null && _skill.isAttack() && !_skill.isRanged() &&
       _targetEntity != null) {
       _properties.DamageTotalMult *= this.getDamageMult(_skill);
-      this.m.IsSpent = true;
       this.m.Skill = _skill;
       this.m.TargetEntity = _targetEntity;
       this.m.TargetEntityTile = _targetEntity.getTile();
@@ -155,13 +154,6 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
     this.removeSelf();
   }
 
-  function onAfterAnySkillUsed(_skill, _targetTile) {
-    if (this.m.IsSpent) {
-      this.getContainer().getActor().setDirty(true);
-      this.getContainer().remove(this);
-    }
-  }
-
   function onPlunge(_entity, _tag) {
     local actorTile = _tag.User.getTile();
     local plungeToTile = actorTile.hasNextTile(_tag.Direction) ? actorTile.getNextTile(_tag.Direction) : null;
@@ -174,11 +166,13 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
     if (_skill != this.m.Skill ||
       _targetEntity.getCurrentProperties().IsImmuneToKnockBackAndGrab ||
       _targetEntity.getCurrentProperties().IsRooted) {
+      this.removeSelf();
       return;
     }
 
     local knockBackChance = this.getKnockBackChance(_skill);
     if (knockBackChance * 1000 <= this.Math.rand(1, 1000)) {
+      this.removeSelf();
       return;
     }
 
@@ -211,5 +205,11 @@ this.quirks_plunge_effect <- this.inherit("scripts/skills/skill", {
         this.onPlunge(null, tag);
       }
     }
+
+    this.removeSelf();
+  }
+
+  function onTargetMissed(_skill, _targetEntity) {
+    this.removeSelf();
   }
 });
