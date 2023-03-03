@@ -1,6 +1,7 @@
 this.quirks_bank_effect <- this.inherit("scripts/skills/skill", {
   m = {
-    ActionPoints = 0
+    ActionPoints = 0,
+    ActionPointsMax = this.Const.Quirks.BankApMax,
   }
 
   function create() {
@@ -37,9 +38,10 @@ this.quirks_bank_effect <- this.inherit("scripts/skills/skill", {
   }
 
   function onTurnEnd() {
-    this.setActionPoints(this.getActionPoints() * (this.Const.Quirks.BankInterestRatePerTurn + 1));
+    this.setActionPoints(this.Math.minf(
+      this.m.ActionPointsMax, this.getActionPoints() * (this.Const.Quirks.BankInterestRatePerTurn + 1)));
   }
-  
+
   function onUpdated(_properties) {
     _properties.TargetAttractionMult *= this.Math.pow(1.03, 1 + this.getActionPoints());
   }

@@ -82,13 +82,10 @@ The chance starts from 135 and is reduced by 100% of maximum hitpoints and 150% 
 * **Bank** - Unlocks the ability to bank action points to be used later.
 When used, banks 1 action point.
 Breaking the bank (cashing in) makes the action points available next turn.
-Each turn the bank is not spent it is increased by 25%.
-'Bank' costs 50 fatigue and 9 action points.
-'Cash In' costs 50 fatigue and 9 action points.  
-This perk is maybe game-breaking due to its exponential nature, but this mod is called Quirks after all.
-If you like to turtle fights you can pick this and wait to clean house in one turn.
-Note that this perk changes the behavior of the AI, causing them to be aggressive and to stop you from charging the bank.
-It kind of breaks fort battles, as the AI is forced to sally out.
+Each turn the bank is not spent it is increased by 66% up to a maximum of 7.
+'Bank' costs 25 fatigue and 9 action points.
+'Cash In' costs 0 fatigue and 0 action points.\
+If you like to turtle fights you can pick this and be more deffensive until the bank accumulates.
 * **Double Or Nothing** -Unlocks the skill to double damage dealt but halves hit chance when attacking.
 The hit chance reduction is applied before clipping in the range [5, 95].  
 I found the perk a bit underwhelming, but there is beauty in its symmetry, so I am leaving it in.

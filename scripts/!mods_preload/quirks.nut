@@ -24,19 +24,21 @@ local setupRootTableStructure = function() {
 };
 
 local addPerkBank = function() {
-  gt.Const.Quirks.BankFatigueCost <- 50;
+  gt.Const.Quirks.BankFatigueCost <- 25;
   gt.Const.Quirks.BankApCost <- 9;
   gt.Const.Quirks.BankApIncreaseOnUse <- 1;
-  gt.Const.Quirks.CashInFatigueCost <- 50;
-  gt.Const.Quirks.CashInApCost <- 9;
+  gt.Const.Quirks.CashInFatigueCost <- 0;
+  gt.Const.Quirks.CashInApCost <- 0;
+  gt.Const.Quirks.BankApMax <- 7;
   gt.Const.Strings.PerkName.QuirksBank <- "Bank";
   gt.Const.Strings.CashInName <- "Cash In";
   gt.Const.Strings.CashedInEffectName <- "Cashed In";
-  gt.Const.Quirks.BankInterestRatePerTurn <- 0.3;
+  gt.Const.Quirks.BankInterestRatePerTurn <- 0.666;
   gt.Const.Strings.PerkDescription.QuirksBank <- "Unlocks the \'Bank\' ability to bank action points to be used later. " +
     "When used, banks [color=" + this.Const.UI.Color.PositiveValue + "]" + gt.Const.Quirks.BankApIncreaseOnUse + "[/color] action point. " +
     "Breaking (cashing in) makes the action points available next turn. " +
-    "Each turn the bank is not spent it is increased by [color=" + gt.Const.UI.Color.PositiveValue + "]" + (gt.Const.Quirks.BankInterestRatePerTurn * 100) + "%[/color]. " +
+    "Each turn the bank is not spent it is increased by [color=" + gt.Const.UI.Color.PositiveValue + "]" + (gt.Const.Quirks.BankInterestRatePerTurn * 100) + "%[/color]" +
+    " up to a maximum of [color=" + gt.Const.UI.Color.PositiveValue + "]" + gt.Const.Quirks.BankApMax + "[/color]."
     "\'" + gt.Const.Strings.PerkName.QuirksBank + "\' costs " + this.Const.Quirks.BankFatigueCost + " fatigue and " + gt.Const.Quirks.BankApCost + " action points. " +
     "\'" + gt.Const.Strings.CashInName + "\' costs " + this.Const.Quirks.CashInFatigueCost + " fatigue and " + gt.Const.Quirks.CashInApCost + " action points.";
   gt.Const.Strings.BankSkillDescription <- "Adds [color=" + gt.Const.UI.Color.PositiveValue + "]" +
@@ -52,7 +54,7 @@ local addPerkBank = function() {
   };
   ::quirks.setPerk(bankPerkConsts, 6);
 
-  ::quirks.stopAiDefendingOnEnemyBank();
+  //::quirks.stopAiDefendingOnEnemyBank();
 };
 
 local addPerkPrecision = function() {
