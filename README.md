@@ -54,7 +54,7 @@ The cost starts at 90% more fatigue and is reduced to a minimum of 35%
 by subtracting 50% of stamina left and 50% of resolve.\
 Does not work with crossbows, handgones and during spearwall.
 * **Precision** - Unlocks the ability to increase next attack's hit chance with 25%.
-If unused, each turn this bonus is decreased with 12.5%. Costs 8 fatigue and 3 action points.
+If unused, each turn this bonus is decreased with 12.5%. Costs 9 fatigue and 3 action points.
 The bonus is halved for area of effect attacks.\
 Should be good on maces where it is necessary to stun a dangerous target.
 You could use it with a one-handed mace in the same turn even when 1 tile away.
